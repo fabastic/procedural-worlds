@@ -3,11 +3,12 @@
 Built for the ink / graphic-novel look: this module only makes geometry, composition, base colours
 and lights. ink.py later turns materials into cel shading, draws Line Art and adds wobble.
 Geometry is accumulated with a small mesh builder (MB) and emitted as one mesh per building /
-prop, so the scene stays at ~150-250 objects and builds in a couple of seconds.
+prop, so the scene stays at ~100-140 objects and builds in a couple of seconds.
 
 Ink hints set here:
   PW_Reflect_*  road reflection decals   pw_line=0, pw_wonk=0 (emissive, lower strength)
-  PW_Sky        backdrop shell           pw_line=0, pw_wonk=0, material pw_flat=1, no shadows
+  PW_Steam_*    steam puffs              pw_wonk=1 (extra wobble)
+  camera target is placed FOCUS m along the view ray (ink.py sizes lines from that distance)
   emissive materials (Emission Strength > 0): PW_Alley_Neon_*, PW_Alley_Box_*, PW_Alley_Lit_*,
   PW_Alley_Lantern*, PW_Alley_Reflect_*, PW_Alley_Bulb, PW_Alley_FarLit, PW_Alley_Vend*
 """
@@ -106,34 +107,6 @@ def _grime_mat(name, color, dark, amount=0.55):
     return m
 
 
-def _sky_mat(name, bottom, top, z1):
-    """Unlit vertical gradient (haze at the horizon -> sky colour)."""
-    m = bpy.data.materials.get(name) or bpy.data.materials.new(name)
-    m.use_nodes = True
-    nt = m.node_tree
-    nt.nodes.clear()
-    N, L = nt.nodes.new, nt.links.new
-    out = N("ShaderNodeOutputMaterial")
-    b = N("ShaderNodeBsdfPrincipled")
-    geo = N("ShaderNodeNewGeometry")
-    sep = N("ShaderNodeSeparateXYZ")
-    mr = N("ShaderNodeMapRange")
-    mr.inputs["From Min"].default_value = 0.0
-    mr.inputs["From Max"].default_value = z1
-    ramp = N("ShaderNodeValToRGB")
-    ramp.color_ramp.elements[0].color = (*bottom, 1)
-    ramp.color_ramp.elements[1].color = (*top, 1)
-    L(geo.outputs["Position"], sep.inputs[0])
-    L(sep.outputs["Z"], mr.inputs["Value"])
-    L(mr.outputs["Result"], ramp.inputs["Fac"])
-    L(ramp.outputs["Color"], b.inputs["Base Color"])
-    L(ramp.outputs["Color"], b.inputs["Emission Color"])
-    b.inputs["Emission Strength"].default_value = 1.0
-    L(b.outputs["BSDF"], out.inputs["Surface"])
-    m["pw_flat"] = 1
-    return m
-
-
 class Mats:
     """All PW_Alley_* materials for one build (reused by name across regenerations)."""
 
@@ -141,7 +114,6 @@ class Mats:
         ef, lk, self.lit_frac, haze, sky = MOOD[mood]
         self.ef, self.lk = ef, lk
         self.haze = srgb(haze)
-        self.sky_cols = (srgb(sky[0]), srgb(sky[1]))
         # NIGHT: the ink palette multiplies lit tones by a dark blue tint, so lift the
         # non-emissive base colours a little to keep walls/props legible (road/glass stay dark).
         lift = 1.7 if mood == "NIGHT" else 1.0
@@ -669,11 +641,10 @@ class _Alley:
             fe = (max(a0 + .3, c - 1.9), min(a1 - .3, c + 1.9))
 
         def lit_mat():
-            r = R.random()
+            r, k = R.random(), R.random()     # always two draws: layout identical across moods
             if r < lit_frac:
                 if far:
                     return M.far_lit, True
-                k = R.random()
                 return M.lit["warm" if k < .62 else "cyan" if k < .84 else "pink"], True
             return glass_dark, False
 
@@ -703,8 +674,9 @@ class _Alley:
                 if not ribbon and ha1 - ha0 > .8:
                     am = (ha0 + ha1) / 2
                     F.box(mb, am - .025, am + .025, hz0, hz1, -dep, -dep + .04, trim)
-                if gm is not glass_dark and R.random() < .45:                      # blind
-                    zb = hz1 - (hz1 - hz0) * R.uniform(.25, .6)
+                rb = R.random()
+                if gm is not glass_dark and rb < .45:                              # blind
+                    zb = hz1 - (hz1 - hz0) * (.25 + .35 * rb / .45)
                     F.box(mb, ha0, ha1, zb, hz1, -dep, -dep + .03, M.trim_dark)
             if ledges or f == 0:
                 F.box(mb, a0, a1, z0 - .1, z0 + .08, 0, .14 if f else .22, trim)
@@ -1295,10 +1267,9 @@ class _Alley:
             sk.tube([(cx, cy, h), (cx, cy, h + R.uniform(10, 25))], .4, M.metal, 4, smooth=False)
             nb = int(h / 3.5)
             for j in range(nb):
-                if R.random() < M.lit_frac * .8:
+                r, xa, xb = R.random(), R.uniform(cx - w / 2 + 1, cx), R.uniform(cx + 1, cx + w / 2 - 1)
+                if r < M.lit_frac * .8:
                     zb = 4 + j * 3.5
-                    xa = R.uniform(cx - w / 2 + 1, cx)
-                    xb = R.uniform(cx + 1, cx + w / 2 - 1)
                     sk.box_mm(xa, xb, cy - d / 2 - .2, cy - d / 2, zb, zb + 1.2, M.far_lit)
         sk.build("PW_Skyline", self.col, pw_wonk=0.3)
 
