@@ -7,7 +7,8 @@ from .kits.room import Room
 from .kits.street import Street
 from .kits.terrain import Terrain
 
-KITS = {"room": Room, "street": Street, "terrain": Terrain}
+KITS = {"room": Room, "street": Street, "terrain": Terrain}     # kits/ext modules may add kits here
+from .kits import ext as _ext      # noqa: E402,F401  (imports every extension module)
 
 
 class Composed:

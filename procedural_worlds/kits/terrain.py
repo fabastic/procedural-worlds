@@ -25,6 +25,10 @@ BIOMES = {
 }
 
 
+SCATTER = {}         # biome scatter kind -> fn(terrain, x, y, z, scale)
+LANDMARKS = {}       # name -> fn(terrain, x, y, z): add geometry to terrain.mb[...] and set terrain.focus["landmark"]
+
+
 class Terrain:
     def __init__(self, col, entry, layers, seed, mood):
         self.col, self.E, self.L, self.mood, self.seed = col, entry, layers, mood, seed
@@ -173,6 +177,8 @@ class Terrain:
                               rot_z=r.uniform(0, 3))
                 elif kind == "crystal":
                     V.cyl((x, y, z + 1.0 * s), 0.4 * s, 2.0 * s, "crystal", seg=5, r2=0.0)
+                elif kind in SCATTER:
+                    SCATTER[kind](self, x, y, z, s)
                 elif kind == "debris":
                     Rk.box((x, y, z + 0.1), (r.uniform(0.3, 1.5), r.uniform(0.2, 0.6), 0.2), r.choice(("wood2", "metal2", "rock")),
                            rot_z=r.uniform(0, 6.28))
@@ -185,6 +191,8 @@ class Terrain:
         x, y = r.uniform(-4, 4), r.uniform(17, 23)
         z = self.h(x, y)
         night = self.mood in ("DUSK", "NIGHT")
+        if kind in LANDMARKS:                       # extension landmarks (kits/ext/*)
+            return LANDMARKS[kind](self, x, y, z)
         if kind == "cabin":
             Lm.box((x, y, z + 1.4), (6, 4.5, 2.8), "wood")
             Lm.poly([(x - 3.3, y - 2.6, z + 2.8), (x + 3.3, y - 2.6, z + 2.8), (x + 3.3, y, z + 4.6), (x - 3.3, y, z + 4.6)], "wood2")

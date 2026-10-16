@@ -225,9 +225,16 @@ def generate(context, scene_type, seed=1, size=60.0, detail=160, height=1.0,
 def load_preset(kind):
     """presets/<kind>.json as a dict (layers are data: adding a genre/era is adding data)."""
     import json, os
-    path = os.path.join(os.path.dirname(__file__), "presets", kind + ".json")
-    with open(path, encoding="utf-8") as f:
-        return {k: v for k, v in json.load(f).items() if not k.startswith("_")}
+    base = os.path.join(os.path.dirname(__file__), "presets")
+    with open(os.path.join(base, kind + ".json"), encoding="utf-8") as f:
+        out = {k: v for k, v in json.load(f).items() if not k.startswith("_")}
+    frag = os.path.join(base, kind + ".d")          # extension fragments: presets/<kind>.d/*.json
+    if os.path.isdir(frag):
+        for name in sorted(os.listdir(frag)):
+            if name.endswith(".json"):
+                with open(os.path.join(frag, name), encoding="utf-8") as f:
+                    out.update({k: v for k, v in json.load(f).items() if not k.startswith("_")})
+    return out
 
 
 def genre_grade(layers):

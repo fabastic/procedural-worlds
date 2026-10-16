@@ -13,6 +13,9 @@ from .. import core, shots
 from ..ink import srgb
 
 
+FEATURES = {}        # name -> fn(street): extra dressing listed in a setting's "features"
+
+
 class Street:
     def __init__(self, col, entry, layers, seed, mood):
         self.col, self.E, self.L, self.mood = col, entry, layers, mood
@@ -63,6 +66,8 @@ class Street:
         self.street_props()
         if E.get("stalls"):
             self.stalls()
+        for f in E.get("features", []):            # extension street features (kits/ext/*)
+            FEATURES[f](self)
         if E.get("water_end"):
             self.pal["water"] = srgb(0.28, 0.42, 0.46)
             G.box((0, self.len + 30, -0.4), (80, 60, 0.2), "water")
