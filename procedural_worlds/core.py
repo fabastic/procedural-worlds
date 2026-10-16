@@ -17,15 +17,30 @@ def get_collection(clear=True):
     return col
 
 
+def _data_collections():
+    return (bpy.data.meshes, bpy.data.lights, bpy.data.cameras, bpy.data.curves,
+            bpy.data.grease_pencils, bpy.data.metaballs, bpy.data.lattices)
+
+
 def remove_object(o):
-    """Remove an object AND its orphaned data (mesh/light/camera) so regenerating doesn't leak."""
+    """Remove an object AND its orphaned data (mesh/light/camera/curve/grease pencil) so
+    regenerating doesn't leak."""
     data = o.data
     bpy.data.objects.remove(o, do_unlink=True)
     if data is not None and data.users == 0:
-        for coll in (bpy.data.meshes, bpy.data.lights, bpy.data.cameras):
+        for coll in _data_collections():
             if data.name in coll and coll[data.name] is data:
                 coll.remove(data)
                 break
+
+
+def purge_orphans(prefix="PW_"):
+    """Drop zero-user PW_* materials, node groups, textures and images left by a previous build."""
+    for coll in (bpy.data.materials, bpy.data.node_groups, bpy.data.textures, bpy.data.images,
+                 bpy.data.worlds, *_data_collections()):
+        for d in list(coll):
+            if d.name.startswith(prefix) and d.users == 0:
+                coll.remove(d)
 
 
 def link(obj, col):
@@ -107,8 +122,13 @@ MOODS = {
 }
 
 
-def setup_lighting(mood, col):
+def setup_lighting(mood, col, sun_scale=1.0, sky_scale=1.0, sun_dir=None):
+    """Mood sun + world. A scene's build info may pass sun_scale / sky_scale multipliers and
+    sun_dir=(elevation_deg, azimuth_deg) to aim the sun (e.g. through an interior window)."""
     el, az, scol, sstr, sky, skystr = MOODS[mood]
+    if sun_dir is not None:
+        el, az = sun_dir
+    sstr, skystr = sstr * sun_scale, skystr * sky_scale
     sun = bpy.data.lights.new("PW_Sun", "SUN")
     sun.energy, sun.color, sun.angle = sstr, scol, math.radians(1.5)
     so = bpy.data.objects.new("PW_Sun", sun)
@@ -122,12 +142,19 @@ def setup_lighting(mood, col):
     bg.inputs["Strength"].default_value = skystr
 
 
-def setup_camera(col, target=(0, 0, 2), distance=45, height=12, angle=35, lens=35):
+def setup_camera(col, target=(0, 0, 2), distance=45, height=12, angle=35, lens=35,
+                 location=None, clip_end=1000.0, shift_y=0.0):
+    """Orbit placement (distance/height/angle around target) unless an explicit location is given."""
     cam = bpy.data.cameras.new("PW_Camera")
     cam.lens = lens
+    cam.clip_start, cam.clip_end = 0.05, clip_end
+    cam.shift_y = shift_y
     co = bpy.data.objects.new("PW_Camera", cam)
-    a = math.radians(angle)
-    co.location = (target[0] + math.sin(a) * distance, target[1] - math.cos(a) * distance, height)
+    if location is not None:
+        co.location = location
+    else:
+        a = math.radians(angle)
+        co.location = (target[0] + math.sin(a) * distance, target[1] - math.cos(a) * distance, height)
     col.objects.link(co)
     d = Vector(target) - co.location
     co.rotation_euler = d.to_track_quat("-Z", "Y").to_euler()
@@ -135,18 +162,34 @@ def setup_camera(col, target=(0, 0, 2), distance=45, height=12, angle=35, lens=3
     return co
 
 
-def setup_render(engine="CYCLES", samples=64, res=(1920, 1080)):
+def setup_render(engine="CYCLES", samples=64, res=(1920, 1080), fast=False, ink=False):
+    """fast=True: iteration settings (few TAA samples). ink=True: Standard view transform so the
+    flat cel colours and black ink are displayed exactly as authored."""
     s = bpy.context.scene
     try:
         s.render.engine = engine
     except TypeError:
         s.render.engine = "BLENDER_EEVEE"
     s.render.resolution_x, s.render.resolution_y = res
+    s.render.resolution_percentage = 100
     if s.render.engine == "CYCLES":
-        s.cycles.samples = samples
+        s.cycles.samples = 24 if fast else samples
         s.cycles.use_denoising = True
-    s.view_settings.view_transform = "AgX" if "AgX" in [
-        i.identifier for i in s.view_settings.bl_rna.properties["view_transform"].enum_items] else "Filmic"
+    else:
+        s.eevee.taa_render_samples = 8 if fast else 32
+        s.eevee.use_shadows = True
+        s.eevee.shadow_resolution_scale = 1.0
+    if ink or s.get("pw_ink"):
+        s.view_settings.view_transform = "Standard"
+        s.view_settings.look = "None"
+        s.view_settings.exposure, s.view_settings.gamma = 0.0, 1.0
+        return
+    for vt in ("AgX", "Filmic"):
+        try:
+            s.view_settings.view_transform = vt
+            break
+        except TypeError:
+            continue
 
 
 def generate(context, scene_type, seed=1, size=60.0, detail=160, height=1.0,
@@ -158,8 +201,10 @@ def generate(context, scene_type, seed=1, size=60.0, detail=160, height=1.0,
         for o in list(context.scene.objects):
             if o.name.startswith("PW_") and o.name not in col.objects:
                 remove_object(o)
-    info = scenes.REGISTRY[scene_type].build(col, seed=seed, size=size, detail=detail, height=height)
-    setup_lighting(mood, col)
+    info = scenes.REGISTRY[scene_type].build(col, seed=seed, size=size, detail=detail, height=height,
+                                             mood=mood)
+    setup_lighting(mood, col, sun_scale=info.get("sun_scale", 1.0),
+                   sky_scale=info.get("sky_scale", 1.0), sun_dir=info.get("sun_dir"))
     setup_camera(col, **info.get("camera", {}))
     setup_render(engine)
     return info

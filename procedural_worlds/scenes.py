@@ -26,7 +26,7 @@ class CoastalIsland:
     LABEL = "Coastal island"
 
     @staticmethod
-    def build(col, seed, size, detail, height):
+    def build(col, seed, size, detail, height, mood="GOLDEN", **kw):
         amp = 9.0 * height
 
         def h(x, y):
@@ -90,4 +90,7 @@ class CoastalIsland:
                                                              height=size * .22)}
 
 
-REGISTRY = {"COASTAL_ISLAND": CoastalIsland}
+from .scene_kitchen import Kitchen  # noqa: E402
+from .scene_alley import CyberpunkAlley  # noqa: E402
+
+REGISTRY = {"COASTAL_ISLAND": CoastalIsland, "KITCHEN": Kitchen, "CYBERPUNK_ALLEY": CyberpunkAlley}
