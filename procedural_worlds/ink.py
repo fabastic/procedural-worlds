@@ -209,7 +209,7 @@ def build_toon_group():
     half = t.math("MULTIPLY", mid, t.math("SUBTRACT", 1.0, lit))
     deep = t.math("LESS_THAN", lum_w, t.math("MULTIPLY", O["Lo"], 0.45))
     occ = t.maprange(g_ao, 0.05, 0.6)
-    w1 = t.math("MULTIPLY", O["Hatch"], t.math("MULTIPLY", shadow, t.math("ADD", 0.05, t.math("MULTIPLY", occ, 0.26))))
+    w1 = t.math("MULTIPLY", O["Hatch"], t.math("MULTIPLY", shadow, t.math("ADD", 0.025, t.math("MULTIPLY", occ, 0.26))))
     w2 = t.math("MULTIPLY", O["Hatch"], t.math("MULTIPLY", t.math("MULTIPLY", shadow, t.maprange(g_ao, 0.45, 0.9)), 0.22))
     h1 = t.math("LESS_THAN", wave["a"], w1)
     h2 = t.math("LESS_THAN", wave["b"], w2)

@@ -758,13 +758,13 @@ class _Kitchen:
 
     def camera(self):
         rng, W, D = self.rng, self.W, self.D
-        loc = (W - 0.62 + rng.uniform(-0.12, 0.08), rng.uniform(0.4, 0.6), rng.uniform(1.58, 1.68))
+        loc = (W - 0.75 + rng.uniform(-0.12, 0.08), rng.uniform(0.85, 1.05), rng.uniform(1.55, 1.65))
         if self.layout == "back":
             dc = (self.door[1] + self.door[2]) / 2
-            tgt = (dc + 0.9 + rng.uniform(-0.15, 0.2), D, 0.9)
+            tgt = (dc + 0.9 + rng.uniform(-0.15, 0.2), D, 0.7)
         else:
-            tgt = (1.3 + rng.uniform(-0.2, 0.2), D - 0.75, 0.9)
-        self.cam = {"location": loc, "target": tgt, "lens": rng.choice((16, 17, 18)),
+            tgt = (1.3 + rng.uniform(-0.2, 0.2), D - 0.75, 0.7)
+        self.cam = {"location": loc, "target": tgt, "lens": rng.choice((17, 18, 19)),
                     "clip_end": 60.0}
 
     def hall_dims(self):
@@ -1501,7 +1501,7 @@ class _Kitchen:
         if K["lamp"] > 0:
             add("PW_LampLight", "POINT", K["lamp"], (1.0, 0.78, 0.5), (x, y, z), 0.04)
             # light spilling up out of the shade so the ceiling doesn't go black
-            add("PW_LampUp", "POINT", K["lamp"] * 0.3, (1.0, 0.8, 0.55), (x, y, H - 0.3), 0.5)
+            add("PW_LampUp", "POINT", K["lamp"] * 0.12, (1.0, 0.8, 0.55), (x, y, H - 0.3), 0.5)
         cl = self.cam["location"]
         add("PW_Fill", "AREA", K["fill"], K["fcol"], (cl[0] - 0.6, cl[1] + 0.3, H - 0.05), 2.0)
         # skylight through the window: a rectangle in the opening shining into the room
