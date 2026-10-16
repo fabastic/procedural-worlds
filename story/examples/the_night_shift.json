@@ -1,0 +1,314 @@
+{
+ "title": "The Night Shift",
+ "slug": "the-night-shift",
+ "logline": "The rain had not stopped for three days, and the city's neon signs bled into every puddle on Mercer Street.",
+ "protagonist": {
+  "name": "Ines",
+  "eye_height_m": 1.65
+ },
+ "scenes": [
+  {
+   "id": "alley_night_1",
+   "name": "Alley (night)",
+   "layers": {
+    "base": "street",
+    "setting": "alley",
+    "era": "near-future",
+    "genre_mood": "noir",
+    "weather": "rain",
+    "time": "night",
+    "state": "lived-in"
+   },
+   "generator": "CYBERPUNK_ALLEY",
+   "seed": 42,
+   "spawn": {
+    "focus": "alley"
+   },
+   "focus_points": [
+    "neon_sign",
+    "stall",
+    "lanterns",
+    "fire_escape",
+    "vending"
+   ]
+  },
+  {
+   "id": "kitchen_day_2",
+   "name": "Kitchen (day)",
+   "layers": {
+    "base": "interior",
+    "setting": "kitchen",
+    "era": "near-future",
+    "genre_mood": "noir",
+    "weather": "clear",
+    "time": "day",
+    "state": "lived-in"
+   },
+   "generator": "KITCHEN",
+   "seed": 42,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "cork_board",
+    "stove"
+   ]
+  },
+  {
+   "id": "coast_dusk_3",
+   "name": "Coast (dusk)",
+   "layers": {
+    "base": "landscape",
+    "setting": "coast",
+    "era": "near-future",
+    "genre_mood": "noir",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "lived-in"
+   },
+   "generator": "COASTAL_ISLAND",
+   "seed": 1,
+   "spawn": {
+    "focus": "island"
+   },
+   "focus_points": [
+    "lighthouse",
+    "lantern",
+    "cliff"
+   ]
+  },
+  {
+   "id": "coast_night_4",
+   "name": "Coast (night)",
+   "layers": {
+    "base": "landscape",
+    "setting": "coast",
+    "era": "near-future",
+    "genre_mood": "noir",
+    "weather": "clear",
+    "time": "night",
+    "state": "lived-in"
+   },
+   "generator": "COASTAL_ISLAND",
+   "seed": 42,
+   "spawn": {
+    "focus": "island"
+   },
+   "focus_points": [
+    "horizon"
+   ]
+  }
+ ],
+ "beats": [
+  {
+   "id": "b01",
+   "scene_id": "alley_night_1",
+   "shot": {
+    "type": "establishing",
+    "focus": "neon_sign",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "neon_sign",
+    "radius_m": 3.0
+   },
+   "caption": "The rain had not stopped for three days, and the city's neon signs bled into every puddle on Mercer Street."
+  },
+  {
+   "id": "b02",
+   "scene_id": "alley_night_1",
+   "shot": {
+    "type": "medium",
+    "focus": "stall",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "stall",
+    "radius_m": 3.0
+   },
+   "caption": "Detective Ines Calloway stood at the mouth of the alley, collar up, listening to the steam hiss from the grates. A noodle stall was still open at the far end."
+  },
+  {
+   "id": "b03",
+   "scene_id": "alley_night_1",
+   "shot": {
+    "type": "close",
+    "focus": "lanterns",
+    "camera_move": "static",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "lanterns",
+    "radius_m": 3.0
+   },
+   "caption": "Its lanterns swayed over an empty counter. The vendor had vanished, but his radio still played, tinny and far away."
+  },
+  {
+   "id": "b04",
+   "scene_id": "alley_night_1",
+   "shot": {
+    "type": "POV",
+    "focus": "fire_escape",
+    "camera_move": "pan_right",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "fire_escape",
+    "radius_m": 3.0
+   },
+   "caption": "said a voice from somewhere above the fire escape. Ines did not look up.",
+   "dialogue": [
+    {
+     "speaker": "VOICE",
+     "text": "You're late"
+    }
+   ]
+  },
+  {
+   "id": "b05",
+   "scene_id": "alley_night_1",
+   "shot": {
+    "type": "low",
+    "focus": "vending",
+    "camera_move": "tilt_up",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "vending",
+    "radius_m": 3.0
+   },
+   "caption": "she said. She found the envelope taped under the vending machine, exactly where the caller had promised.",
+   "dialogue": [
+    {
+     "speaker": "INES",
+     "text": "I'm always late"
+    }
+   ]
+  },
+  {
+   "id": "b06",
+   "scene_id": "kitchen_day_2",
+   "shot": {
+    "type": "establishing",
+    "focus": "cork_board",
+    "camera_move": "pull_out",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "cork_board",
+    "radius_m": 3.0
+   },
+   "caption": "Inside was a key and a photograph of a kitchen she knew too well. By morning she was standing in that kitchen."
+  },
+  {
+   "id": "b07",
+   "scene_id": "kitchen_day_2",
+   "shot": {
+    "type": "close",
+    "focus": "stove",
+    "camera_move": "orbit",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "stove",
+    "radius_m": 3.0
+   },
+   "caption": "Her mother's kitchen. The kettle was still warm on the stove."
+  },
+  {
+   "id": "b08",
+   "scene_id": "kitchen_day_2",
+   "shot": {
+    "type": "high",
+    "focus": "cork_board",
+    "camera_move": "pan_left",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "cork_board",
+    "radius_m": 3.0
+   },
+   "caption": "On the cork board, between the shopping lists and the old postcards, someone had pinned a new note. It said only: Go to the lighthouse."
+  },
+  {
+   "id": "b09",
+   "scene_id": "coast_dusk_3",
+   "shot": {
+    "type": "establishing",
+    "focus": "lighthouse",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "lighthouse",
+    "radius_m": 3.0
+   },
+   "caption": "She drove to the coast at dusk. The island sat black against the sunset, the lighthouse already turning."
+  },
+  {
+   "id": "b10",
+   "scene_id": "coast_dusk_3",
+   "shot": {
+    "type": "wide",
+    "focus": "lantern",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "lantern",
+    "radius_m": 3.0
+   },
+   "caption": "The keeper's cottage door was open. The lantern above swept the sea in long, patient circles."
+  },
+  {
+   "id": "b11",
+   "scene_id": "coast_dusk_3",
+   "shot": {
+    "type": "medium",
+    "focus": "cliff",
+    "camera_move": "static",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "cliff",
+    "radius_m": 3.0
+   },
+   "caption": "On the cliff edge she finally understood. Someone had been leading her here for years, one clue at a time."
+  },
+  {
+   "id": "b12",
+   "scene_id": "coast_night_4",
+   "shot": {
+    "type": "establishing",
+    "focus": "horizon",
+    "camera_move": "pan_right",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "horizon",
+    "radius_m": 3.0
+   },
+   "caption": "said a voice behind her. Far out on the horizon, a boat's light blinked once and went dark.",
+   "dialogue": [
+    {
+     "speaker": "VOICE",
+     "text": "Hello, Ines"
+    }
+   ]
+  }
+ ]
+}
