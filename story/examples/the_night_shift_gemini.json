@@ -1,0 +1,351 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "The Night Shift",
+ "slug": "the-night-shift",
+ "logline": "Detective Ines Calloway follows a trail of cryptic clues from a rain-slicked alley to her childhood kitchen and an isolated coastal lighthouse.",
+ "protagonist": {
+  "name": "Ines Calloway",
+  "eye_height_m": 1.68
+ },
+ "scenes": [
+  {
+   "id": "mercer_alley",
+   "name": "Mercer Street Alley",
+   "layers": {
+    "base": "street",
+    "setting": "alley",
+    "era": "near-future",
+    "genre_mood": "noir",
+    "weather": "rain",
+    "time": "night",
+    "state": "lived-in"
+   },
+   "generator": "CYBERPUNK_ALLEY",
+   "seed": 42,
+   "spawn": {
+    "focus": "alley",
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "yaw_deg": 0.0
+   },
+   "focus_points": [
+    "alley",
+    "far_end",
+    "neon_sign",
+    "stall",
+    "puddle",
+    "fire_escape",
+    "vending",
+    "dumpster",
+    "steam",
+    "scooter",
+    "trash",
+    "lanterns",
+    "street_lamp"
+   ]
+  },
+  {
+   "id": "mothers_kitchen",
+   "name": "Mother's Kitchen",
+   "layers": {
+    "base": "interior",
+    "setting": "kitchen",
+    "era": "modern",
+    "genre_mood": "mystery",
+    "weather": "clear",
+    "time": "dawn",
+    "state": "lived-in"
+   },
+   "generator": "KITCHEN",
+   "seed": 17,
+   "spawn": {
+    "focus": "room",
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "yaw_deg": 0.0
+   },
+   "focus_points": [
+    "room",
+    "stove",
+    "kettle",
+    "sink",
+    "fridge",
+    "cork_board",
+    "lamp",
+    "shelf",
+    "pans",
+    "counter",
+    "cupboards",
+    "doorway",
+    "window"
+   ]
+  },
+  {
+   "id": "coastal_lighthouse",
+   "name": "Coastal Lighthouse Island",
+   "layers": {
+    "base": "landscape",
+    "setting": "coast",
+    "era": "modern",
+    "genre_mood": "noir",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "abandoned"
+   },
+   "generator": "COASTAL_ISLAND",
+   "seed": 88,
+   "spawn": {
+    "focus": "island",
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "yaw_deg": 0.0
+   },
+   "focus_points": [
+    "island",
+    "lighthouse",
+    "lantern",
+    "cottage",
+    "door",
+    "cliff",
+    "path",
+    "sea_stack",
+    "horizon"
+   ]
+  }
+ ],
+ "beats": [
+  {
+   "id": "b01",
+   "scene_id": "mercer_alley",
+   "shot": {
+    "type": "establishing",
+    "focus": "alley",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "caption": "Rain had not stopped for three days. Neon bled into every puddle on Mercer Street.",
+   "trigger": {
+    "type": "focus",
+    "focus": "alley",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b02",
+   "scene_id": "mercer_alley",
+   "shot": {
+    "type": "low",
+    "focus": "steam",
+    "camera_move": "tilt_up",
+    "duration_s": 3.0
+   },
+   "caption": "Steam hissed from iron grates, curling through the soaked air.",
+   "trigger": {
+    "type": "focus",
+    "focus": "steam",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b03",
+   "scene_id": "mercer_alley",
+   "shot": {
+    "type": "medium",
+    "focus": "stall",
+    "camera_move": "pan_left",
+    "duration_s": 3.5
+   },
+   "caption": "At the far end, lanterns swayed over an empty noodle stall. A tinny radio played to no one.",
+   "trigger": {
+    "type": "focus",
+    "focus": "stall",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b04",
+   "scene_id": "mercer_alley",
+   "shot": {
+    "type": "high",
+    "focus": "fire_escape",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "caption": "Metal stairs dripped into the shadows overhead.",
+   "dialogue": [
+    {
+     "speaker": "VOICE",
+     "text": "You're late."
+    },
+    {
+     "speaker": "INES",
+     "text": "I'm always late."
+    }
+   ],
+   "trigger": {
+    "type": "focus",
+    "focus": "fire_escape",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b05",
+   "scene_id": "mercer_alley",
+   "shot": {
+    "type": "close",
+    "focus": "vending",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "caption": "Taped beneath the rusted machine: an envelope containing a key and an all too familiar photograph.",
+   "trigger": {
+    "type": "focus",
+    "focus": "vending",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b06",
+   "scene_id": "mothers_kitchen",
+   "shot": {
+    "type": "establishing",
+    "focus": "room",
+    "camera_move": "pan_right",
+    "duration_s": 3.5
+   },
+   "caption": "By dawn, she was inside her mother's kitchen, where dust floated in pale light.",
+   "trigger": {
+    "type": "focus",
+    "focus": "room",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b07",
+   "scene_id": "mothers_kitchen",
+   "shot": {
+    "type": "close",
+    "focus": "kettle",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "caption": "The kettle on the cold stove was still warm to the touch.",
+   "trigger": {
+    "type": "focus",
+    "focus": "kettle",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b08",
+   "scene_id": "mothers_kitchen",
+   "shot": {
+    "type": "POV",
+    "focus": "cork_board",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "caption": "Pinned among yellowed postcards and lists was a fresh slip of paper: Go to the lighthouse.",
+   "trigger": {
+    "type": "focus",
+    "focus": "cork_board",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b09",
+   "scene_id": "coastal_lighthouse",
+   "shot": {
+    "type": "establishing",
+    "focus": "island",
+    "camera_move": "drift",
+    "duration_s": 4.0
+   },
+   "caption": "She drove out at dusk. The jagged island rose black against a dying sky.",
+   "trigger": {
+    "type": "focus",
+    "focus": "island",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b10",
+   "scene_id": "coastal_lighthouse",
+   "shot": {
+    "type": "medium",
+    "focus": "door",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "caption": "The keeper's cottage door stood unlatched, creaking in the salt breeze.",
+   "trigger": {
+    "type": "focus",
+    "focus": "door",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b11",
+   "scene_id": "coastal_lighthouse",
+   "shot": {
+    "type": "high",
+    "focus": "lantern",
+    "camera_move": "orbit",
+    "duration_s": 3.5
+   },
+   "caption": "Above, the great lens turned, sweeping silent beams in patient circles across the water.",
+   "trigger": {
+    "type": "focus",
+    "focus": "lantern",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b12",
+   "scene_id": "coastal_lighthouse",
+   "shot": {
+    "type": "wide",
+    "focus": "cliff",
+    "camera_move": "pull_out",
+    "duration_s": 3.5
+   },
+   "caption": "At the edge of the rocks, the truth clicked into place. She had been led here for years.",
+   "dialogue": [
+    {
+     "speaker": "VOICE",
+     "text": "Hello, Ines."
+    }
+   ],
+   "trigger": {
+    "type": "focus",
+    "focus": "cliff",
+    "radius_m": 3
+   }
+  },
+  {
+   "id": "b13",
+   "scene_id": "coastal_lighthouse",
+   "shot": {
+    "type": "POV",
+    "focus": "horizon",
+    "camera_move": "static",
+    "duration_s": 3.0
+   },
+   "caption": "Miles off the dark coast, a lonely vessel blinked once, then slipped into the night.",
+   "trigger": {
+    "type": "focus",
+    "focus": "horizon",
+    "radius_m": 3
+   }
+  }
+ ]
+}

@@ -2,15 +2,31 @@
 
     python story/parse.py my_story.txt -o story/examples/my_story.json [--offline] [--beats 12]
 
-Uses the Gemini API when GEMINI_API_KEY is set (model from GEMINI_MODEL, default gemini-2.5-flash),
+Uses the Gemini API when GEMINI_API_KEY is set (env or the gitignored repo .env; GEMINI_MODEL overrides the
+newest-first model list),
 otherwise -- or if the call fails -- an offline keyword parser. Either way the result is repaired
 against story/catalog.json (only stageable generators and focus points) and validated against the
 schema. Pure standard library."""
-import argparse, hashlib, json, os, re, sys, urllib.request, urllib.error
+import argparse, hashlib, json, os, re, sys, time, urllib.request, urllib.error
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def _load_dotenv(path=os.path.join(os.path.dirname(HERE), ".env")):
+    """Load KEY=VALUE lines from the repo's gitignored .env into os.environ (never printed)."""
+    if not os.path.exists(path):
+        return
+    for line in open(path, encoding="utf-8"):
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+_load_dotenv()
 SCHEMA = json.load(open(os.path.join(HERE, "schema.json"), encoding="utf-8"))
 CATALOG = json.load(open(os.path.join(HERE, "catalog.json"), encoding="utf-8"))["generators"]
+GEMINI_MODELS = ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.5-flash", "gemini-flash-latest"]
 SHOT_CYCLE = ["wide", "medium", "close", "POV", "low", "medium", "close", "high", "OTS"]
 MOVE_CYCLE = ["push_in", "drift", "static", "pan_right", "tilt_up", "pull_out", "orbit", "pan_left"]
 TIME_WORDS = {"night": ["night", "midnight", "dark", "moon", "stars", "neon"], "dusk": ["dusk", "evening", "sunset", "twilight"],
@@ -173,7 +189,8 @@ def gemini_parse(text, n_beats=12):
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         raise RuntimeError("GEMINI_API_KEY not set")
-    model = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+    models = [os.environ["GEMINI_MODEL"]] if os.environ.get("GEMINI_MODEL") else []
+    models += [m for m in GEMINI_MODELS if m not in models]
     catalog = {g: {"base": c["base"], "setting": c["setting"], "focus_points": c["focus_points"]} for g, c in CATALOG.items()}
     prompt = f"""You adapt stories into an animated, hand-inked graphic novel told WITHOUT drawn characters:
 only places, objects, point-of-view shots, narration captions and dialogue from OFF-PANEL speakers.
@@ -193,11 +210,27 @@ STORY:
 {text}"""
     body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {"responseMimeType": "application/json", "temperature": 0.5}}
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-    req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST",
-                                 headers={"Content-Type": "application/json", "x-goog-api-key": key})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        data = json.loads(r.read().decode())
+    data, last = None, None
+    for model in models:                      # newest first; skip retired (404), retry busy (429/503)
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+        for attempt in range(3):
+            req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST",
+                                         headers={"Content-Type": "application/json", "x-goog-api-key": key})
+            try:
+                with urllib.request.urlopen(req, timeout=180) as r:
+                    data = json.loads(r.read().decode())
+                print(f"gemini model: {model}", file=sys.stderr)
+                break
+            except urllib.error.HTTPError as e:
+                last = f"{model}: HTTP {e.code}"
+                if e.code in (429, 500, 503):
+                    time.sleep(4 * (attempt + 1))
+                    continue
+                break
+        if data is not None:
+            break
+    if data is None:
+        raise RuntimeError(f"all Gemini models failed ({last})")
     out = data["candidates"][0]["content"]["parts"][0]["text"]
     out = re.sub(r"^```(?:json)?|```$", "", out.strip()).strip()
     return json.loads(out)
