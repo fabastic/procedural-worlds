@@ -20,9 +20,7 @@ class Street:
     def __init__(self, col, entry, layers, seed, mood):
         self.col, self.E, self.L, self.mood = col, entry, layers, mood
         self.rng = random.Random(f"street:{entry['_name']}:{seed}")
-        eras = core.load_preset("era")
-        self.era = layers.get("era") if layers.get("era") in eras else entry["eras"][0]
-        self.era_def = eras[self.era]
+        self.era, self.era_def = core.resolve_era(layers, entry["eras"][0])
         cond = core.load_preset("conditions")
         self.state = cond["state"].get(layers.get("state", "lived-in"), cond["state"]["lived-in"])
         self.weather = cond["weather"].get(layers.get("weather", "clear"), cond["weather"]["clear"])
@@ -96,7 +94,14 @@ class Street:
         return {"objects": len(self.col.objects), "focus_points": self.focus, "spawn": {"focus": "street"},
                 "camera": {"location": tuple(cam), "target": tuple(tgt), "lens": 24, "clip_end": 600.0},
                 "sun_dir": sun, "sun_scale": self.weather.get("sun_scale", 1.0), "sky_scale": self.weather.get("sky_scale", 1.0),
-                "ink": {"grime": self.state.get("grime", 1.0), "base_height": 0.8, "line_scale": 1.2}}
+                "ink": self.ink_hints()}
+
+    def ink_hints(self):
+        h = {"grime": self.state.get("grime", 1.0), "base_height": 0.8, "line_scale": 1.2}
+        if self.mood in ("DUSK", "NIGHT") and not self.state.get("lights_off"):
+            h["light_tint"] = srgb(0.92, 0.84, 0.70)        # lamp- and window-lit street, not moonlight
+            h["shadow_tint"] = srgb(0.40, 0.42, 0.58)
+        return h
 
     # ------------------------------------------------------------------ buildings
     def side(self, s):
@@ -188,7 +193,7 @@ class Street:
                     D.box((x - s * 0.5, y, h), (1.0, 0.1, 0.08), "metal2")
                     D.box((x - s * 0.9, y, h - 0.12), (0.4, 0.3, 0.15), "lampshade")
                 if on:
-                    self.lamps.append((Vector((x - s * 0.8, y, h - 0.4)), lc, 350.0))
+                    self.lamps.append((Vector((x - s * 0.8, y, h - 0.4)), lc, 700.0))
                 if k == 1 and s == 1:
                     self.focus["street_lamp"] = shots.focus_point(Vector((x, y, h * 0.7)), Vector((-s, -0.6, 0)), 3.0)
         # vehicles / carts and clutter

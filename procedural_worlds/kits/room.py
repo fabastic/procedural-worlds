@@ -55,8 +55,7 @@ class Room:
     def __init__(self, col, entry, layers, seed, mood):
         self.col, self.E, self.L, self.mood = col, entry, layers, mood
         self.rng = random.Random(f"room:{entry['_name']}:{seed}")
-        self.era = layers.get("era") if layers.get("era") in core.load_preset("era") else entry["eras"][0]
-        self.era_def = core.load_preset("era")[self.era]
+        self.era, self.era_def = core.resolve_era(layers, entry["eras"][0])
         cond = core.load_preset("conditions")
         self.state = cond["state"].get(layers.get("state", "lived-in"), cond["state"]["lived-in"])
         self.weather = cond["weather"].get(layers.get("weather", "clear"), cond["weather"]["clear"])

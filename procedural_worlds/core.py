@@ -240,3 +240,31 @@ def load_preset(kind):
 def genre_grade(layers):
     g = load_preset("genre")
     return g.get((layers or {}).get("genre_mood", "slice-of-life"), g["slice-of-life"])
+
+
+ERA_ALIASES = {"antiquity": "classical_antiquity", "middle_ages": "early_high_middle_ages", "renaissance": "renaissance_discovery",
+               "enlightenment": "enlightenment_piracy", "victorian": "victorian_industrial", "1920s": "interwar",
+               "1950s": "cold_war", "1980s": "analog_digital", "2020s": "contemporary", "future": "near_future"}
+
+
+def resolve_era(layers, default="modern"):
+    """(era_key, era_def) for story layers: aliases, unknown -> default, and layers.culture overrides
+    (palette keys merge, other keys replace). era_def["family"] is the legacy group key."""
+    import copy
+    eras = load_preset("era")
+    e = (layers or {}).get("era")
+    e = ERA_ALIASES.get(e, e)
+    if e not in eras:
+        e = default if default in eras else "modern"
+    d = copy.deepcopy(eras[e])
+    d.setdefault("family", e)
+    cul = (layers or {}).get("culture")
+    over = d.get("cultures", {}).get(cul) if cul else None
+    if over:
+        for k, v in over.items():
+            if k == "palette":
+                d["palette"].update(v)
+            else:
+                d[k] = v
+        d["culture"] = cul
+    return e, d

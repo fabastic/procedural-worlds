@@ -33,15 +33,14 @@ class Terrain:
     def __init__(self, col, entry, layers, seed, mood):
         self.col, self.E, self.L, self.mood, self.seed = col, entry, layers, mood, seed
         self.rng = random.Random(f"terrain:{entry['_name']}:{seed}")
-        eras = core.load_preset("era")
-        self.era = layers.get("era") if layers.get("era") in eras else entry["eras"][0]
+        self.era, era_def = core.resolve_era(layers, entry["eras"][0])
         cond = core.load_preset("conditions")
         self.state = cond["state"].get(layers.get("state", "lived-in"), cond["state"]["lived-in"])
         self.weather = cond["weather"].get(layers.get("weather", "clear"), cond["weather"]["clear"])
         self.B = dict(BIOMES[entry.get("biome", "forest")])
         if self.weather.get("snow_cover"):
             self.B["ga"], self.B["gb"] = BIOMES["snowfield"]["ga"], BIOMES["snowfield"]["gb"]
-        self.pal = era_palette(eras[self.era], mood, self.state)
+        self.pal = era_palette(era_def, mood, self.state)
         self.pal.update({"groundA": srgb(*self.B["ga"]), "groundB": srgb(*self.B["gb"]),
                          "bark": srgb(0.36, 0.27, 0.20), "foliage": srgb(0.30, 0.44, 0.28), "foliage2": srgb(0.38, 0.52, 0.30),
                          "snow": srgb(0.95, 0.96, 0.97), "cactus": srgb(0.40, 0.55, 0.36), "crystal": {"color": srgb(0.60, 0.90, 0.85), "emission": srgb(0.5, 0.9, 0.85), "strength": 2.0},
