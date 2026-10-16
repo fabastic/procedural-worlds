@@ -12,11 +12,27 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
 - Shapes: hand-made, wonky, never perfectly straight.
 - Implemented once in `procedural_worlds/ink.py`, applied automatically by `core.generate()` to ANY scene; never hand-tune per scene (scenes may only pass hints, see Contracts).
 
+## Session log
+- Final 5-hour session started **2026-10-16 19:13 IST** (checkpoints 20:43 / 22:13 / 23:13 / 23:53).
+
 ## Status (read this first)
-- **Milestone 1 done — ink style module (`ink.py`), verified headless on Blender 5.2.2 (Windows):** coastal island seed x mood grid (1/7/42 x DAY/GOLDEN/DUSK/NIGHT) renders in ink style, looked at: bold wobbly Line Art outlines, cel shadows with hatching, paper grain/mottling, outlined clouds, per-mood palettes. Also checked on a close-range box-room test (cabinets, sphere): clean bold strokes. `tools/check_invariants.py` passes for the island (deterministic, seed differs, leak-free incl. toggling ink on/off, PW_ names).
-- **Milestone 2 done � coastal island hero quality (`scene_island.py`):** cliffed heightfield (cliff side + gentle side, stepped ledges), slope/height terrain material with inked strata + fissures, striped octagonal lighthouse (lantern lit + point light at DUSK/NIGHT) and keeper's cottage, angular rocks and sea stacks, GN grass tufts (`PW_IslandGrass`, slope+height masks, instance proto `PW_TuftProto` hidden), ink-authored sea material (`mat["pw_ink_custom"]`: flat distance bands, shallows + foam rings from a baked `pw_shore` vertex attribute, wave dashes; one mesh grid + far ring so no edge; world below-horizon = sea colour), GP seagull strokes, 3/4 framing over the water. Grid looked at for seeds 1/7/42 x 4 moods; 4 heroes in `renders/hero/coastal_island_*.jpg`. Invariants pass. Known nits: gulls tiny; sea stacks small; sun-glint path was tried and removed (read as a speckled column).
-- **Kitchen and cyberpunk alley:** `scene_kitchen.py` / `scene_alley.py` are stubs on master (being built on separate branches).
-- Previous realistic Cycles path still works with `generate(..., ink=False)`.
+- **Ink style module (`ink.py`) — done, applied to every scene by `core.generate()`:** Line Art (GP v3) heavy silhouettes + thin inner/crease/intersection lines with noise, taper, overshoot; `PW_InkToon` cel bands + muted shadow hue + occlusion-gated hatching + AO grime/stains/drips; `PW_InkWonk` GN wobble; inked sky world (bands, outlined clouds, sun/moon disc, stars); compositor (line wobble, paper tint/mottle/grain, blots, smudges, warm vignette, bloom for strong emitters).
+- **Scenes (all three registered, grids looked at, invariants pass):**
+  - `COASTAL_ISLAND` (`scene_island.py`): cliffs with inked strata, lighthouse + cottage, sea stacks, GN grass, ink-authored sea with foam rings (baked `pw_shore` attribute), gulls. Heroes: `renders/hero/coastal_island_*.jpg`.
+  - `KITCHEN` (`scene_kitchen.py`, the showpiece, built by a subagent): checker floor, teal trim, cabinets, cork board, pans, fridge, hallway beyond doorway, per-mood lamps. Heroes: `renders/hero/kitchen_*.jpg`.
+  - `CYBERPUNK_ALLEY` (`scene_alley.py`, built by a subagent): modular buildings, fire escapes, blade neon signs, cables, lanterns, wet road with streak reflection decals. Heroes: `renders/hero/cyberpunk_alley_*.jpg`. Slow: 15-35 s/frame at 960x540 (Line Art).
+- **Fly-through:** `anim.py` (`setup_flythrough`, `set_video_output`), operator `pw.flythrough`, `tools/flythrough.py` -> MP4; GP noise reseeds every 2 frames + compositor wobble keyed to frame = line boil. `tools/video_frames.py` decodes MP4 frames via the sequencer (no ffmpeg on this machine).
+- **Panel:** presets, Ink/Realistic style toggle, quality, fly-through box. `blender_manifest.toml` present (not yet tested as an extension install).
+- **Known issues:** night kitchen outlines read dark brown instead of black (not lighting: GP layer/object lights off and isolated strokes render near-black; cause unknown); NIGHT palette is dark on lit scenes (alley lifts its own colours); realistic mode keeps the stylized island sea; island gulls tiny.
+
+## In progress right now
+- Ink style pass (session 0:00-1:30).
+
+## Blocked
+- Nothing.
+
+## Next
+- See the session plan: ink pass -> scene polish -> 20-40 s animatic at 12 fps -> ship (heroes, README, manifest, reinstall).
 
 ## Running Blender headless on this machine (important)
 - The Store install's `blender.exe` (`C:\Program Files\WindowsApps\BlenderFoundation.Blender_5.2.2.0_x64__ppwjx1n5r4v9t\Blender\blender.exe`) **cannot be exec'd from Git Bash or PowerShell ("Access denied")**. Use the app-execution alias via **`tools/blender.sh`** (wraps `%LOCALAPPDATA%\Microsoft\WindowsApps\blender-launcher.exe`). The launcher drops stdout, so the wrapper redirects Python stdout/stderr to a temp log, replays it, and propagates the exit code (`--python-exit-code 3`).

@@ -362,6 +362,7 @@ def gulls(col, center, rng, n, span):
         m.grease_pencil.color = (*INK, 1)
     gp.materials.append(m)
     layer = gp.layers.new("Gulls")
+    layer.use_lights = False
     dr = layer.frames.new(bpy.context.scene.frame_start).drawing
     dr.add_strokes([5] * n)
     pos = dr.attributes["position"].data

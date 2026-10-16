@@ -385,7 +385,7 @@ def add_outlines(col, seed, radius, line_scale=1.0):
                                           use_loose=True, crease_threshold=math.radians(128))),
             ("Silhouette", heavy, r, dict(use_contour=True, use_crease=False, use_intersection=False,
                                          use_loose=False, silhouette_filtering="INDIVIDUAL"))):
-        gp.layers.new(lname)
+        gp.layers.new(lname).use_lights = False     # ink is never lit (lamps tinted it brown)
         la = obj.modifiers.new(f"PW_LA_{lname}", "LINEART")
         la.source_type = "COLLECTION"
         la.source_collection = col
