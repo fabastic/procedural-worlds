@@ -37,7 +37,7 @@ def remove_object(o):
 def purge_orphans(prefix="PW_"):
     """Drop zero-user PW_* materials, node groups, textures and images left by a previous build."""
     for coll in (bpy.data.materials, bpy.data.node_groups, bpy.data.textures, bpy.data.images,
-                 bpy.data.worlds, *_data_collections()):
+                 bpy.data.worlds, bpy.data.actions, *_data_collections()):
         for d in list(coll):
             if d.name.startswith(prefix) and d.users == 0:
                 coll.remove(d)
@@ -209,6 +209,7 @@ def generate(context, scene_type, seed=1, size=60.0, detail=160, height=1.0,
     setup_lighting(mood, col, sun_scale=info.get("sun_scale", 1.0),
                    sky_scale=info.get("sky_scale", 1.0), sun_dir=info.get("sun_dir"))
     setup_camera(col, **info.get("camera", {}))
+    context.scene["pw_cam_target"] = tuple(info.get("camera", {}).get("target", (0, 0, 0)))
     if ink:
         engine = "BLENDER_EEVEE"
         info["ink"] = ink_style.apply(context, col, seed, mood, info)

@@ -1,0 +1,16 @@
+schema_version = "1.0.0"
+
+id = "procedural_worlds"
+version = "0.2.0"
+name = "Procedural Worlds"
+tagline = "Seeded scenes rendered as hand-inked graphic-novel panels"
+maintainer = "FABASTIC"
+type = "add-on"
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+tags = ["Add Mesh", "Render", "Scene"]
+
+[build]
+paths_exclude_pattern = ["__pycache__/", "*.pyc"]
