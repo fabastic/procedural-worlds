@@ -80,10 +80,12 @@ export function mountPaste(main: HTMLElement): View {
           ${STEPS.map(
             (s, i) => `
             <li class="step">
-              <h3><span class="step-letter">${String.fromCharCode(97 + i)}</span> ${escapeHtml(s.title)}</h3>
+              <div class="step-head">
+                <h3><span class="step-letter">${String.fromCharCode(97 + i)}</span> ${escapeHtml(s.title)}</h3>
+                <button class="copy" type="button" data-copy="${escapeHtml(s.cmd)}" aria-label="Copy command: ${escapeHtml(s.title)}">${icons.copy}<span>Copy</span></button>
+              </div>
               <div class="code">
                 <pre><code>${escapeHtml(s.cmd)}</code></pre>
-                <button class="copy" type="button" data-copy="${escapeHtml(s.cmd)}" aria-label="Copy command: ${escapeHtml(s.title)}">${icons.copy}<span>Copy</span></button>
               </div>
               <p class="step-note">${s.note}</p>
             </li>`,
@@ -134,7 +136,8 @@ export function mountPaste(main: HTMLElement): View {
           label.textContent = "Copy";
           btn.querySelector("svg")!.outerHTML = icons.copy;
         }, 1600);
-        if (!ok) selectText(btn.parentElement!.querySelector("code")!);
+        const code = btn.closest(".step")?.querySelector("code");
+        if (!ok && code) selectText(code);
       }
     }
   });

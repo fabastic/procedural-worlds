@@ -13,6 +13,7 @@ body[data-route="animatic"] #app {
   min-height: 0;
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   background: transparent;
 }
 .reader.is-fullscreen {
@@ -33,7 +34,7 @@ body[data-route="animatic"] #app {
 }
 .stage:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 3px var(--teal);
+  box-shadow: inset 0 0 0 2px rgba(59, 111, 104, 0.55);
 }
 .stage.is-fading .page {
   opacity: 0;
@@ -377,36 +378,49 @@ body[data-route="animatic"] #app {
   text-align: center;
   padding: 20px;
 }
+.end-mark {
+  position: relative;
+  width: min(600px, 100%);
+  aspect-ratio: 600 / 340;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .end-blot {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  overflow: visible;
   fill: var(--ink);
-  transform: rotate(-4deg) scale(0.86);
+  transform: rotate(-5deg);
   animation: blot-in 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.1) both;
 }
 @keyframes blot-in {
   from {
-    transform: rotate(-12deg) scale(0.2);
+    transform: rotate(-14deg) scale(0.2);
     opacity: 0;
   }
 }
 .end-title {
   position: relative;
   font-family: var(--font-title);
-  font-size: clamp(64px, 13vmin, 150px);
+  font-size: clamp(56px, 11vmin, 128px);
   letter-spacing: 0.06em;
   line-height: 0.9;
   color: var(--paper-hi);
+  -webkit-text-stroke: 0.05em var(--ink);
+  paint-order: stroke fill;
   transform: rotate(-4deg);
-  margin-top: -0.4em;
+  animation: stamp 0.4s 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  --rot: -4deg;
 }
 .end-story {
   position: relative;
-  margin: 0.3em 0 1.6em;
-  font-size: clamp(17px, 2.4vmin, 23px);
-  letter-spacing: 0.18em;
+  margin: 0.4em 0 0;
+  font-size: clamp(16px, 2.3vmin, 22px);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--caption);
   transform: rotate(-2deg);
@@ -417,7 +431,7 @@ body[data-route="animatic"] #app {
   flex-wrap: wrap;
   justify-content: center;
   gap: 14px;
-  margin-top: 8vmin;
+  margin-top: clamp(20px, 5vmin, 44px);
 }
 .end-actions .btn-ink {
   box-shadow: 3px 3px 0 var(--terra);
@@ -499,6 +513,12 @@ body[data-route="animatic"] #app {
 .ctl-next:hover {
   background: var(--ink-2);
 }
+.ctl-next:disabled {
+  opacity: 1;
+  color: var(--ink-soft);
+  background: transparent;
+  box-shadow: inset 0 0 0 2px rgba(22, 19, 17, 0.25);
+}
 .ctl-next .icon {
   width: 28px;
   height: 28px;
@@ -558,6 +578,8 @@ body[data-route="animatic"] #app {
   margin-bottom: 2px;
 }
 .progress-chapter {
+  flex: 1 1 0;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -753,5 +775,10 @@ body[data-route="animatic"] #app {
   }
   .cover-hint {
     font-size: 13px;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cover-title {
+    bottom: 84px;
   }
 }

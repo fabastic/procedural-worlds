@@ -6,8 +6,18 @@ const INK = "#15110e";
 // ?slow=4 stretches every transition (handy for reviewing / capturing them mid-way)
 const SLOW = Math.min(20, Math.max(1, Number(new URLSearchParams(location.search).get("slow")) || 1));
 
+/** Next animation frame, or a timer tick if frames are starved (background tab, hidden pane). */
 function frame(): Promise<number> {
-  return new Promise((res) => requestAnimationFrame(res));
+  return new Promise((res) => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      res(performance.now());
+    };
+    requestAnimationFrame(finish);
+    setTimeout(finish, 80);
+  });
 }
 
 async function animate(duration: number, step: (t: number, now: number) => void): Promise<void> {

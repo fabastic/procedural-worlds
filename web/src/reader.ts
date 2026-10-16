@@ -423,15 +423,19 @@ class Reader {
     this.flushQueue();
   }
 
+  /** Called whenever a transition releases `busy`: run a queued move or re-arm autoplay. */
   private flushQueue(): void {
     const q = this.queued;
     this.queued = null;
     if (q === "next") this.next();
     else if (q === "prev") this.prev();
+    else this.scheduleAuto();
   }
 
   private jumpToScene(sceneIdx: number): void {
     this.toggleChapters(false);
+    // hand focus to the page so Space/arrows keep reading (not re-opening the menu)
+    this.stage.focus({ preventScroll: true });
     const sceneId = this.m.scenes[sceneIdx]?.id;
     const bi = this.m.beats.findIndex((b) => b.scene_id === sceneId);
     if (bi >= 0) this.jumpToBeat(bi);
@@ -635,14 +639,16 @@ class Reader {
   private renderEnd(el: HTMLElement): void {
     const { W, H } = this.stageBox();
     const w = Math.min(W, 760);
-    const h = Math.min(H, 520);
+    const h = Math.min(H, 560);
     this.placePage(el, w, h);
-    const blot = blotPath(makeBlot(hash(this.m.slug + "/end"), 0.9), 380, 230, 150);
+    const blot = blotPath(makeBlot(hash(this.m.slug + "/end"), 0.8), 300, 170, 118);
     el.innerHTML = `
       <div class="end-card">
-        <svg class="end-blot" viewBox="0 0 760 460" aria-hidden="true"><path d="${blot}"/></svg>
-        <h2 class="end-title">The End</h2>
-        <p class="end-story">${escapeHtml(this.m.title)}</p>
+        <div class="end-mark">
+          <svg class="end-blot" viewBox="0 0 600 340" aria-hidden="true"><path d="${blot}"/></svg>
+          <h2 class="end-title">The End</h2>
+          <p class="end-story">${escapeHtml(this.m.title)}</p>
+        </div>
         <div class="end-actions">
           <button class="btn btn-ink" type="button" data-act="restart">${icons.restart}<span>Read again</span></button>
           <a class="btn" href="#/">${icons.library}<span>Library</span></a>

@@ -85,6 +85,7 @@ body::before {
   display: flex;
   flex-direction: column;
   outline: none;
+  overflow-x: clip;
 }
 
 a {

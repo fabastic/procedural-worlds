@@ -94,10 +94,11 @@ function balloon(layer: HTMLElement, line: LineSpec, spec: LetterSpec, lt: numbe
   text.append(say);
   // pick a pleasant text block shape (~2.3:1) before wrapping, capped by the panel
   const chars = line.text.length + (line.showSpeaker ? 4 : 0);
-  const areaEm = chars * 0.5 * 1.12;
-  const idealEm = Math.sqrt(areaEm * 2.3);
-  const maxPx = spec.w * (spec.w < 420 ? 0.62 : 0.42);
-  const widthPx = Math.min(maxPx, Math.max(5.5 * lt, idealEm * lt));
+  // uppercase hand lettering runs ~0.6em per glyph; aim for a ~2.6:1 block
+  const areaEm = chars * 0.6 * 1.12;
+  const idealEm = Math.sqrt(areaEm * 2.6);
+  const maxPx = spec.w * (spec.w < 420 ? 0.64 : spec.w < 640 ? 0.54 : 0.44);
+  const widthPx = Math.min(maxPx, Math.max(6.5 * lt, idealEm * lt));
   text.style.width = `${Math.round(widthPx)}px`;
   el.append(text);
   layer.append(el);
