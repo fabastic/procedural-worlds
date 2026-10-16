@@ -139,7 +139,7 @@ def _materials(rng, mood):
         upanel=g("PW_Kitchen_UpperPanel", upanel, 0.15, 2.0),
         counter=g("PW_Kitchen_Counter", counter, 0.2, 2.5),
         tile=m("Backsplash", (0.74, 0.72, 0.62), 0.4),
-        grout=m("Grout", (0.32, 0.30, 0.25), 0.9),
+        grout=m("Grout", (0.13, 0.12, 0.10), 0.9),
         dark=m("Shadow", (0.035, 0.03, 0.028), 0.9),
         steel=m("Steel", (0.38, 0.39, 0.37), 0.35),
         black=m("Black", (0.03, 0.03, 0.03), 0.5),
@@ -689,12 +689,15 @@ class _Kitchen:
         self.hall()
         self.lights()
         wonk = {"PW_Walls": 0.0, "PW_Floor": 0.0, "PW_HallShell": 0.0, "PW_HallFloor": 0.0,
-                "PW_SkyCard": 0.0, "PW_Skyline": 0.0, "PW_HallSky": 0.0, "PW_Backsplash": 0.15, "PW_Trim": 0.3}
+                "PW_SkyCard": 0.0, "PW_Skyline": 0.0, "PW_HallSky": 0.0, "PW_Backsplash": 0.0,
+                "PW_BacksplashGrout": 0.0, "PW_Trim": 0.3}
         for name, b in self.mbs.items():
             ob = b.done(self.col)
             ob.location = OFF
             if ob.name in wonk:
                 ob["pw_wonk"] = wonk[ob.name]
+            if ob.name == "PW_Backsplash":  # tiles: grout gaps read as fine pen lines, no outlines
+                ob["pw_line"] = 0
             if ob.name in ("PW_SkyCard", "PW_Skyline"):
                 ob.visible_shadow = False
                 if ob.name == "PW_SkyCard":
@@ -758,9 +761,9 @@ class _Kitchen:
         loc = (W - 0.62 + rng.uniform(-0.12, 0.08), rng.uniform(0.4, 0.6), rng.uniform(1.58, 1.68))
         if self.layout == "back":
             dc = (self.door[1] + self.door[2]) / 2
-            tgt = (dc + 0.9 + rng.uniform(-0.15, 0.2), D, 0.98)
+            tgt = (dc + 0.9 + rng.uniform(-0.15, 0.2), D, 0.9)
         else:
-            tgt = (1.3 + rng.uniform(-0.2, 0.2), D - 0.75, 0.98)
+            tgt = (1.3 + rng.uniform(-0.2, 0.2), D - 0.75, 0.9)
         self.cam = {"location": loc, "target": tgt, "lens": rng.choice((16, 17, 18)),
                     "clip_end": 60.0}
 
@@ -1049,8 +1052,9 @@ class _Kitchen:
             xs += [max(x0, self.win[0] - 0.1), min(x1, self.win[1] + 0.1)]
         xs.append(x1)
         xs = sorted(set(xs))
+        gb = self.mb("BacksplashGrout")
         for a, c in zip(xs, xs[1:]):
-            b.box((a, -0.004, zb), (c, 0, ztop((a + c) / 2)), P["grout"], R)
+            gb.box((a, -0.004, zb), (c, 0, ztop((a + c) / 2)), P["grout"], R)
         row = 0
         z = zb + g
         while z < 1.6:
@@ -1497,7 +1501,7 @@ class _Kitchen:
         if K["lamp"] > 0:
             add("PW_LampLight", "POINT", K["lamp"], (1.0, 0.78, 0.5), (x, y, z), 0.04)
             # light spilling up out of the shade so the ceiling doesn't go black
-            add("PW_LampUp", "POINT", K["lamp"] * 0.5, (1.0, 0.8, 0.55), (x, y, H - 0.3), 0.3)
+            add("PW_LampUp", "POINT", K["lamp"] * 0.3, (1.0, 0.8, 0.55), (x, y, H - 0.3), 0.5)
         cl = self.cam["location"]
         add("PW_Fill", "AREA", K["fill"], K["fcol"], (cl[0] - 0.6, cl[1] + 0.3, H - 0.05), 2.0)
         # skylight through the window: a rectangle in the opening shining into the room
