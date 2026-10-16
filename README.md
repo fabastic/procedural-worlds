@@ -1,6 +1,10 @@
 # Procedural Worlds
 
-A Blender 5.2 add-on (pure Python / `bpy`, no external assets) that generates a complete scene from a seed (geometry, materials, lights, camera) and renders it as a **hand-inked graphic-novel panel**: wobbly brush outlines, flat cel shading, hatching, grime and paper grain.
+**Paste a story, get it told as a hand-inked animated graphic novel.** A Blender 5.2 engine (pure Python / `bpy`, no external assets) builds every place in the story from a seed, frames each beat as a comic shot, and renders it in an ink style: wobbly brush outlines, flat cel shading, hatching, grime and paper grain. A web player presents the result as a motion comic.
+
+```
+story text --story/parse.py--> story.json --tools/render_story.py (Blender)--> clips + stills --web/--> motion comic
+```
 
 ![Kitchen, golden hour](renders/hero/kitchen_7_golden.jpg)
 
@@ -29,6 +33,17 @@ A short fly-through with "boiling" lines: [renders/flythrough_coastal_island_42_
   - Compositor effects: line wobble, paper grain, ink blots and a vignette.
 - **Fly-through camera** that follows a spline. The lines "boil" every two frames, like hand-drawn animation.
 - **Sidebar panel:** presets, an Ink/Realistic style toggle and quality settings.
+
+## Tell a story
+```
+python story/parse.py my_story.txt -o story/examples/my_story.json          # Gemini if GEMINI_API_KEY is set, else offline keywords
+tools/blender.sh -b --factory-startup -P tools/render_story.py -- story/examples/my_story.json
+tools/blender.sh -b --factory-startup -P tools/export_animatic.py -- story_out/my-story
+cd web && npm run sync && npm run dev
+```
+- `story/schema.json` is the shared story format: scenes with setting layers, plus beats with a shot type, focus, camera move, caption and off-panel dialogue.
+- Example stories are in `story/examples/`.
+- There are no character models: the story is told through places, objects, POV shots, captions and speech balloons.
 
 ## Install
 - **As an extension (Blender 4.2+):** zip the `procedural_worlds/` folder (it contains `blender_manifest.toml`), then Preferences > Add-ons > Install from Disk. The extension install path is not verified yet.
