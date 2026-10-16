@@ -520,4 +520,4 @@ class CoastalIsland:
         return {"objects": len(col.objects),
                 "camera": dict(location=tuple(cam), target=tuple(target), lens=rng.choice((35, 40, 45)),
                                clip_end=6000.0),
-                "ink": {"sea_color": SEA[mood][1], "line_scale": 1.0}}
+                "ink": {"sea_color": SEA[mood][1], "line_scale": 1.0, "base_height": 1.4}}

@@ -469,7 +469,8 @@ class _Alley:
         return {"objects": len(self.col.objects),
                 "camera": {"location": cam, "target": tgt, "lens": round(R.uniform(21.0, 25.0), 1),
                            "clip_end": 500.0},
-                "sun_scale": sun_scale, "sky_scale": sky_scale, "sun_dir": sun_dir}
+                "sun_scale": sun_scale, "sky_scale": sky_scale, "sun_dir": sun_dir,
+                "ink": {"line_scale": 1.45}}
 
     # ------------------------------------------------------------------------------ helpers
     def facade_x(self, s, y):

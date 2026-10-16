@@ -154,7 +154,7 @@ def build_toon_group():
         ("Shadow Tint", C, (0.6, 0.62, 0.75, 1)), ("Hatch", F, 1.0), ("Grime", F, 1.0),
         ("Grime Color", C, (*srgb(0.42, 0.36, 0.26), 1)), ("AO Distance", F, 0.6),
         ("Stain Scale", F, 1.0), ("Aspect", F, 16 / 9), ("Hatch Density", F, 30.0),
-        ("Lo", F, 0.16), ("Hi", F, 0.62), ("Ink", C, (*INK, 1)),
+        ("Lo", F, 0.16), ("Hi", F, 0.62), ("Ink", C, (*INK, 1)), ("Base Height", F, 0.25),
     ], [("Shader", "NodeSocketShader")])
     O = gi.outputs
     # light amount and light hue from a white diffuse surface
@@ -192,6 +192,20 @@ def build_toon_group():
     drip = t.maprange(dr.outputs["Fac"], 0.60, 0.68)
     dirt = t.math("ADD", t.math("MULTIPLY", g_ao, 0.8),
                   t.math("ADD", t.math("MULTIPLY", stain, 0.16), t.math("MULTIPLY", drip, 0.12)))
+    # base grime: a dirty band creeping up from each object's origin height (floor, ground, sea
+    # level) with a ragged noisy top edge -- the grubby bottoms of cabinets, walls and curtains
+    geo = t.node("ShaderNodeNewGeometry")
+    oinfo = t.node("ShaderNodeObjectInfo")
+    zrel = t.math("SUBTRACT", t.node("ShaderNodeSeparateXYZ", {"Vector": geo.outputs["Position"]}).outputs["Z"],
+                  t.node("ShaderNodeSeparateXYZ", {"Vector": oinfo.outputs["Location"]}).outputs["Z"])
+    bn = t.node("ShaderNodeTexNoise", {"Vector": t.vmath("MULTIPLY", ocoord, (3.0, 3.0, 0.6)), "Scale": 2.5,
+                                       "Detail": 3.0})
+    edge_h = t.math("MULTIPLY", O["Base Height"], t.maprange(bn.outputs["Fac"], 0.3, 0.7, 0.35, 1.5))
+    base = t.math("SUBTRACT", 1.0, t.maprange(zrel, t.math("MULTIPLY", edge_h, 0.15), edge_h))
+    base = t.math("MULTIPLY", base, t.math("GREATER_THAN", zrel, -0.02))
+    nzv = t.node("ShaderNodeSeparateXYZ", {"Vector": geo.outputs["Normal"]}).outputs["Z"]
+    base = t.math("MULTIPLY", base, t.maprange(t.math("ABSOLUTE", nzv), 0.75, 0.4))   # walls, not floors
+    dirt = t.math("ADD", dirt, t.math("MULTIPLY", base, 0.55))
     dirt = t.math("MINIMUM", t.math("MULTIPLY", dirt, O["Grime"]), 0.9)
     col = t.mix(1.0, col, t.mix(dirt, (1, 1, 1, 1), O["Grime Color"]), blend="MULTIPLY")
     # hatching: screen-space wobbly diagonal strokes, only in shadow; cross-hatch in the darkest
@@ -217,6 +231,14 @@ def build_toon_group():
     breaks = t.math("GREATER_THAN", brk.outputs["Fac"], 0.38)
     hatch = t.math("MULTIPLY", t.math("MAXIMUM", h1, h2), breaks)
     col = t.mix(t.math("MULTIPLY", hatch, 0.72), col, t.mix(0.65, col, O["Ink"], blend="MULTIPLY"))
+    # marker/gouache fill texture: soft horizontal-ish streaks in screen space (+-5% value)
+    mk = t.node("ShaderNodeTexNoise", {"Vector": t.vmath("MULTIPLY", v1, (2.0, 26.0, 1.0)), "Scale": 1.0,
+                                       "Detail": 2.0, "Roughness": 0.6})
+    col = t.vmath("SCALE", col, scale=t.maprange(mk.outputs["Fac"], 0.3, 0.7, 0.93, 1.05))
+    # contour weight: surfaces darken slightly as they turn away toward the silhouette
+    lw = t.node("ShaderNodeLayerWeight", {"Blend": 0.35})
+    rim = t.maprange(lw.outputs["Facing"], 0.55, 0.95, 0.0, 0.22)
+    col = t.mix(rim, col, t.mix(1.0, col, (*INK, 1), blend="MULTIPLY"))
     col = t.vmath("MINIMUM", col, (0.985, 0.985, 0.985))
     em = t.node("ShaderNodeEmission", {"Color": col, "Strength": 1.0})
     t.link(em.outputs[0], go.inputs["Shader"])
@@ -295,6 +317,7 @@ def ink_material(m, mood, opts):
     grp.inputs["AO Distance"].default_value = opts["ao_distance"]
     grp.inputs["Stain Scale"].default_value = opts["stain_scale"]
     grp.inputs["Aspect"].default_value = opts["aspect"]
+    grp.inputs["Base Height"].default_value = opts["base_height"]
     if mood == "NIGHT":
         grp.inputs["Lo"].default_value, grp.inputs["Hi"].default_value = 0.14, 0.55
     nt.links.new(grp.outputs["Shader"], out.inputs["Surface"])
@@ -604,7 +627,8 @@ def apply(context, col, seed, mood, info):
     scene = context.scene
     scene["pw_ink"] = 1
     context.view_layer.update()          # camera/sun matrix_world are stale right after creation
-    opts = dict(line_scale=1.0, wobble=1.0, grime=1.0, hatch=1.0, ao_distance=None, sea_color=None)
+    opts = dict(line_scale=1.0, wobble=1.0, grime=1.0, hatch=1.0, ao_distance=None, sea_color=None,
+                base_height=None)
     opts.update(info.get("ink", {}))
     d = _scene_scale(scene, info)
     cam = scene.camera.data
@@ -614,6 +638,7 @@ def apply(context, col, seed, mood, info):
     opts["ao_distance"] = opts["ao_distance"] or 0.06 * d
     opts["stain_scale"] = 0.9 / max(d * 0.08, 0.05)
     opts["aspect"] = scene.render.resolution_x / max(scene.render.resolution_y, 1)
+    opts["base_height"] = opts["base_height"] or 0.055 * d
     build_toon_group()
     build_wonk_group()
     done = set()
