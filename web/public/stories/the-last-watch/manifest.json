@@ -1,0 +1,254 @@
+{
+ "slug": "the-last-watch",
+ "title": "The Last Watch",
+ "logline": "The last lighthouse keeper on Gull Rock waits out one more night for a boat that is three days late.",
+ "protagonist": {
+  "name": "Mara",
+  "eye_height_m": 1.62
+ },
+ "cover": "beats/b01/still.jpg",
+ "scenes": [
+  {
+   "id": "rock_dusk",
+   "name": "Gull Rock at dusk",
+   "generator": "COASTAL_ISLAND",
+   "layers": {
+    "base": "landscape",
+    "setting": "coast",
+    "era": "modern",
+    "genre_mood": "slice-of-life",
+    "weather": "clear",
+    "time": "dusk",
+    "season": "autumn",
+    "state": "lived-in"
+   }
+  },
+  {
+   "id": "kitchen_night",
+   "name": "The keeper's kitchen",
+   "generator": "KITCHEN",
+   "layers": {
+    "base": "interior",
+    "setting": "kitchen",
+    "era": "1920s-50s",
+    "genre_mood": "slice-of-life",
+    "weather": "clear",
+    "time": "night",
+    "season": "autumn",
+    "state": "lived-in"
+   }
+  },
+  {
+   "id": "rock_night",
+   "name": "Gull Rock at night",
+   "generator": "COASTAL_ISLAND",
+   "layers": {
+    "base": "landscape",
+    "setting": "coast",
+    "era": "modern",
+    "genre_mood": "slice-of-life",
+    "weather": "clear",
+    "time": "night",
+    "season": "autumn",
+    "state": "lived-in"
+   }
+  }
+ ],
+ "beats": [
+  {
+   "id": "b01",
+   "scene_id": "rock_dusk",
+   "shot": {
+    "type": "establishing",
+    "focus": "lighthouse",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "caption": "The last keeper of Gull Rock had one rule: the light never goes out.",
+   "still": "beats/b01/still.jpg",
+   "clip": "beats/b01/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b02",
+   "scene_id": "rock_dusk",
+   "shot": {
+    "type": "wide",
+    "focus": "horizon",
+    "camera_move": "pan_right",
+    "duration_s": 3.0
+   },
+   "caption": "The supply boat was three days late.",
+   "still": "beats/b02/still.jpg",
+   "clip": "beats/b02/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b03",
+   "scene_id": "rock_dusk",
+   "shot": {
+    "type": "low",
+    "focus": "lighthouse",
+    "camera_move": "tilt_up",
+    "duration_s": 3.0
+   },
+   "caption": "Ninety stairs at dusk. Every night for eleven years.",
+   "still": "beats/b03/still.jpg",
+   "clip": "beats/b03/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b04",
+   "scene_id": "rock_dusk",
+   "shot": {
+    "type": "medium",
+    "focus": "cottage",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "caption": "Then home, to wait.",
+   "still": "beats/b04/still.jpg",
+   "clip": "beats/b04/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b05",
+   "scene_id": "kitchen_night",
+   "shot": {
+    "type": "establishing",
+    "focus": "room",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "caption": "The radio had been silent since Tuesday.",
+   "still": "beats/b05/still.jpg",
+   "clip": "beats/b05/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b06",
+   "scene_id": "kitchen_night",
+   "shot": {
+    "type": "close",
+    "focus": "kettle",
+    "camera_move": "static",
+    "duration_s": 3.0
+   },
+   "dialogue": [
+    {
+     "speaker": "RADIO",
+     "text": "...krrsh... Gull Rock, do you... krrsh..."
+    }
+   ],
+   "still": "beats/b06/still.jpg",
+   "clip": "beats/b06/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b07",
+   "scene_id": "kitchen_night",
+   "shot": {
+    "type": "POV",
+    "focus": "cork_board",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "caption": "Tide tables. A postcard from her brother. A list of repairs that never got shorter.",
+   "still": "beats/b07/still.jpg",
+   "clip": "beats/b07/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b08",
+   "scene_id": "kitchen_night",
+   "shot": {
+    "type": "close",
+    "focus": "window",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "caption": "Outside, the beam kept turning.",
+   "still": "beats/b08/still.jpg",
+   "clip": "beats/b08/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b09",
+   "scene_id": "kitchen_night",
+   "shot": {
+    "type": "medium",
+    "focus": "doorway",
+    "camera_move": "pull_out",
+    "duration_s": 3.0
+   },
+   "dialogue": [
+    {
+     "speaker": "RADIO",
+     "text": "Mara? Mara, is the light still on?"
+    },
+    {
+     "speaker": "MARA",
+     "text": "It's always on."
+    }
+   ],
+   "still": "beats/b09/still.jpg",
+   "clip": "beats/b09/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b10",
+   "scene_id": "rock_night",
+   "shot": {
+    "type": "establishing",
+    "focus": "lighthouse",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "caption": "It was. It always was.",
+   "still": "beats/b10/still.jpg",
+   "clip": "beats/b10/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b11",
+   "scene_id": "rock_night",
+   "shot": {
+    "type": "close",
+    "focus": "lantern",
+    "camera_move": "orbit",
+    "duration_s": 3.0
+   },
+   "caption": "Somewhere out there, a boat was finding its way home by it.",
+   "still": "beats/b11/still.jpg",
+   "clip": "beats/b11/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b12",
+   "scene_id": "rock_night",
+   "shot": {
+    "type": "wide",
+    "focus": "island",
+    "camera_move": "pull_out",
+    "duration_s": 3.5
+   },
+   "caption": "For one more night, that was enough.",
+   "still": "beats/b12/still.jpg",
+   "clip": "beats/b12/clip.mp4",
+   "width": 1280,
+   "height": 720
+  }
+ ],
+ "animatic": "animatic.mp4"
+}

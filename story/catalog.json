@@ -1,35 +1,1172 @@
 {
-  "description": "What the Blender generators can stage. Used by story/parse.py (LLM prompt + offline fallback). Keep in sync with procedural_worlds/scenes.py REGISTRY and each generator's info['focus_points'].",
-  "generators": {
-    "KITCHEN": {
-      "base": "interior", "setting": "kitchen",
-      "keywords": ["kitchen", "home", "apartment", "flat", "house", "breakfast", "dinner", "kettle", "stove", "fridge", "cook", "table", "mug", "coffee", "tea", "room", "indoors", "inside", "family"],
-      "focus_points": ["room", "stove", "kettle", "sink", "fridge", "cork_board", "lamp", "shelf", "pans", "counter", "cupboards", "doorway", "window"],
-      "focus_keywords": {"stove": ["stove", "oven", "cook"], "kettle": ["kettle", "pot", "tea", "coffee", "boil"], "sink": ["sink", "tap", "dishes", "wash"],
-                         "fridge": ["fridge", "refrigerator", "magnet"], "cork_board": ["board", "note", "notes", "photo", "postcard", "letter", "list", "map", "clue", "pinned"],
-                         "lamp": ["lamp", "bulb", "light"], "shelf": ["shelf", "jar", "book"], "pans": ["pan", "pans", "copper"], "counter": ["counter", "knife", "bread", "plate"],
-                         "doorway": ["door", "doorway", "hall", "hallway", "knock", "footsteps", "voice"], "window": ["window", "outside", "rain", "street", "glass"]},
-      "seeds": [7, 42, 1]
-    },
-    "COASTAL_ISLAND": {
-      "base": "landscape", "setting": "coast",
-      "keywords": ["sea", "ocean", "island", "lighthouse", "coast", "cliff", "beach", "shore", "wave", "waves", "boat", "harbour", "harbor", "tide", "gull", "gulls", "keeper", "storm", "sail"],
-      "focus_points": ["island", "lighthouse", "lantern", "cottage", "door", "cliff", "path", "sea_stack", "horizon"],
-      "focus_keywords": {"lighthouse": ["lighthouse", "tower"], "lantern": ["lantern", "lamp", "beam", "light"], "cottage": ["cottage", "house", "home", "hut"],
-                         "door": ["door", "knock"], "cliff": ["cliff", "edge", "fall", "drop"], "path": ["path", "walk", "climb"],
-                         "sea_stack": ["rock", "rocks", "stack"], "horizon": ["horizon", "boat", "ship", "sea", "ocean", "distance", "waves"]},
-      "seeds": [42, 7, 1]
-    },
-    "CYBERPUNK_ALLEY": {
-      "base": "street", "setting": "alley",
-      "keywords": ["alley", "street", "city", "neon", "sign", "rain", "night", "club", "bar", "market", "stall", "noodle", "gang", "debt", "cop", "detective", "cyber", "future", "downtown", "crowd", "car"],
-      "focus_points": ["alley", "far_end", "neon_sign", "stall", "puddle", "fire_escape", "vending", "dumpster", "steam", "scooter", "trash", "lanterns", "street_lamp"],
-      "focus_keywords": {"neon_sign": ["sign", "neon"], "stall": ["stall", "noodle", "food", "vendor"], "puddle": ["puddle", "reflection", "wet", "rain"],
-                         "fire_escape": ["fire escape", "ladder", "window", "above", "roof"], "vending": ["vending", "machine", "phone", "call"],
-                         "dumpster": ["dumpster", "bin", "garbage"], "steam": ["steam", "vent", "smoke", "breath"], "scooter": ["scooter", "bike", "motorbike"],
-                         "trash": ["trash", "bag", "rubbish"], "lanterns": ["lantern", "lanterns", "lights"], "street_lamp": ["lamp", "streetlight"],
-                         "far_end": ["end", "far", "distance", "away", "exit"]},
-      "seeds": [42, 7, 1]
-    }
+ "description": "What the Blender generators can stage. Used by story/parse.py (LLM prompt + offline fallback). Keep in sync with procedural_worlds/scenes.py REGISTRY and each generator's info['focus_points'].",
+ "generators": {
+  "KITCHEN": {
+   "base": "interior",
+   "setting": "kitchen",
+   "keywords": [
+    "kitchen",
+    "home",
+    "apartment",
+    "flat",
+    "house",
+    "breakfast",
+    "dinner",
+    "kettle",
+    "stove",
+    "fridge",
+    "cook",
+    "table",
+    "mug",
+    "coffee",
+    "tea",
+    "room",
+    "indoors",
+    "inside",
+    "family"
+   ],
+   "focus_points": [
+    "room",
+    "stove",
+    "kettle",
+    "sink",
+    "fridge",
+    "cork_board",
+    "lamp",
+    "shelf",
+    "pans",
+    "counter",
+    "cupboards",
+    "doorway",
+    "window"
+   ],
+   "focus_keywords": {
+    "stove": [
+     "stove",
+     "oven",
+     "cook"
+    ],
+    "kettle": [
+     "kettle",
+     "pot",
+     "tea",
+     "coffee",
+     "boil"
+    ],
+    "sink": [
+     "sink",
+     "tap",
+     "dishes",
+     "wash"
+    ],
+    "fridge": [
+     "fridge",
+     "refrigerator",
+     "magnet"
+    ],
+    "cork_board": [
+     "board",
+     "note",
+     "notes",
+     "photo",
+     "postcard",
+     "letter",
+     "list",
+     "map",
+     "clue",
+     "pinned"
+    ],
+    "lamp": [
+     "lamp",
+     "bulb",
+     "light"
+    ],
+    "shelf": [
+     "shelf",
+     "jar",
+     "book"
+    ],
+    "pans": [
+     "pan",
+     "pans",
+     "copper"
+    ],
+    "counter": [
+     "counter",
+     "knife",
+     "bread",
+     "plate"
+    ],
+    "doorway": [
+     "door",
+     "doorway",
+     "hall",
+     "hallway",
+     "knock",
+     "footsteps",
+     "voice"
+    ],
+    "window": [
+     "window",
+     "outside",
+     "rain",
+     "street",
+     "glass"
+    ]
+   },
+   "seeds": [
+    7,
+    42,
+    1
+   ]
+  },
+  "COASTAL_ISLAND": {
+   "base": "landscape",
+   "setting": "coast",
+   "keywords": [
+    "sea",
+    "ocean",
+    "island",
+    "lighthouse",
+    "coast",
+    "cliff",
+    "beach",
+    "shore",
+    "wave",
+    "waves",
+    "boat",
+    "harbour",
+    "harbor",
+    "tide",
+    "gull",
+    "gulls",
+    "keeper",
+    "storm",
+    "sail"
+   ],
+   "focus_points": [
+    "island",
+    "lighthouse",
+    "lantern",
+    "cottage",
+    "door",
+    "cliff",
+    "path",
+    "sea_stack",
+    "horizon"
+   ],
+   "focus_keywords": {
+    "lighthouse": [
+     "lighthouse",
+     "tower"
+    ],
+    "lantern": [
+     "lantern",
+     "lamp",
+     "beam",
+     "light"
+    ],
+    "cottage": [
+     "cottage",
+     "house",
+     "home",
+     "hut"
+    ],
+    "door": [
+     "door",
+     "knock"
+    ],
+    "cliff": [
+     "cliff",
+     "edge",
+     "fall",
+     "drop"
+    ],
+    "path": [
+     "path",
+     "walk",
+     "climb"
+    ],
+    "sea_stack": [
+     "rock",
+     "rocks",
+     "stack"
+    ],
+    "horizon": [
+     "horizon",
+     "boat",
+     "ship",
+     "sea",
+     "ocean",
+     "distance",
+     "waves"
+    ]
+   },
+   "seeds": [
+    42,
+    7,
+    1
+   ]
+  },
+  "CYBERPUNK_ALLEY": {
+   "base": "street",
+   "setting": "alley",
+   "keywords": [
+    "alley",
+    "street",
+    "city",
+    "neon",
+    "sign",
+    "rain",
+    "night",
+    "club",
+    "bar",
+    "market",
+    "stall",
+    "noodle",
+    "gang",
+    "debt",
+    "cop",
+    "detective",
+    "cyber",
+    "future",
+    "downtown",
+    "crowd",
+    "car"
+   ],
+   "focus_points": [
+    "alley",
+    "far_end",
+    "neon_sign",
+    "stall",
+    "puddle",
+    "fire_escape",
+    "vending",
+    "dumpster",
+    "steam",
+    "scooter",
+    "trash",
+    "lanterns",
+    "street_lamp"
+   ],
+   "focus_keywords": {
+    "neon_sign": [
+     "sign",
+     "neon"
+    ],
+    "stall": [
+     "stall",
+     "noodle",
+     "food",
+     "vendor"
+    ],
+    "puddle": [
+     "puddle",
+     "reflection",
+     "wet",
+     "rain"
+    ],
+    "fire_escape": [
+     "fire escape",
+     "ladder",
+     "window",
+     "above",
+     "roof"
+    ],
+    "vending": [
+     "vending",
+     "machine",
+     "phone",
+     "call"
+    ],
+    "dumpster": [
+     "dumpster",
+     "bin",
+     "garbage"
+    ],
+    "steam": [
+     "steam",
+     "vent",
+     "smoke",
+     "breath"
+    ],
+    "scooter": [
+     "scooter",
+     "bike",
+     "motorbike"
+    ],
+    "trash": [
+     "trash",
+     "bag",
+     "rubbish"
+    ],
+    "lanterns": [
+     "lantern",
+     "lanterns",
+     "lights"
+    ],
+    "street_lamp": [
+     "lamp",
+     "streetlight"
+    ],
+    "far_end": [
+     "end",
+     "far",
+     "distance",
+     "away",
+     "exit"
+    ]
+   },
+   "seeds": [
+    42,
+    7,
+    1
+   ]
   }
+ },
+ "composed": {
+  "diner": {
+   "base": "interior",
+   "setting": "diner",
+   "category": "civic",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "near-future"
+   ],
+   "keywords": [
+    "diner",
+    "cafe",
+    "café",
+    "coffee shop",
+    "booth",
+    "waitress",
+    "milkshake",
+    "counter",
+    "pie"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "counter",
+    "bar_back",
+    "bottles",
+    "booth",
+    "table"
+   ]
+  },
+  "bar": {
+   "base": "interior",
+   "setting": "bar",
+   "category": "civic",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "near-future"
+   ],
+   "keywords": [
+    "bar",
+    "pub",
+    "saloon",
+    "bartender",
+    "whiskey",
+    "drink",
+    "speakeasy",
+    "cocktail"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "counter",
+    "bar_back",
+    "bottles",
+    "table"
+   ]
+  },
+  "tavern": {
+   "base": "interior",
+   "setting": "tavern",
+   "category": "fantasy",
+   "eras": [
+    "medieval",
+    "1700s-1800s",
+    "ancient"
+   ],
+   "keywords": [
+    "tavern",
+    "inn",
+    "ale",
+    "mead",
+    "innkeeper",
+    "hearth"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "counter",
+    "bar_back",
+    "bottles",
+    "fireplace",
+    "table",
+    "crates"
+   ]
+  },
+  "office": {
+   "base": "interior",
+   "setting": "office",
+   "category": "civic",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "near-future"
+   ],
+   "keywords": [
+    "office",
+    "cubicle",
+    "desk",
+    "boss",
+    "meeting",
+    "corporate"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "desk",
+    "shelves"
+   ]
+  },
+  "detective_office": {
+   "base": "interior",
+   "setting": "detective_office",
+   "category": "civic",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "near-future"
+   ],
+   "keywords": [
+    "detective",
+    "private eye",
+    "investigator",
+    "case file",
+    "agency"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "desk",
+    "shelves",
+    "sofa"
+   ]
+  },
+  "police_station": {
+   "base": "interior",
+   "setting": "police_station",
+   "category": "civic",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "near-future"
+   ],
+   "keywords": [
+    "police",
+    "precinct",
+    "station house",
+    "cell",
+    "sergeant",
+    "interrogation",
+    "cop"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "counter",
+    "desk",
+    "cells"
+   ]
+  },
+  "classroom": {
+   "base": "interior",
+   "setting": "classroom",
+   "category": "civic",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "1700s-1800s"
+   ],
+   "keywords": [
+    "classroom",
+    "school",
+    "teacher",
+    "student",
+    "lesson",
+    "blackboard",
+    "chalk"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "blackboard",
+    "desk",
+    "shelves"
+   ]
+  },
+  "library": {
+   "base": "interior",
+   "setting": "library",
+   "category": "civic",
+   "eras": [
+    "1700s-1800s",
+    "1920s-50s",
+    "modern"
+   ],
+   "keywords": [
+    "library",
+    "librarian",
+    "bookshop",
+    "bookstore",
+    "archive",
+    "books",
+    "tome"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "shelves",
+    "table"
+   ]
+  },
+  "hospital_ward": {
+   "base": "interior",
+   "setting": "hospital_ward",
+   "category": "civic",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "near-future"
+   ],
+   "keywords": [
+    "hospital",
+    "ward",
+    "nurse",
+    "doctor",
+    "patient",
+    "infirmary"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "beds",
+    "counter"
+   ]
+  },
+  "bedroom": {
+   "base": "interior",
+   "setting": "bedroom",
+   "category": "domestic",
+   "eras": [
+    "modern",
+    "1920s-50s",
+    "1700s-1800s"
+   ],
+   "keywords": [
+    "bedroom",
+    "bed",
+    "pillow",
+    "nightstand",
+    "sleep",
+    "woke"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "bed",
+    "desk"
+   ]
+  },
+  "living_room": {
+   "base": "interior",
+   "setting": "living_room",
+   "category": "domestic",
+   "eras": [
+    "modern",
+    "1920s-50s",
+    "1700s-1800s"
+   ],
+   "keywords": [
+    "living room",
+    "lounge",
+    "sofa",
+    "couch",
+    "parlour",
+    "parlor",
+    "fireplace"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "sofa",
+    "fireplace",
+    "shelves"
+   ]
+  },
+  "castle_hall": {
+   "base": "interior",
+   "setting": "castle_hall",
+   "category": "fantasy",
+   "eras": [
+    "medieval",
+    "ancient",
+    "1700s-1800s"
+   ],
+   "keywords": [
+    "castle",
+    "throne",
+    "king",
+    "queen",
+    "hall",
+    "court",
+    "knight",
+    "banquet"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "pillars",
+    "dais",
+    "throne",
+    "banquet",
+    "fireplace"
+   ]
+  },
+  "dungeon": {
+   "base": "interior",
+   "setting": "dungeon",
+   "category": "fantasy",
+   "eras": [
+    "medieval",
+    "ancient",
+    "1700s-1800s"
+   ],
+   "keywords": [
+    "dungeon",
+    "prison",
+    "chains",
+    "jail",
+    "cell",
+    "torch"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "pillars",
+    "cells",
+    "crates"
+   ]
+  },
+  "basement": {
+   "base": "interior",
+   "setting": "basement",
+   "category": "domestic",
+   "eras": [
+    "modern",
+    "1920s-50s",
+    "near-future"
+   ],
+   "keywords": [
+    "basement",
+    "cellar",
+    "boiler",
+    "furnace",
+    "storage"
+   ],
+   "focus_points": [
+    "room",
+    "door",
+    "window",
+    "lamp",
+    "machines",
+    "crates",
+    "shelves"
+   ]
+  },
+  "main_street": {
+   "base": "street",
+   "setting": "main_street",
+   "category": "urban",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "near-future",
+    "1700s-1800s",
+    "medieval"
+   ],
+   "keywords": [
+    "street",
+    "avenue",
+    "downtown",
+    "shops",
+    "sidewalk",
+    "traffic",
+    "town"
+   ],
+   "focus_points": [
+    "street",
+    "far_end",
+    "shopfront",
+    "sign",
+    "street_lamp",
+    "vehicle"
+   ]
+  },
+  "market": {
+   "base": "street",
+   "setting": "market",
+   "category": "urban",
+   "eras": [
+    "medieval",
+    "modern",
+    "near-future",
+    "ancient"
+   ],
+   "keywords": [
+    "market",
+    "bazaar",
+    "stall",
+    "vendor",
+    "merchant",
+    "haggle"
+   ],
+   "focus_points": [
+    "street",
+    "far_end",
+    "shopfront",
+    "sign",
+    "street_lamp",
+    "vehicle",
+    "stall"
+   ]
+  },
+  "village": {
+   "base": "street",
+   "setting": "village",
+   "category": "settlement",
+   "eras": [
+    "medieval",
+    "1700s-1800s",
+    "modern"
+   ],
+   "keywords": [
+    "village",
+    "hamlet",
+    "cottages",
+    "villagers"
+   ],
+   "focus_points": [
+    "street",
+    "far_end",
+    "shopfront",
+    "sign",
+    "street_lamp",
+    "vehicle"
+   ]
+  },
+  "harbour_town": {
+   "base": "street",
+   "setting": "harbour_town",
+   "category": "settlement",
+   "eras": [
+    "1700s-1800s",
+    "1920s-50s",
+    "modern"
+   ],
+   "keywords": [
+    "harbour",
+    "harbor",
+    "port",
+    "docks",
+    "pier",
+    "fishing"
+   ],
+   "focus_points": [
+    "street",
+    "far_end",
+    "shopfront",
+    "sign",
+    "street_lamp",
+    "vehicle"
+   ]
+  },
+  "rooftop": {
+   "base": "rooftop",
+   "setting": "rooftop",
+   "category": "urban",
+   "eras": [
+    "1920s-50s",
+    "modern",
+    "near-future"
+   ],
+   "keywords": [
+    "rooftop",
+    "roof",
+    "skyline",
+    "ledge"
+   ],
+   "focus_points": [
+    "street",
+    "far_end",
+    "shopfront",
+    "sign",
+    "street_lamp",
+    "vehicle"
+   ]
+  },
+  "forest": {
+   "base": "landscape",
+   "setting": "forest",
+   "category": "nature",
+   "eras": [
+    "modern",
+    "medieval",
+    "far-future"
+   ],
+   "keywords": [
+    "forest",
+    "woods",
+    "trees",
+    "pine",
+    "woodland"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "tree"
+   ]
+  },
+  "jungle": {
+   "base": "landscape",
+   "setting": "jungle",
+   "category": "nature",
+   "eras": [
+    "modern",
+    "ancient",
+    "1920s-50s"
+   ],
+   "keywords": [
+    "jungle",
+    "rainforest",
+    "vines",
+    "tropical"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "tree"
+   ]
+  },
+  "desert": {
+   "base": "landscape",
+   "setting": "desert",
+   "category": "nature",
+   "eras": [
+    "modern",
+    "ancient",
+    "far-future"
+   ],
+   "keywords": [
+    "desert",
+    "dunes",
+    "sand",
+    "cactus",
+    "oasis"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "tree"
+   ]
+  },
+  "snowfield": {
+   "base": "landscape",
+   "setting": "snowfield",
+   "category": "nature",
+   "eras": [
+    "modern",
+    "medieval",
+    "1920s-50s"
+   ],
+   "keywords": [
+    "snow",
+    "tundra",
+    "ice",
+    "frozen",
+    "blizzard",
+    "arctic"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "tree"
+   ]
+  },
+  "mountain_pass": {
+   "base": "landscape",
+   "setting": "mountain_pass",
+   "category": "nature",
+   "eras": [
+    "medieval",
+    "modern",
+    "1700s-1800s"
+   ],
+   "keywords": [
+    "mountain",
+    "pass",
+    "peak",
+    "summit",
+    "cliffs",
+    "ridge"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "tree"
+   ]
+  },
+  "swamp": {
+   "base": "landscape",
+   "setting": "swamp",
+   "category": "nature",
+   "eras": [
+    "medieval",
+    "modern",
+    "1700s-1800s"
+   ],
+   "keywords": [
+    "swamp",
+    "bog",
+    "marsh",
+    "bayou",
+    "mire"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "tree"
+   ]
+  },
+  "open_field": {
+   "base": "landscape",
+   "setting": "open_field",
+   "category": "nature",
+   "eras": [
+    "modern",
+    "medieval",
+    "1920s-50s"
+   ],
+   "keywords": [
+    "field",
+    "meadow",
+    "prairie",
+    "plain",
+    "grassland"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "tree"
+   ]
+  },
+  "cabin": {
+   "base": "landscape",
+   "setting": "cabin",
+   "category": "settlement",
+   "eras": [
+    "modern",
+    "1700s-1800s",
+    "1920s-50s"
+   ],
+   "keywords": [
+    "cabin",
+    "lodge",
+    "hut",
+    "woodsman"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "cabin"
+   ]
+  },
+  "camp": {
+   "base": "landscape",
+   "setting": "camp",
+   "category": "settlement",
+   "eras": [
+    "medieval",
+    "modern",
+    "ancient"
+   ],
+   "keywords": [
+    "camp",
+    "campfire",
+    "tent",
+    "bonfire"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "campfire"
+   ]
+  },
+  "ruins": {
+   "base": "landscape",
+   "setting": "ruins",
+   "category": "settlement",
+   "eras": [
+    "ancient",
+    "medieval",
+    "far-future"
+   ],
+   "keywords": [
+    "ruins",
+    "ruin",
+    "temple",
+    "ancient stones",
+    "crumbling"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "ruins"
+   ]
+  },
+  "farmstead": {
+   "base": "landscape",
+   "setting": "farmstead",
+   "category": "settlement",
+   "eras": [
+    "1700s-1800s",
+    "1920s-50s",
+    "modern"
+   ],
+   "keywords": [
+    "farm",
+    "barn",
+    "farmer",
+    "harvest",
+    "crops"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "barn"
+   ]
+  },
+  "graveyard": {
+   "base": "landscape",
+   "setting": "graveyard",
+   "category": "dramatic",
+   "eras": [
+    "1700s-1800s",
+    "modern",
+    "medieval"
+   ],
+   "keywords": [
+    "graveyard",
+    "cemetery",
+    "grave",
+    "tomb",
+    "headstone",
+    "funeral"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "graves"
+   ]
+  },
+  "battlefield": {
+   "base": "landscape",
+   "setting": "battlefield",
+   "category": "dramatic",
+   "eras": [
+    "1920s-50s",
+    "medieval",
+    "near-future"
+   ],
+   "keywords": [
+    "battlefield",
+    "battle",
+    "trench",
+    "war",
+    "soldiers",
+    "front"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "trench"
+   ]
+  },
+  "alien_landscape": {
+   "base": "landscape",
+   "setting": "alien_landscape",
+   "category": "fantasy",
+   "eras": [
+    "far-future"
+   ],
+   "keywords": [
+    "alien",
+    "planet",
+    "crystals",
+    "strange world",
+    "xeno"
+   ],
+   "focus_points": [
+    "landmark",
+    "path",
+    "horizon",
+    "tree"
+   ]
+  }
+ }
 }

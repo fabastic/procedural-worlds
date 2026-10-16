@@ -1,9 +1,15 @@
 {
   "stories": [
     {
-      "slug": "demo",
+      "slug": "neon-debt",
+      "title": "Neon Debt",
+      "logline": "A courier with forty credits and a forty-thousand-credit debt has until dawn to find a way out of Hollow Street.",
+      "cover": "beats/b01/still.jpg"
+    },
+    {
+      "slug": "the-last-watch",
       "title": "The Last Watch",
-      "logline": "On a rock in the North Sea, the last lighthouse keeper keeps one rule through the worst storm in eleven years.",
+      "logline": "The last lighthouse keeper on Gull Rock waits out one more night for a boat that is three days late.",
       "cover": "beats/b01/still.jpg"
     }
   ]

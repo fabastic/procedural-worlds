@@ -1,0 +1,239 @@
+{
+ "slug": "neon-debt",
+ "title": "Neon Debt",
+ "logline": "A courier with forty credits and a forty-thousand-credit debt has until dawn to find a way out of Hollow Street.",
+ "protagonist": {
+  "name": "Kade",
+  "eye_height_m": 1.78
+ },
+ "cover": "beats/b01/still.jpg",
+ "scenes": [
+  {
+   "id": "alley_night",
+   "name": "Hollow Street, after the rain",
+   "generator": "CYBERPUNK_ALLEY",
+   "layers": {
+    "base": "street",
+    "setting": "alley",
+    "era": "near-future",
+    "genre_mood": "noir",
+    "weather": "rain",
+    "time": "night",
+    "season": "autumn",
+    "state": "lived-in"
+   }
+  },
+  {
+   "id": "flat_morning",
+   "name": "Kade's kitchen",
+   "generator": "KITCHEN",
+   "layers": {
+    "base": "interior",
+    "setting": "kitchen",
+    "era": "modern",
+    "genre_mood": "noir",
+    "weather": "clear",
+    "time": "day",
+    "season": "autumn",
+    "state": "lived-in"
+   }
+  },
+  {
+   "id": "alley_dusk",
+   "name": "Hollow Street at dusk",
+   "generator": "CYBERPUNK_ALLEY",
+   "layers": {
+    "base": "street",
+    "setting": "alley",
+    "era": "near-future",
+    "genre_mood": "noir",
+    "weather": "clear",
+    "time": "dusk",
+    "season": "autumn",
+    "state": "lived-in"
+   }
+  }
+ ],
+ "beats": [
+  {
+   "id": "b01",
+   "scene_id": "alley_night",
+   "shot": {
+    "type": "establishing",
+    "focus": "far_end",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "caption": "The rain had stopped an hour ago. The neon hadn't noticed.",
+   "still": "beats/b01/still.jpg",
+   "clip": "beats/b01/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b02",
+   "scene_id": "alley_night",
+   "shot": {
+    "type": "low",
+    "focus": "neon_sign",
+    "camera_move": "tilt_up",
+    "duration_s": 3.0
+   },
+   "caption": "Hollow Street. Where debts come due.",
+   "still": "beats/b02/still.jpg",
+   "clip": "beats/b02/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b03",
+   "scene_id": "alley_night",
+   "shot": {
+    "type": "medium",
+    "focus": "vending",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "dialogue": [
+    {
+     "speaker": "PHONE",
+     "text": "You have until morning, Kade."
+    }
+   ],
+   "still": "beats/b03/still.jpg",
+   "clip": "beats/b03/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b04",
+   "scene_id": "alley_night",
+   "shot": {
+    "type": "close",
+    "focus": "puddle",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "caption": "Forty thousand credits. I had forty.",
+   "still": "beats/b04/still.jpg",
+   "clip": "beats/b04/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b05",
+   "scene_id": "alley_night",
+   "shot": {
+    "type": "POV",
+    "focus": "steam",
+    "camera_move": "pan_left",
+    "duration_s": 3.0
+   },
+   "caption": "So I did what anyone would. I walked home and made breakfast.",
+   "still": "beats/b05/still.jpg",
+   "clip": "beats/b05/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b06",
+   "scene_id": "flat_morning",
+   "shot": {
+    "type": "establishing",
+    "focus": "room",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "caption": "Some mornings the kitchen was the only thing in the city that didn't want something from me.",
+   "still": "beats/b06/still.jpg",
+   "clip": "beats/b06/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b07",
+   "scene_id": "flat_morning",
+   "shot": {
+    "type": "close",
+    "focus": "kettle",
+    "camera_move": "static",
+    "duration_s": 3.0
+   },
+   "caption": "Eggs. Coffee. A plan, maybe.",
+   "still": "beats/b07/still.jpg",
+   "clip": "beats/b07/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b08",
+   "scene_id": "flat_morning",
+   "shot": {
+    "type": "POV",
+    "focus": "cork_board",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "caption": "Every lead I had, pinned to the wall. None of them good.",
+   "still": "beats/b08/still.jpg",
+   "clip": "beats/b08/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b09",
+   "scene_id": "flat_morning",
+   "shot": {
+    "type": "medium",
+    "focus": "window",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "dialogue": [
+    {
+     "speaker": "VOICE",
+     "text": "You're up early."
+    },
+    {
+     "speaker": "KADE",
+     "text": "Never went to sleep."
+    }
+   ],
+   "still": "beats/b09/still.jpg",
+   "clip": "beats/b09/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b10",
+   "scene_id": "alley_dusk",
+   "shot": {
+    "type": "establishing",
+    "focus": "far_end",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "caption": "By dusk I was back on Hollow Street.",
+   "still": "beats/b10/still.jpg",
+   "clip": "beats/b10/clip.mp4",
+   "width": 1280,
+   "height": 720
+  },
+  {
+   "id": "b11",
+   "scene_id": "alley_dusk",
+   "shot": {
+    "type": "high",
+    "focus": "alley",
+    "camera_move": "pull_out",
+    "duration_s": 3.0
+   },
+   "caption": "I had a plan. It was a bad one. It was enough.",
+   "still": "beats/b11/still.jpg",
+   "clip": "beats/b11/clip.mp4",
+   "width": 1280,
+   "height": 720
+  }
+ ],
+ "animatic": "animatic.mp4"
+}
