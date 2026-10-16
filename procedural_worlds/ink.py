@@ -634,7 +634,8 @@ def apply(context, col, seed, mood, info):
     cam = scene.camera.data
     sensor = cam.sensor_width
     # world-space radius giving ~4.5 px silhouettes at 960 px width at the focus distance
-    radius = 0.0068 * d * (sensor / cam.lens) / 2.0
+    radius = line_radius(d, cam.lens, sensor)
+    scene["pw_ink_line_scale"] = float(opts["line_scale"])
     opts["ao_distance"] = opts["ao_distance"] or 0.06 * d
     opts["stain_scale"] = 0.9 / max(d * 0.08, 0.05)
     opts["aspect"] = scene.render.resolution_x / max(scene.render.resolution_y, 1)
@@ -667,6 +668,23 @@ def apply(context, col, seed, mood, info):
     add_outlines(col, seed, radius, opts["line_scale"])
     build_compositor(scene, seed)
     return {"line_radius": radius, "materials": len(done)}
+
+
+def line_radius(distance, lens, sensor=36.0):
+    """World-space Line Art radius giving ~6.5 px silhouettes at 960 px width at `distance`."""
+    return 0.0068 * distance * (sensor / lens) / 2.0
+
+
+def retarget(scene, distance, lens):
+    """Re-size the outlines for a new camera distance/lens (story shots move the camera)."""
+    gp = bpy.data.objects.get("PW_InkLines")
+    if gp is None:
+        return
+    r = line_radius(distance, lens, scene.camera.data.sensor_width if scene.camera else 36.0)
+    r *= float(scene.get("pw_ink_line_scale", 1.0))
+    for md in gp.modifiers:
+        if md.type == "LINEART":
+            md.radius = r * (0.5 if md.name.endswith("Inner") else 1.0)
 
 
 def _default_mat():

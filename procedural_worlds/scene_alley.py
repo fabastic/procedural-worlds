@@ -466,11 +466,54 @@ class _Alley:
         tgt = tuple(cam + (far + Vector((0, Y_OFF, 0)) - cam).normalized() * FOCUS)
         cam = tuple(cam)
         sun_scale, sky_scale, sun_dir = SUN[self.mood]
-        return {"objects": len(self.col.objects),
+        focus = self._focus_points(Vector(cam))
+        return {"focus_points": focus, "spawn": {"focus": "alley"},
+                "objects": len(self.col.objects),
                 "camera": {"location": cam, "target": tgt, "lens": round(R.uniform(21.0, 25.0), 1),
                            "clip_end": 500.0},
                 "sun_scale": sun_scale, "sky_scale": sky_scale, "sun_dir": sun_dir,
                 "ink": {"line_scale": 1.45}}
+
+    def _focus_points(self, cam):
+        """Named story focus points (see shots.py contract)."""
+        from . import shots
+        col, W, Y = self.col, self.W, Y_OFF
+
+        def axis(p, back=4.0):
+            return Vector((0.0, p[1] - back, 1.7))
+
+        def nearest(prefix, ymin=4.0):
+            objs = [o for o in shots.objects_named(col, prefix) if o.location.y > cam.y + ymin]
+            return min(objs, key=lambda o: o.location.y, default=None)
+
+        fp = {}
+        blades = [g for g in self.signs if g.get("kind") == "blade" and (g["y0"] + g["y1"]) / 2 + Y > cam.y + 6]
+        if blades:
+            g = min(blades, key=lambda g: g["y0"])
+            p = Vector(((g["x0"] + g["x1"]) / 2, (g["y0"] + g["y1"]) / 2 + Y, (g["zb"] + g["zt"]) / 2))
+            fp["neon_sign"] = shots.focus_point(p, axis(p, 6.0) - p, max(2.0, g["zt"] - g["zb"]))
+        side, sy = self.stall
+        p = Vector((side * (W / 2 - 1.3), sy + Y, 1.5))
+        fp["stall"] = shots.focus_point(p, axis(p, 5.0) - p, 3.5)
+        p = Vector((0.0, self.L * 0.85 + Y, 3.5))
+        fp["far_end"] = shots.focus_point(p, cam - p, 12.0)
+        p = Vector((cam.x, cam.y + 7.0, 0.05))
+        fp["puddle"] = shots.focus_point(p, cam - p, 2.4)
+        p = Vector((0.0, cam.y + 16.0, 3.5))
+        fp["alley"] = shots.focus_point(p, cam - p, 9.0)
+        p = Vector((-W / 2 + 0.3, cam.y + 13.0, 8.0))
+        fp["fire_escape"] = shots.focus_point(p, axis(p, 6.0) - p, 7.0)
+        for name, prefix in (("vending", "PW_Vending"), ("dumpster", "PW_Dumpster"), ("steam", "PW_Steam"),
+                             ("scooter", "PW_Scooter"), ("trash", "PW_TrashBags")):
+            o = nearest(prefix)
+            if o is not None:
+                c = shots.focus_from_objects([o], axis(o.location), z_frac=0.5)
+                fp[name] = c
+        for name, oname in (("lanterns", "PW_LanternString"), ("street_lamp", "PW_StreetLamp")):
+            o = col.objects.get(oname)
+            if o is not None:
+                fp[name] = shots.focus_from_objects([o], cam, size=3.0, z_frac=0.5)
+        return {k: v for k, v in fp.items() if v}
 
     # ------------------------------------------------------------------------------ helpers
     def facade_x(self, s, y):

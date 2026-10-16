@@ -517,7 +517,24 @@ class CoastalIsland:
 
         gulls(col, Vector((lx, ly, lz + 16)) + perp * offs * 6, rng, rng.randint(3, 6), 9.0)
 
-        return {"objects": len(col.objects),
+        # story focus points (see shots.py contract)
+        from . import shots
+        lh = [o for o in col.objects if o.name.startswith("PW_LH_")]
+        sea_dir = Vector((math.cos(th_c), math.sin(th_c), 0))
+        fp = {"lighthouse": shots.focus_from_objects(lh, cam, z_frac=0.5),
+              "lantern": shots.focus_from_objects([col.objects["PW_LH_Lantern"]], cam, size=7.5),
+              "cottage": shots.focus_from_objects([col.objects["PW_Cottage"], col.objects["PW_CottageRoof"]],
+                                                  cam, z_frac=0.4),
+              "sea_stack": shots.focus_from_objects([col.objects["PW_SeaStack_0"]], cam, z_frac=0.5),
+              "cliff": shots.focus_point(Vector((lx, ly, lz - 2.0)) + sea_dir * 5.0, cam - Vector((lx, ly, lz)), 9.0),
+              "path": shots.focus_point(Vector(((lx + cpos.x) / 2, (ly + cpos.y) / 2, lz + 1.0)),
+                                        cam - Vector((lx, ly, lz)), 6.0),
+              "horizon": shots.focus_point(Vector((lx, ly, 3.0)) + sea_dir * 140.0, -sea_dir, 45.0),
+              "island": shots.focus_point(Vector((0, 0, H * 0.4)), cam - Vector((0, 0, H * 0.4)), R * 1.6)}
+        door_pos = Vector((cpos.x, cpos.y, h(cpos.x, cpos.y) + 1.0))
+        fp["door"] = shots.focus_point(door_pos, cam - door_pos, 2.6)
+        return {"focus_points": {k: v for k, v in fp.items() if v}, "spawn": {"focus": "path"},
+                "objects": len(col.objects),
                 "camera": dict(location=tuple(cam), target=tuple(target), lens=rng.choice((35, 40, 45)),
                                clip_end=6000.0),
                 "ink": {"sea_color": SEA[mood][1], "line_scale": 1.0, "base_height": 1.4}}

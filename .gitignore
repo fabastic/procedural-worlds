@@ -4,3 +4,5 @@ renders/*.png
 !renders/hero/
 .claude/
 renders/grid/
+story_out/*/beats/*/frames/
+story_out/*/beats/*/seq/

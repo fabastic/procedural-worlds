@@ -705,7 +705,8 @@ class _Kitchen:
         cam = dict(self.cam)
         cam["location"] = tuple(Vector(cam["location"]) + OFF)
         cam["target"] = tuple(Vector(cam["target"]) + OFF)
-        return {"objects": len(self.col.objects), "camera": cam,
+        return {"focus_points": self.focus_points(Vector(cam["location"])), "spawn": {"focus": "room"},
+                "objects": len(self.col.objects), "camera": cam,
                 "sun_dir": (self.K["el"] + rng.uniform(-3, 3), self.sun_az),
                 "sun_scale": self.K["sun"], "sky_scale": self.K["sky"],
                 "layout": self.layout}
@@ -755,6 +756,34 @@ class _Kitchen:
         for k, w in mods:
             self.mods.append((k, x, x + w))
             x += w
+
+    def focus_points(self, cam_loc):
+        """Named story focus points (see shots.py contract), in world space (OFF applied)."""
+        from . import shots
+        col = self.col
+        center = OFF + Vector((self.W / 2, self.D / 2, 1.2))
+        fp = {}
+        for name, oname, kw in (("stove", "PW_Stove", dict(z_frac=0.75, size=1.1)),
+                                ("kettle", "PW_Stove", dict(z_frac=0.98, size=0.55)),
+                                ("sink", "PW_Sink", dict(z_frac=0.75, size=1.1)),
+                                ("fridge", "PW_Fridge", dict(z_frac=0.6)),
+                                ("cork_board", "PW_CorkBoard", dict(z_frac=0.5)),
+                                ("lamp", "PW_Lamp", dict(z_frac=0.3, size=0.8)),
+                                ("shelf", "PW_Shelves", dict(z_frac=0.5, size=1.2)),
+                                ("pans", "PW_Hanging", dict(z_frac=0.5, size=1.0)),
+                                ("counter", "PW_Cabinets", dict(z_frac=1.0, size=1.6)),
+                                ("cupboards", "PW_Uppers", dict(z_frac=0.5, size=1.6))):
+            o = col.objects.get(oname)
+            if o is not None:
+                fp[name] = shots.focus_from_objects([o], center, **kw)
+        side, u0, u1 = self.door
+        p = OFF + self.wf(side) @ Vector(((u0 + u1) / 2, 0.0, 1.05))
+        fp["doorway"] = shots.focus_point(p, center - p, 2.1)
+        wu0, wu1, z0, z1 = self.win
+        p = OFF + self.wf(self.win_side) @ Vector(((wu0 + wu1) / 2, 0.0, (z0 + z1) / 2))
+        fp["window"] = shots.focus_point(p, Vector((center.x - p.x, center.y - p.y, 0.0)), max(wu1 - wu0, z1 - z0) * 1.15)
+        fp["room"] = shots.focus_point(center - Vector((0, 0, 0.3)), cam_loc - center, 3.2)
+        return {k: v for k, v in fp.items() if v}
 
     def camera(self):
         rng, W, D = self.rng, self.W, self.D
