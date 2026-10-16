@@ -1,7 +1,11 @@
 # Procedural Worlds — Blender add-on (handoff for Claude Code)
 
 ## What this is
-A Blender add-on (Python/`bpy`). One sidebar panel (View3D > N > **Worlds**): pick a scene type, seed, size, mood -> it builds a *complete* scene: geometry, procedural materials, lighting, camera, render settings, and by default renders it as a **hand-inked graphic-novel panel** (see Art direction). Goal: impressive showcase renders + a reusable tool. Not a web/Three.js project.
+**A story app.** The user pastes any story and gets it told in the hand-inked graphic-novel style: Phase 1 as an animated comic, Phase 2 across any kind of setting, Phase 3 as a world they walk through in first person as the protagonist. One data format, one pipeline:
+`story text -> story.json (story/parse.py) -> Blender builds settings (procedural_worlds generators + ink.py) -> outputs (comic panels/clips, later walkable GLB) -> web app (web/) deployed on Vercel.`
+The Blender add-on (`procedural_worlds/`, panel View3D > N > Worlds) is the engine: it builds complete seeded scenes (geometry, materials, lights, camera) and renders them as inked panels. No character models: stories are told through places, objects, POV, captions and off-panel dialogue.
+
+**Current phase: 1** (animated ink comic). Master prompt rules: commit+push after every working step; never ask; look at every visual change (3-line critique vs reference); parallel subagents for independent work; invariants below.
 
 ## Art direction: hand-drawn ink flow look
 Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_ref.png` (cluttered kitchen panel).
@@ -27,13 +31,13 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
 - **Known issues:** night kitchen outlines *look* dark brown but measured line cores are ~0.04 (near-black); it is antialiasing over warm-lit surfaces, not a pipeline bug (GP layer/object lights are off); NIGHT palette is dark on lit scenes (alley lifts its own colours); realistic mode keeps the stylized island sea; island gulls tiny.
 
 ## In progress right now
-- Ink style pass (session 0:00-1:30) was paused at 19:16 to create the GitHub repo; nothing uncommitted.
+- Phase 1 kickoff (2026-10-16 19:26 IST): schema + example stories + shots.py + focus points; web player subagent.
 
 ## Blocked
 - Nothing.
 
 ## Next
-- See the session plan: ink pass -> scene polish -> 20-40 s animatic at 12 fps -> ship (heroes, README, manifest, reinstall).
+- Phase 1 items in order: schema/examples -> focus_points + shots.py -> render_story.py -> web player -> export_animatic.py -> parse.py -> Vercel deploy -> verify exit criteria.
 
 ## Running Blender headless on this machine (important)
 - The Store install's `blender.exe` (`C:\Program Files\WindowsApps\BlenderFoundation.Blender_5.2.2.0_x64__ppwjx1n5r4v9t\Blender\blender.exe`) **cannot be exec'd from Git Bash or PowerShell ("Access denied")**. Use the app-execution alias via **`tools/blender.sh`** (wraps `%LOCALAPPDATA%\Microsoft\WindowsApps\blender-launcher.exe`). The launcher drops stdout, so the wrapper redirects Python stdout/stderr to a temp log, replays it, and propagates the exit code (`--python-exit-code 3`).
@@ -81,12 +85,10 @@ renders/                  output stills (png gitignored except renders/hero/)
 2. LOOK at the image next to `reference/ink_style_ref.png`; write a 3-line critique (reads hand-drawn? worst issue? next fix?); fix it. "No errors" is not success.
 3. `tools/check_invariants.py` before committing.
 
-## Roadmap (in order)
-1. ~~Ink style module~~ (done).
-2. ~~Coastal island hero quality~~ (done).
-3. Kitchen interior showpiece (2 hero renders). 4. Cyberpunk alley (2 hero renders).
-5. Camera fly-through operator + low-res MP4; lines boil every 2 frames (GP noise `use_random`, compositor wobble keyed to frame).
-6. Panel presets incl. Ink/Realistic toggle, `blender_manifest.toml`, README with hero renders; reinstall into the user add-ons folder.
+## Roadmap (Story App phases)
+- **Phase 1 — animated ink comic.** `story/schema.json` (shared format for all phases), `story/parse.py` (Claude API via `ANTHROPIC_API_KEY`, offline keyword fallback, schema validation), `story/examples/` (2+ stories, 10-14 beats), `procedural_worlds/shots.py` (scene info + shot type + focus -> camera; every generator exposes named `focus_points`), `tools/render_story.py` (per beat 2-4 s clip at 12 fps on twos, 1280x720, + still.jpg -> `story_out/<slug>/`), `web/` (Vite+TS motion-comic player: inked borders, caption/speech boxes, ink-wipe transitions, 2-4 panel pages, keyboard/click/autoplay, chapters, library, "Paste your story" page), `tools/export_animatic.py` (full MP4 via Blender sequencer, captions, transitions), deploy to Vercel. EXIT: 2 example stories play end to end in the deployed player + export MP4; every panel reads as its shot/focus; feels like an inked graphic novel that quietly moves.
+- **Phase 2 — every kind of story.** Layers as data in `presets/` (base, setting kits, era, genre/mood grade, conditions, state), tagged prop library + scatter rules, parser maps stories onto layers, coverage across domestic/civic/urban/transit/nature/settlements/fantasy-scifi/dramatic, `tools/coverage.py` + `COVERAGE.md`, `tools/beats.txt` (50 beats). EXIT: 45/50 beats read correctly, every category has entries, 4+ new example stories deployed.
+- **Phase 3 — walk the story in first person.** `tools/build_world.py` -> GLB per scene (baked ink colours, collision, spawn/focus/trigger empties, interactables), web "Walk" mode (Three.js FPS controller, real-time toon + edge ink + boil + grain, beats at triggers, Comic/Walk toggle), 60 fps. EXIT: both modes work for every example story deployed; the kitchen in Walk mode feels like stepping into the reference.
 
 ## Conventions
 - No external deps; pure `bpy`/`bmesh`/`mathutils` (+ numpy only in tools). Everything procedural, no image textures.
