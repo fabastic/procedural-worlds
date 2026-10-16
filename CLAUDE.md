@@ -5,7 +5,7 @@
 `story text -> story.json (story/parse.py) -> Blender builds settings (procedural_worlds generators + ink.py) -> outputs (comic panels/clips, later walkable GLB) -> web app (web/) deployed on Vercel.`
 The Blender add-on (`procedural_worlds/`, panel View3D > N > Worlds) is the engine: it builds complete seeded scenes (geometry, materials, lights, camera) and renders them as inked panels. No character models: stories are told through places, objects, POV, captions and off-panel dialogue.
 
-**Current phase: 1** (animated ink comic). Master prompt rules: commit+push after every working step; never ask; look at every visual change (3-line critique vs reference); parallel subagents for independent work; invariants below.
+**Current phase: 2** (every kind of story); Phase 1 exit criteria met 2026-10-17 00:15 IST. Master prompt rules: commit+push after every working step; never ask; look at every visual change (3-line critique vs reference); parallel subagents for independent work; invariants below.
 
 ## Art direction: hand-drawn ink flow look
 Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_ref.png` (cluttered kitchen panel).
@@ -30,13 +30,25 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
 - **Panel:** presets, Ink/Realistic style toggle, quality, fly-through box. `blender_manifest.toml` present (not yet tested as an extension install).
 - **Known issues:** night kitchen outlines *look* dark brown but measured line cores are ~0.04 (near-black); it is antialiasing over warm-lit surfaces, not a pipeline bug (GP layer/object lights are off); NIGHT palette is dark on lit scenes (alley lifts its own colours); realistic mode keeps the stylized island sea; island gulls tiny.
 
-## Phase 1 status (verified vs not)
-- VERIFIED: `story/schema.json`; `story/catalog.json` (stageable generators + focus points + keywords); `story/parse.py` offline path (parses `story/texts/the_night_shift.txt` into 4 scenes/12 beats, validates); 3 example stories in `story/examples/` validate (`the_last_watch` 12 beats, `neon_debt` 11, `the_night_shift` 12); `procedural_worlds/shots.py` + `focus_points` in all 3 generators; `tools/render_story.py --stills-only` for both main stories (every panel looked at: reads as its shot/focus); `tools/export_animatic.py` (tested on stills: title card, captions in a hand-lettered font, cross-fades, end card).
-- NOT VERIFIED YET: Gemini path of parse.py (needs `GEMINI_API_KEY`, user will provide at the end; model via `GEMINI_MODEL`, default gemini-2.5-flash); full clip renders + MP4 encode; web player (subagent building it in a worktree); Vercel deploy (Vercel MCP connected, team "Vectre" `team_UlrEstSY0rSG0sWAY2YhnCw5`; plan: `create_git_project` repo fabastic/procedural-worlds, rootDirectory `web`).
-- Timing: kitchen/island beats ~3-6 s per drawing at 1280x720, alley 15-35 s per drawing (Line Art). A 3 s beat = 18 drawings (on twos).
+## Phase 1 — DONE (verified 2026-10-17)
+- Deployed player: **https://procedural-worlds-gamma.vercel.app** (alias procedural-worlds-vectre.vercel.app); Vercel project `procedural-worlds` in team Vectre (`web/.vercel/project.json`, gitignored). The Vercel MCP `create_git_project` returns 403 (account cannot create projects), so deploy with the logged-in CLI: `cd web && npx vercel deploy --prod --yes`. Not git-linked: redeploy after `npm run sync`.
+- Both stories (`the-last-watch` 12 beats, `neon-debt` 11) rendered with `tools/render_story.py`, animatics via `tools/export_animatic.py` (38 s / 34 s), play end to end in the deployed reader (checked live: clips play, captions, balloons, ink-wipe). Story media is committed in `web/public/stories/` (~40 MB, deliberate exception to the 2 MB render rule: the static deploy needs it).
+- Web player `web/` (Vite + TS, subagent-built): inked panel pages, caption boxes, off-panel balloons (spiky for RADIO/PHONE), ink-wipe transitions, autoplay, chapters, library, paste page. `npm run sync -- --from <story_out>`.
+- Parser: **Gemini works** (`gemini-3.8-flash`, newest-first fallback list in `story/parse.py`; 2.5 is closed to new users). Key lives ONLY in the gitignored repo-root `.env` (`GEMINI_API_KEY=...`, template `.env.example`); `parse.py` loads it. Never print or commit it. Test output: `story/examples/the_night_shift_gemini.json` (3 scenes, 13 beats).
+- Nits: neon-debt b04 (puddle close-up) very dark; joined-prop inner contours thin/doubled at close range.
+
+## Phase 2 status (verified vs not)
+- VERIFIED: layers as data in `procedural_worlds/presets/` (`genre.json` 10 grades, `era.json` 7 eras, `conditions.json`, `settings.json` 33 entries); kits in `procedural_worlds/kits/` (`room.py` 22 features, `street.py`, `terrain.py` 9 biomes + landmarks); tagged prop library `kits/props.py`; `COMPOSED` generator takes `layers`; genre grades drive palette/ink/hatch/vignette + dutch angle; lamp-lit night interiors via `info["ink"]["light_tint"]`. `tools/coverage.py` + `tools/coverage_report.py` -> `COVERAGE.md` + `renders/coverage/<category>_sheet.jpg`: **99/99 OK**. `tools/layers_grid.py` renders arbitrary layer specs. `story/catalog.json` `composed` section generated by `tools/build_catalog.py`.
+- NOT YET: parser choosing composed settings (offline + Gemini prompt), `tools/beats.txt` (50 beats) + judging, weather overlays (rain/snow/fog are data only), transit/underground/water bases, more civic rooms (shop, factory, lab, courtroom, kids room, bathroom, attic), 4+ new example stories deployed.
 
 ## In progress right now
-- Rendering clips for `the-last-watch` (background), then `neon-debt`; web player subagent; then sync -> deploy.
+- Phase 2: parser -> composed settings (catalog section exists; parse.py not yet using it).
+
+## Blocked
+- Vercel MCP cannot create/link projects (403): using the CLI (works). No git auto-deploy.
+
+## Next
+- 1) parse.py: unified options (3 hero generators + COMPOSED settings) for offline + Gemini. 2) tools/beats.txt (50 beats) -> render -> judge -> fix to 45/50. 3) Weather overlays in ink compositor (rain streaks, snow, fog via mist). 4) Fan out new coverage (transit, civic rooms, underground, water) with subagents. 5) 4+ new example stories (parse with Gemini, render, sync, redeploy).
 
 ## Running Blender headless on this machine (important)
 - The Store install's `blender.exe` (`C:\Program Files\WindowsApps\BlenderFoundation.Blender_5.2.2.0_x64__ppwjx1n5r4v9t\Blender\blender.exe`) **cannot be exec'd from Git Bash or PowerShell ("Access denied")**. Use the app-execution alias via **`tools/blender.sh`** (wraps `%LOCALAPPDATA%\Microsoft\WindowsApps\blender-launcher.exe`). The launcher drops stdout, so the wrapper redirects Python stdout/stderr to a temp log, replays it, and propagates the exit code (`--python-exit-code 3`).
@@ -53,6 +65,7 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
 - `obj.matrix_world` is stale right after creating/moving objects in a script -> `context.view_layer.update()` before reading it.
 - Light Path "Is Camera Ray" works in the EEVEE world shader (camera sees the inked sky, lighting sees a flat ambient).
 - Freestyle still exists (`scene.render.use_freestyle`) but is unused.
+- **Installing into the user's Blender (Store/MSIX app):** its AppData is virtualized; the addons folder seen from bash is NOT what Blender reads (real path under `%LOCALAPPDATA%\Packages\BlenderFoundation.Blender_ppwjx1n5r4v9t\LocalCache\Roaming\...`). Reinstall from inside Blender via MCP `execute_blender_code`: shutil.copytree repo `procedural_worlds` -> `bpy.utils.user_resource("SCRIPTS", path="addons")`, purge `sys.modules`, `addon_utils.enable`. Done + verified 2026-10-17 (all 4 scene types generate from the panel operator).
 - Live bridge: Blender 5.x needs **Preferences > System > Network > Allow Online Access** ON, then Preferences > Add-ons > MCP > **Start MCP Bridge Server** (port 9876).
 
 ## Layout
