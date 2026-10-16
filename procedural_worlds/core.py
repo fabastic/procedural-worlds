@@ -208,7 +208,7 @@ def generate(context, scene_type, seed=1, size=60.0, detail=160, height=1.0,
                 remove_object(o)
         purge_orphans()
     info = scenes.REGISTRY[scene_type].build(col, seed=seed, size=size, detail=detail, height=height,
-                                             mood=mood)
+                                             mood=mood, layers=dict(layers or {}))
     setup_lighting(mood, col, sun_scale=info.get("sun_scale", 1.0),
                    sky_scale=info.get("sky_scale", 1.0), sun_dir=info.get("sun_dir"))
     setup_camera(col, **info.get("camera", {}))

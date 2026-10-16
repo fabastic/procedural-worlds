@@ -1,0 +1,33 @@
+{
+  "_doc": "Era dressing (data). Colours are display sRGB. floor: pattern + 2 colours; window: style for openings; light: lamp type used by kits (shape + colour + warmth); props: era tags used by the prop library; signage: how signs are drawn.",
+  "ancient": {
+    "palette": {"wall": [0.80, 0.70, 0.52], "wall2": [0.66, 0.52, 0.38], "trim": [0.55, 0.38, 0.26], "floor_a": [0.72, 0.62, 0.48], "floor_b": [0.58, 0.48, 0.36],
+                "wood": [0.52, 0.36, 0.22], "metal": [0.62, 0.48, 0.25], "fabric": [0.66, 0.30, 0.22], "accent": [0.25, 0.42, 0.45], "ceiling": [0.62, 0.50, 0.36]},
+    "floor": "stone", "window": "arched", "light": {"type": "brazier", "color": [1.0, 0.62, 0.30]}, "signage": "painted", "props": ["ancient", "old"]},
+  "medieval": {
+    "palette": {"wall": [0.70, 0.66, 0.58], "wall2": [0.52, 0.48, 0.42], "trim": [0.40, 0.28, 0.18], "floor_a": [0.55, 0.50, 0.44], "floor_b": [0.44, 0.40, 0.35],
+                "wood": [0.46, 0.31, 0.19], "metal": [0.38, 0.38, 0.40], "fabric": [0.55, 0.20, 0.18], "accent": [0.28, 0.40, 0.30], "ceiling": [0.36, 0.26, 0.17]},
+    "floor": "stone", "window": "arched", "light": {"type": "candle", "color": [1.0, 0.66, 0.32]}, "signage": "painted", "props": ["medieval", "old"]},
+  "1700s-1800s": {
+    "palette": {"wall": [0.82, 0.76, 0.62], "wall2": [0.48, 0.55, 0.50], "trim": [0.38, 0.27, 0.18], "floor_a": [0.55, 0.40, 0.26], "floor_b": [0.47, 0.33, 0.21],
+                "wood": [0.42, 0.28, 0.17], "metal": [0.55, 0.47, 0.30], "fabric": [0.45, 0.20, 0.25], "accent": [0.30, 0.40, 0.48], "ceiling": [0.84, 0.80, 0.70]},
+    "floor": "planks", "window": "sash", "light": {"type": "oil_lamp", "color": [1.0, 0.70, 0.38]}, "signage": "painted", "props": ["victorian", "old"]},
+  "1920s-50s": {
+    "palette": {"wall": [0.84, 0.74, 0.52], "wall2": [0.40, 0.56, 0.52], "trim": [0.22, 0.38, 0.36], "floor_a": [0.92, 0.88, 0.78], "floor_b": [0.14, 0.13, 0.12],
+                "wood": [0.48, 0.32, 0.20], "metal": [0.72, 0.72, 0.70], "fabric": [0.66, 0.22, 0.20], "accent": [0.70, 0.32, 0.25], "ceiling": [0.88, 0.84, 0.74]},
+    "floor": "checker", "window": "sash", "light": {"type": "bulb", "color": [1.0, 0.80, 0.52]}, "signage": "enamel", "props": ["midcentury", "retro"]},
+  "modern": {
+    "palette": {"wall": [0.86, 0.84, 0.78], "wall2": [0.56, 0.62, 0.62], "trim": [0.30, 0.32, 0.33], "floor_a": [0.62, 0.55, 0.45], "floor_b": [0.52, 0.46, 0.38],
+                "wood": [0.62, 0.48, 0.34], "metal": [0.66, 0.68, 0.70], "fabric": [0.30, 0.40, 0.52], "accent": [0.80, 0.52, 0.24], "ceiling": [0.90, 0.89, 0.86]},
+    "floor": "planks", "window": "industrial", "light": {"type": "pendant", "color": [1.0, 0.88, 0.70]}, "signage": "printed", "props": ["modern"]},
+  "near-future": {
+    "palette": {"wall": [0.46, 0.52, 0.56], "wall2": [0.30, 0.34, 0.40], "trim": [0.18, 0.20, 0.24], "floor_a": [0.36, 0.38, 0.42], "floor_b": [0.26, 0.28, 0.32],
+                "wood": [0.45, 0.38, 0.32], "metal": [0.58, 0.62, 0.66], "fabric": [0.28, 0.30, 0.42], "accent": {"color": [0.30, 0.95, 0.90], "emission": [0.30, 0.95, 0.90], "strength": 3.0},
+                "ceiling": [0.36, 0.40, 0.44]},
+    "floor": "tiles", "window": "sleek", "light": {"type": "strip", "color": [0.75, 0.92, 1.0]}, "signage": "neon", "props": ["futuristic", "modern"]},
+  "far-future": {
+    "palette": {"wall": [0.88, 0.90, 0.92], "wall2": [0.62, 0.70, 0.78], "trim": [0.40, 0.46, 0.55], "floor_a": [0.80, 0.82, 0.86], "floor_b": [0.66, 0.70, 0.76],
+                "wood": [0.70, 0.72, 0.76], "metal": [0.78, 0.82, 0.88], "fabric": [0.50, 0.58, 0.72], "accent": {"color": [0.95, 0.55, 0.30], "emission": [0.95, 0.55, 0.30], "strength": 3.0},
+                "ceiling": [0.84, 0.86, 0.90]},
+    "floor": "tiles", "window": "porthole", "light": {"type": "strip", "color": [0.90, 0.96, 1.0]}, "signage": "holo", "props": ["futuristic"]}
+}

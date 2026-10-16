@@ -1,0 +1,20 @@
+{
+  "_doc": "Conditions (data). weather -> compositor overlay + light scales; time -> core mood; state -> grime/clutter/damage knobs read by kits and the ink pass.",
+  "weather": {
+    "clear":     {"overlay": null, "sun_scale": 1.0, "sky_scale": 1.0, "mist": 0.0},
+    "rain":      {"overlay": "rain", "sun_scale": 0.45, "sky_scale": 0.8, "mist": 0.15, "wet": true},
+    "snow":      {"overlay": "snow", "sun_scale": 0.7, "sky_scale": 1.1, "mist": 0.2, "snow_cover": true},
+    "fog":       {"overlay": null, "sun_scale": 0.5, "sky_scale": 0.9, "mist": 0.6},
+    "storm":     {"overlay": "rain", "sun_scale": 0.3, "sky_scale": 0.6, "mist": 0.3, "wet": true, "heavy": true},
+    "heat-haze": {"overlay": "haze", "sun_scale": 1.2, "sky_scale": 1.1, "mist": 0.1}
+  },
+  "time": {"dawn": "GOLDEN", "day": "DAY", "golden": "GOLDEN", "dusk": "DUSK", "night": "NIGHT"},
+  "state": {
+    "pristine":  {"grime": 0.4, "clutter": 0.6, "debris": 0.0, "broken": 0.0},
+    "lived-in":  {"grime": 1.0, "clutter": 1.0, "debris": 0.1, "broken": 0.0},
+    "abandoned": {"grime": 2.0, "clutter": 0.7, "debris": 0.6, "broken": 0.25, "lights_off": true},
+    "ruined":    {"grime": 2.4, "clutter": 0.4, "debris": 1.0, "broken": 0.6, "holes": true, "lights_off": true},
+    "burning":   {"grime": 1.8, "clutter": 0.8, "debris": 0.5, "broken": 0.3, "fire": true},
+    "flooded":   {"grime": 1.6, "clutter": 0.8, "debris": 0.4, "broken": 0.1, "water_level": 0.35}
+  }
+}

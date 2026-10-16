@@ -4,5 +4,7 @@ Add a new scene: write a module with one class and add it to REGISTRY."""
 from .scene_island import CoastalIsland
 from .scene_kitchen import Kitchen
 from .scene_alley import CyberpunkAlley
+from .scene_composed import Composed
 
-REGISTRY = {"COASTAL_ISLAND": CoastalIsland, "KITCHEN": Kitchen, "CYBERPUNK_ALLEY": CyberpunkAlley}
+REGISTRY = {"COASTAL_ISLAND": CoastalIsland, "KITCHEN": Kitchen, "CYBERPUNK_ALLEY": CyberpunkAlley,
+            "COMPOSED": Composed}
