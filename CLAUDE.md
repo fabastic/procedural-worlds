@@ -14,6 +14,7 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
 
 ## Session log
 - Final 5-hour session started **2026-10-16 19:13 IST** (checkpoints 20:43 / 22:13 / 23:13 / 23:53).
+- Remote: **https://github.com/fabastic/procedural-worlds** (private), branch `master` tracks `origin/master`. Push after every commit.
 
 ## Status (read this first)
 - **Ink style module (`ink.py`) — done, applied to every scene by `core.generate()`:** Line Art (GP v3) heavy silhouettes + thin inner/crease/intersection lines with noise, taper, overshoot; `PW_InkToon` cel bands + muted shadow hue + occlusion-gated hatching + AO grime/stains/drips; `PW_InkWonk` GN wobble; inked sky world (bands, outlined clouds, sun/moon disc, stars); compositor (line wobble, paper tint/mottle/grain, blots, smudges, warm vignette, bloom for strong emitters).
@@ -23,10 +24,10 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
   - `CYBERPUNK_ALLEY` (`scene_alley.py`, built by a subagent): modular buildings, fire escapes, blade neon signs, cables, lanterns, wet road with streak reflection decals. Heroes: `renders/hero/cyberpunk_alley_*.jpg`. Slow: 15-35 s/frame at 960x540 (Line Art).
 - **Fly-through:** `anim.py` (`setup_flythrough`, `set_video_output`), operator `pw.flythrough`, `tools/flythrough.py` -> MP4; GP noise reseeds every 2 frames + compositor wobble keyed to frame = line boil. `tools/video_frames.py` decodes MP4 frames via the sequencer (no ffmpeg on this machine).
 - **Panel:** presets, Ink/Realistic style toggle, quality, fly-through box. `blender_manifest.toml` present (not yet tested as an extension install).
-- **Known issues:** night kitchen outlines read dark brown instead of black (not lighting: GP layer/object lights off and isolated strokes render near-black; cause unknown); NIGHT palette is dark on lit scenes (alley lifts its own colours); realistic mode keeps the stylized island sea; island gulls tiny.
+- **Known issues:** night kitchen outlines *look* dark brown but measured line cores are ~0.04 (near-black); it is antialiasing over warm-lit surfaces, not a pipeline bug (GP layer/object lights are off); NIGHT palette is dark on lit scenes (alley lifts its own colours); realistic mode keeps the stylized island sea; island gulls tiny.
 
 ## In progress right now
-- Ink style pass (session 0:00-1:30).
+- Ink style pass (session 0:00-1:30) was paused at 19:16 to create the GitHub repo; nothing uncommitted.
 
 ## Blocked
 - Nothing.
