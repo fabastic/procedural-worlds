@@ -613,7 +613,9 @@ def build_compositor(scene, seed, frame_boil=True, grade=None):
     if g:
         lum = t.vmath("DOT_PRODUCT", img, (0.2126, 0.7152, 0.0722))
         grey = t.node("ShaderNodeCombineXYZ", {"X": lum, "Y": lum, "Z": lum}).outputs[0]
-        img = t.vmath("ADD", grey, t.vmath("SCALE", t.vmath("SUBTRACT", img, grey), scale=g.get("saturation", 1.0)))
+        # bright pixels (neon, lamps, lit windows) keep their colour; the rest takes the grade
+        sat = t.maprange(lum, 0.45, 0.85, g.get("saturation", 1.0), max(1.0, g.get("saturation", 1.0)))
+        img = t.vmath("ADD", grey, t.vmath("SCALE", t.vmath("SUBTRACT", img, grey), scale=sat))
         piv = (0.38, 0.38, 0.38)        # low pivot: contrast lifts the lights, keeps the darks readable
         img = t.vmath("ADD", t.vmath("SCALE", t.vmath("SUBTRACT", img, piv), scale=g.get("contrast", 1.0)), piv)
         img = t.vmath("MULTIPLY", img, tuple(g.get("tint", (1, 1, 1))))

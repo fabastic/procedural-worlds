@@ -17,24 +17,24 @@
   }
  },
  "noir": {
-  "saturation": 0.4,
-  "contrast": 1.1,
+  "saturation": 0.45,
+  "contrast": 1.04,
   "tint": [
    0.96,
    0.98,
    1.04
   ],
-  "ink_weight": 1.3,
-  "hatch": 1.5,
-  "grime": 1.1,
-  "vignette": 1.35,
+  "ink_weight": 1.2,
+  "hatch": 1.15,
+  "grime": 1.0,
+  "vignette": 1.1,
   "camera": {
    "dutch_deg": 5
   }
  },
  "horror": {
   "saturation": 0.6,
-  "contrast": 1.12,
+  "contrast": 1.06,
   "tint": [
    0.92,
    1.0,
@@ -43,7 +43,7 @@
   "ink_weight": 1.35,
   "hatch": 1.9,
   "grime": 1.6,
-  "vignette": 1.6,
+  "vignette": 1.35,
   "camera": {
    "dutch_deg": 8
   }
