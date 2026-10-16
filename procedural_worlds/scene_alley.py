@@ -18,6 +18,7 @@ from . import core
 
 Z = Vector((0.0, 0.0, 1.0))
 Y_OFF = 5.0
+FOCUS = 9.0
 
 
 # ----------------------------------------------------------------------------------- colours
@@ -141,9 +142,18 @@ class Mats:
         self.ef, self.lk = ef, lk
         self.haze = srgb(haze)
         self.sky_cols = (srgb(sky[0]), srgb(sky[1]))
-        mk = core.make_material
-        g = srgb(GRIME)
-        self.walls = {k: _grime_mat(f"PW_Alley_Wall_{k}", srgb(c), g) for k, c in WALLS.items()}
+        # NIGHT: the ink palette multiplies lit tones by a dark blue tint, so lift the
+        # non-emissive base colours a little to keep walls/props legible (road/glass stay dark).
+        lift = 1.7 if mood == "NIGHT" else 1.0
+        nb = lambda c: tuple(min(.85, x * lift) for x in c)
+        keep = ("Road", "RoadPatch", "Puddle", "Glass", "GlassFar", "Metal", "SignBoard")
+
+        def mk(name, color, emission=None, **kw):
+            if emission is None and name[len("PW_Alley_"):] not in keep:
+                color = nb(color)
+            return core.make_material(name, color, emission=emission, **kw)
+        g = nb(srgb(GRIME))
+        self.walls = {k: _grime_mat(f"PW_Alley_Wall_{k}", nb(srgb(c)), g) for k, c in WALLS.items()}
         self.far_walls = {k: _grime_mat(f"PW_Alley_WallFar_{k}", mixc(srgb(c), self.haze, .5),
                                         mixc(g, self.haze, .5), amount=.3) for k, c in WALLS.items()}
         self.trim_dark = mk("PW_Alley_TrimDark", srgb("#2b2622"), rough=.8)
@@ -205,7 +215,6 @@ class Mats:
                         mk("PW_Alley_Scooter2", srgb("#3e6e6a"), rough=.4)]
         self.skyline = mk("PW_Alley_Skyline", mixc(srgb("#3b4448"), self.haze, .7), rough=.9)
         self.skyline2 = mk("PW_Alley_Skyline2", mixc(srgb("#2c3134"), self.haze, .55), rough=.9)
-        self.sky = _sky_mat("PW_Alley_Sky", self.sky_cols[0], self.sky_cols[1], 170.0)
 
 
 # ----------------------------------------------------------------------------- mesh builder
@@ -478,9 +487,13 @@ class _Alley:
         # behind the camera and out of shot.
         for o in self.col.objects:
             o.location.y += Y_OFF
-        tgt = (self.cam.x * 0.25 + R.uniform(-.3, .3), self.L * 0.85 + Y_OFF, R.uniform(5.0, 6.2))
+        # aim down the alley (vanishing point ~0.85 L away, slight upward tilt) but put the target
+        # only FOCUS m out along that ray: ink.py sizes lines/wobble from camera->target distance.
+        far = Vector((self.cam.x * 0.25 + R.uniform(-.3, .3), self.L * 0.85, R.uniform(5.0, 6.2)))
+        cam = self.cam + Vector((0, Y_OFF, 0))
+        tgt = tuple(cam + (far + Vector((0, Y_OFF, 0)) - cam).normalized() * FOCUS)
+        cam = tuple(cam)
         sun_scale, sky_scale, sun_dir = SUN[self.mood]
-        cam = (self.cam.x, self.cam.y + Y_OFF, self.cam.z)
         return {"objects": len(self.col.objects),
                 "camera": {"location": cam, "target": tgt, "lens": round(R.uniform(21.0, 25.0), 1),
                            "clip_end": 500.0},
@@ -567,21 +580,6 @@ class _Alley:
             self.puddles.append((cx, cy, rx, ry))
         pu.build("PW_Puddles", self.col)
 
-        # backdrop sky shell (unlit gradient, no shadows, no outlines)
-        sk = MB()
-        cx, cy = self.cam.x, self.cam.y
-        Rr, n = 300.0, 24
-        ring = []
-        for k in range(n + 1):
-            a = math.radians(-115 + 230 * k / n)
-            ring.append((cx + math.sin(a) * Rr, cy + math.cos(a) * Rr))
-        for k in range(n):
-            (xa, ya), (xb, yb) = ring[k], ring[k + 1]
-            for z0, z1 in ((-40, 60), (60, 160), (160, 300)):
-                sk.poly([(xa, ya, z0), (xb, yb, z0), (xb, yb, z1), (xa, ya, z1)], M.sky,
-                        normal=(cx - xa, cy - ya, 0))
-        o = sk.build("PW_Sky", self.col, pw_line=0, pw_wonk=0)
-        o.visible_shadow = False
 
     # ------------------------------------------------------------------------- side blocks
     def _side(self, s):
@@ -1602,16 +1600,22 @@ class _Alley:
             xc = (sg["x0"] + sg["x1"]) / 2
             loc = (xc * .7, (sg["y0"] + sg["y1"]) / 2 - .6, (sg["zb"] + sg["zt"]) / 2 - .5)
             col = srgb(NEON[sg["key"]])
-            e = (350 + 120 * sg.get("power", 3)) * lk
+            e = min(2600, 1000 + 300 * sg.get("power", 3)) * lk
             self._light(f"PW_Light_Neon_{i}", loc, col, e, radius=.6)
         if hasattr(self, "stall_light"):
-            self._light("PW_Light_Stall", self.stall_light, srgb("#ffa85a"), 260 * lk, radius=.5)
+            self._light("PW_Light_Stall", self.stall_light, srgb("#ffa85a"), 650 * lk, radius=.5)
         if hasattr(self, "lamp"):
-            self._light("PW_Light_Lamp", self.lamp, srgb("#ffb56b"), 320 * lk, radius=.3)
-        if hasattr(self, "lantern_mid"):
-            self._light("PW_Light_Lanterns", self.lantern_mid, srgb("#ff6a3a"), 200 * lk, radius=1.0)
+            self._light("PW_Light_Lamp", self.lamp, srgb("#ffb56b"), 1000 * lk, radius=.3)
+        shops = [s for s in self.signs if s["kind"] == "shop" and s["y0"] > cy + 4]
+        if shops:      # nearest lit shop window spills light onto the street
+            sg = min(shops, key=lambda s: s["y0"])
+            xc = (sg["x0"] + sg["x1"]) / 2
+            loc = (xc - math.copysign(1.3, xc), (sg["y0"] + sg["y1"]) / 2, 1.6)
+            self._light("PW_Light_Shop", loc, srgb(LIT["warm"]), 450 * lk, radius=.8)
+        elif hasattr(self, "lantern_mid"):
+            self._light("PW_Light_Lanterns", self.lantern_mid, srgb("#ff6a3a"), 450 * lk, radius=1.0)
         fx, fy, fz, fk = self.far_sign
-        self._light("PW_Light_Far", (fx, fy - 2, fz), srgb(NEON[fk]), 1200 * lk, radius=1.5)
+        self._light("PW_Light_Far", (fx, fy - 2, fz), srgb(NEON[fk]), 2500 * lk, radius=1.5)
         for name, kind, loc, color, energy, radius in self.lights:
             ld = bpy.data.lights.new(name, kind)
             ld.color = color
