@@ -51,6 +51,7 @@ class CoastalIsland:
         b.inputs["Transmission Weight"].default_value = 0.85
         b.inputs["IOR"].default_value = 1.33
         w.data.materials.append(wm)
+        wm["pw_grime"] = 0.0
 
         # rocks scattered on land
         rock_mat = core.make_material("PW_RockMat", (0.33, 0.31, 0.29), rough=0.9)

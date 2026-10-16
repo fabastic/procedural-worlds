@@ -134,7 +134,7 @@ def setup_lighting(mood, col, sun_scale=1.0, sky_scale=1.0, sun_dir=None):
     so = bpy.data.objects.new("PW_Sun", sun)
     so.rotation_euler = (math.radians(90 - el), 0, math.radians(az))
     col.objects.link(so)
-    w = bpy.context.scene.world or bpy.data.worlds.new("PW_World")
+    w = bpy.data.worlds.get("PW_World") or bpy.data.worlds.new("PW_World")
     bpy.context.scene.world = w
     w.use_nodes = True
     bg = w.node_tree.nodes.get("Background")
@@ -193,18 +193,26 @@ def setup_render(engine="CYCLES", samples=64, res=(1920, 1080), fast=False, ink=
 
 
 def generate(context, scene_type, seed=1, size=60.0, detail=160, height=1.0,
-             mood="GOLDEN", clear=True, engine="CYCLES"):
-    from . import scenes
+             mood="GOLDEN", clear=True, engine="CYCLES", ink=True):
+    """Build a scene. ink=True (default) applies the hand-inked graphic-novel style to whatever the
+    generator built (see ink.py); it needs EEVEE, so the engine is forced to BLENDER_EEVEE."""
+    from . import scenes, ink as ink_style
     random.seed(seed)
     col = get_collection(clear)
     if clear:
         for o in list(context.scene.objects):
             if o.name.startswith("PW_") and o.name not in col.objects:
                 remove_object(o)
+        purge_orphans()
     info = scenes.REGISTRY[scene_type].build(col, seed=seed, size=size, detail=detail, height=height,
                                              mood=mood)
     setup_lighting(mood, col, sun_scale=info.get("sun_scale", 1.0),
                    sky_scale=info.get("sky_scale", 1.0), sun_dir=info.get("sun_dir"))
     setup_camera(col, **info.get("camera", {}))
-    setup_render(engine)
+    if ink:
+        engine = "BLENDER_EEVEE"
+        info["ink"] = ink_style.apply(context, col, seed, mood, info)
+    else:
+        ink_style.remove(context)
+    setup_render(engine, ink=ink)
     return info

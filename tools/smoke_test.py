@@ -8,6 +8,9 @@ sys.path.insert(0, root)
 import bpy
 pw = importlib.import_module("procedural_worlds")
 pw.register()
+for o in list(bpy.data.objects):        # factory-startup cube/camera/light would pollute the render
+    if not o.name.startswith("PW_"):
+        bpy.data.objects.remove(o)
 args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 scene_type = args[0] if args else "COASTAL_ISLAND"
 seed = int(args[1]) if len(args) > 1 else 1
@@ -18,7 +21,7 @@ from procedural_worlds import core
 t0 = time.time()
 info = core.generate(bpy.context, scene_type, seed=seed, size=60, detail=120, mood=mood,
                      engine="BLENDER_EEVEE")
-core.setup_render("BLENDER_EEVEE", res=res, fast=True)
+core.setup_render("BLENDER_EEVEE", res=res, fast=True, ink=True)
 col = bpy.data.collections[core.COLLECTION]
 bad = [o.name for o in col.objects if not o.name.startswith("PW_")]
 assert not bad, f"objects without PW_ prefix: {bad}"
