@@ -30,14 +30,13 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
 - **Panel:** presets, Ink/Realistic style toggle, quality, fly-through box. `blender_manifest.toml` present (not yet tested as an extension install).
 - **Known issues:** night kitchen outlines *look* dark brown but measured line cores are ~0.04 (near-black); it is antialiasing over warm-lit surfaces, not a pipeline bug (GP layer/object lights are off); NIGHT palette is dark on lit scenes (alley lifts its own colours); realistic mode keeps the stylized island sea; island gulls tiny.
 
+## Phase 1 status (verified vs not)
+- VERIFIED: `story/schema.json`; `story/catalog.json` (stageable generators + focus points + keywords); `story/parse.py` offline path (parses `story/texts/the_night_shift.txt` into 4 scenes/12 beats, validates); 3 example stories in `story/examples/` validate (`the_last_watch` 12 beats, `neon_debt` 11, `the_night_shift` 12); `procedural_worlds/shots.py` + `focus_points` in all 3 generators; `tools/render_story.py --stills-only` for both main stories (every panel looked at: reads as its shot/focus); `tools/export_animatic.py` (tested on stills: title card, captions in a hand-lettered font, cross-fades, end card).
+- NOT VERIFIED YET: Gemini path of parse.py (needs `GEMINI_API_KEY`, user will provide at the end; model via `GEMINI_MODEL`, default gemini-2.5-flash); full clip renders + MP4 encode; web player (subagent building it in a worktree); Vercel deploy (Vercel MCP connected, team "Vectre" `team_UlrEstSY0rSG0sWAY2YhnCw5`; plan: `create_git_project` repo fabastic/procedural-worlds, rootDirectory `web`).
+- Timing: kitchen/island beats ~3-6 s per drawing at 1280x720, alley 15-35 s per drawing (Line Art). A 3 s beat = 18 drawings (on twos).
+
 ## In progress right now
-- Phase 1 kickoff (2026-10-16 19:26 IST): schema + example stories + shots.py + focus points; web player subagent.
-
-## Blocked
-- Nothing.
-
-## Next
-- Phase 1 items in order: schema/examples -> focus_points + shots.py -> render_story.py -> web player -> export_animatic.py -> parse.py -> Vercel deploy -> verify exit criteria.
+- Rendering clips for `the-last-watch` (background), then `neon-debt`; web player subagent; then sync -> deploy.
 
 ## Running Blender headless on this machine (important)
 - The Store install's `blender.exe` (`C:\Program Files\WindowsApps\BlenderFoundation.Blender_5.2.2.0_x64__ppwjx1n5r4v9t\Blender\blender.exe`) **cannot be exec'd from Git Bash or PowerShell ("Access denied")**. Use the app-execution alias via **`tools/blender.sh`** (wraps `%LOCALAPPDATA%\Microsoft\WindowsApps\blender-launcher.exe`). The launcher drops stdout, so the wrapper redirects Python stdout/stderr to a temp log, replays it, and propagates the exit code (`--python-exit-code 3`).
@@ -77,6 +76,7 @@ renders/                  output stills (png gitignored except renders/hero/)
 ## Contracts
 - A scene generator is a class with `LABEL` and `build(col, seed, size, detail, height, mood="GOLDEN", **kw) -> dict`. It must add ALL objects to `col` (collection `PW_Generated`), name them `PW_*`, be deterministic for a seed (`random.Random(seed)` only), and returns info: `camera` (`target`, `distance`, `height`, `angle`, `lens`, or explicit `location`; `clip_end`, `shift_y`), optional `sun_dir=(elev_deg, azim_deg)`, `sun_scale`, `sky_scale`, `ink={line_scale, wobble, grime, hatch, sea_color, ao_distance}`. Register it in `scenes.REGISTRY`; the panel enum picks it up.
 - `core.generate(..., ink=True)` clears previous `PW_*` objects + purges zero-user `PW_*` datablocks, builds, applies mood lighting (DAY/GOLDEN/DUSK/NIGHT, `core.MOODS`), camera, then `ink.apply()` and render setup (ink forces `BLENDER_EEVEE` + Standard view transform). `ink=False` strips ink nodes and renders realistic (Cycles/AgX by default).
+- **Focus points (story contract, Phase 1):** every generator returns `info["focus_points"] = {name: {"pos", "view", "size"}}` (built with `shots.focus_point` / `shots.focus_from_objects`; `view` points to the side the focus is best seen from) and `info["spawn"]`. `shots.compute_shot(info, shot, focus)` turns a shot type (establishing|wide|medium|close|POV|low|high|OTS) + camera_move into a start/end camera, ray-casting so cameras stay out of walls and above floors (interiors: probe down from just above the camera, never from the sky). `ink.retarget(scene, distance, lens)` re-sizes Line Art per shot.
 - Ink hints: `obj["pw_line"]=0` (no outlines), `obj["pw_wonk"]` (wobble multiplier, 0 = off), `mat["pw_flat"]=1` (flat unlit), `mat["pw_hatch"]`, `mat["pw_grime"]`, `mat["pw_ink_custom"]=1` (material authored for ink already; untouched). Materials with Emission Strength > 0 become flat bright "neon ink" (>= 2 also blooms).
 - How ink converts materials: keeps the original node tree, inserts group `PW_InkToon` fed by whatever drives the Principled Base Color, relinks the output (original link remembered in `mat["pw_ink_orig"]`, restored by `ink.remove()`).
 

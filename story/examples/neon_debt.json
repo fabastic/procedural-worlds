@@ -78,7 +78,7 @@
    },
    "focus_points": [
     "far_end",
-    "lanterns"
+    "alley"
    ]
   }
  ],
@@ -90,7 +90,7 @@
     "type": "establishing",
     "focus": "far_end",
     "camera_move": "push_in",
-    "duration_s": 3.5
+    "duration_s": 3.0
    },
    "caption": "The rain had stopped an hour ago. The neon hadn't noticed.",
    "trigger": {
@@ -248,7 +248,7 @@
     "type": "establishing",
     "focus": "far_end",
     "camera_move": "push_in",
-    "duration_s": 3.5
+    "duration_s": 3.0
    },
    "caption": "By dusk I was back on Hollow Street.",
    "trigger": {
@@ -261,15 +261,15 @@
    "id": "b11",
    "scene_id": "alley_dusk",
    "shot": {
-    "type": "wide",
-    "focus": "lanterns",
+    "type": "high",
+    "focus": "alley",
     "camera_move": "pull_out",
-    "duration_s": 3.5
+    "duration_s": 3.0
    },
    "caption": "I had a plan. It was a bad one. It was enough.",
    "trigger": {
     "type": "focus",
-    "focus": "lanterns",
+    "focus": "alley",
     "radius_m": 3.0
    }
   }

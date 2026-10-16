@@ -482,9 +482,15 @@ class _Alley:
         def axis(p, back=4.0):
             return Vector((0.0, p[1] - back, 1.7))
 
+        bpy.context.view_layer.update()
+
+        def cy(o):                      # joined meshes keep their origin at 0: use the bbox centre
+            lo, hi = shots._world_bbox([o])
+            return (lo.y + hi.y) / 2
+
         def nearest(prefix, ymin=4.0):
-            objs = [o for o in shots.objects_named(col, prefix) if o.location.y > cam.y + ymin]
-            return min(objs, key=lambda o: o.location.y, default=None)
+            objs = [o for o in shots.objects_named(col, prefix) if cy(o) > cam.y + ymin]
+            return min(objs, key=cy, default=None)
 
         fp = {}
         blades = [g for g in self.signs if g.get("kind") == "blade" and (g["y0"] + g["y1"]) / 2 + Y > cam.y + 6]
@@ -507,7 +513,8 @@ class _Alley:
                              ("scooter", "PW_Scooter"), ("trash", "PW_TrashBags")):
             o = nearest(prefix)
             if o is not None:
-                c = shots.focus_from_objects([o], axis(o.location), z_frac=0.5)
+                lo, hi = shots._world_bbox([o])
+                c = shots.focus_from_objects([o], axis((lo + hi) / 2), z_frac=0.5)
                 fp[name] = c
         for name, oname in (("lanterns", "PW_LanternString"), ("street_lamp", "PW_StreetLamp")):
             o = col.objects.get(oname)
