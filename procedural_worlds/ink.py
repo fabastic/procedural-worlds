@@ -536,14 +536,14 @@ def build_world(mood, sun_obj, seed, sea_color=None):
 
 
 # ----------------------------------------------------------------------------- compositor
-def build_compositor(scene, seed, frame_boil=True):
+def build_compositor(scene, seed, frame_boil=True, grade=None):
     name = "PW_InkComp"
     g = bpy.data.node_groups.get(name)
     if g is not None:
         bpy.data.node_groups.remove(g)
-    g = bpy.data.node_groups.new(name, "CompositorNodeTree")
-    g.interface.new_socket("Image", in_out="OUTPUT", socket_type="NodeSocketColor")
-    t = _T(g)
+    g_tree = bpy.data.node_groups.new(name, "CompositorNodeTree")
+    g_tree.interface.new_socket("Image", in_out="OUTPUT", socket_type="NodeSocketColor")
+    t = _T(g_tree)
     rl = t.node("CompositorNodeRLayers")
     img = rl.outputs["Image"]
     uv = t.node("CompositorNodeImageCoordinates", {"Image": img}).outputs["Uniform"]
@@ -606,13 +606,23 @@ def build_compositor(scene, seed, frame_boil=True):
     dark = t.math("MINIMUM", t.math("ADD", t.math("MULTIPLY", t.math("MAXIMUM", blot, splat), 0.85), smudge), 0.9)
     img = t.mix(dark, img, (*INK, 1))
     # 5. warm grimy vignette
-    vig = t.maprange(r, 0.55, 1.15, 0.0, 0.45)
+    g = grade or {}
+    vig = t.maprange(r, 0.55, 1.15, 0.0, min(0.85, 0.45 * g.get("vignette", 1.0)))
     img = t.mix(vig, img, t.mix(1.0, img, (*srgb(0.62, 0.52, 0.40), 1), blend="MULTIPLY"))
+    # 6. genre grade: saturation, contrast around mid-grey, colour tint
+    if g:
+        lum = t.vmath("DOT_PRODUCT", img, (0.2126, 0.7152, 0.0722))
+        grey = t.node("ShaderNodeCombineXYZ", {"X": lum, "Y": lum, "Z": lum}).outputs[0]
+        img = t.vmath("ADD", grey, t.vmath("SCALE", t.vmath("SUBTRACT", img, grey), scale=g.get("saturation", 1.0)))
+        piv = (0.38, 0.38, 0.38)        # low pivot: contrast lifts the lights, keeps the darks readable
+        img = t.vmath("ADD", t.vmath("SCALE", t.vmath("SUBTRACT", img, piv), scale=g.get("contrast", 1.0)), piv)
+        img = t.vmath("MULTIPLY", img, tuple(g.get("tint", (1, 1, 1))))
+        img = t.vmath("MAXIMUM", img, (0.0, 0.0, 0.0))
     go = t.node("NodeGroupOutput")
     t.link(img, go.inputs[0])
-    scene.compositing_node_group = g
+    scene.compositing_node_group = g_tree
     scene.render.use_compositing = True
-    return g
+    return g_tree
 
 
 # ----------------------------------------------------------------------------- entry points
@@ -630,6 +640,11 @@ def apply(context, col, seed, mood, info):
     opts = dict(line_scale=1.0, wobble=1.0, grime=1.0, hatch=1.0, ao_distance=None, sea_color=None,
                 base_height=None)
     opts.update(info.get("ink", {}))
+    from .core import genre_grade
+    grade = genre_grade(scene.get("pw_layers", {}))
+    opts["line_scale"] *= grade["ink_weight"]
+    opts["hatch"] *= grade["hatch"]
+    opts["grime"] *= grade["grime"]
     d = _scene_scale(scene, info)
     cam = scene.camera.data
     sensor = cam.sensor_width
@@ -666,7 +681,7 @@ def apply(context, col, seed, mood, info):
         sun.data.angle = math.radians(0.6)
         build_world(mood, sun, seed, opts["sea_color"])
     add_outlines(col, seed, radius, opts["line_scale"])
-    build_compositor(scene, seed)
+    build_compositor(scene, seed, grade=grade)
     return {"line_radius": radius, "materials": len(done)}
 
 

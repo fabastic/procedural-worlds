@@ -48,10 +48,10 @@ def set_jpeg(scene, quality=90):
     ims.file_format, ims.quality, ims.color_mode = "JPEG", quality, "RGB"
 
 
-def render_beat(scene, info, beat, seed, eye, out_dir, res, stills_only):
+def render_beat(scene, info, beat, seed, eye, out_dir, res, stills_only, dutch=0.0):
     shot = dict(beat["shot"])
     dur = float(shot.get("duration_s", 3.0))
-    sol = shots.compute_shot(info, shot, shot.get("focus", ""), seed=seed, eye_height=eye)
+    sol = shots.compute_shot(info, shot, shot.get("focus", ""), seed=seed, eye_height=eye, dutch_deg=dutch)
     ink.retarget(scene, sol["focus_distance"], sol["lens"])
     cam = scene.camera
     n = max(2, int(round(dur * FPS / 2)))          # unique drawings (on twos)
@@ -62,7 +62,7 @@ def render_beat(scene, info, beat, seed, eye, out_dir, res, stills_only):
     for i in todo:
         t = i / (n - 1)
         loc, tgt = shots.lerp_cam(sol, t)
-        shots.apply_camera(cam, loc, tgt, sol["lens"])
+        shots.apply_camera(cam, loc, tgt, sol["lens"], sol.get("roll", 0.0))
         scene.frame_set(1 + 2 * i)                 # GP noise + compositor wobble step -> line boil
         path = os.path.join(frames_dir, f"u{i:03d}.jpg")
         scene.render.filepath = path
@@ -124,9 +124,6 @@ def main():
     scenes = {s["id"]: s for s in story["scenes"]}
     eye = float(story.get("protagonist", {}).get("eye_height_m", 1.62))
     manifest_path = os.path.join(out, "manifest.json")
-    old = {}
-    if os.path.exists(manifest_path):
-        old = {b["id"]: b for b in json.load(open(manifest_path, encoding="utf-8")).get("beats", [])}
     scene = bpy.context.scene
     jobs, done_beats = [], []
     order = []
@@ -140,7 +137,9 @@ def main():
         if not beats:
             continue
         mood = TIME_TO_MOOD.get(sc["layers"].get("time", "day"), "DAY")
-        info = core.generate(bpy.context, sc["generator"], seed=int(sc["seed"]), size=60, detail=160, mood=mood)
+        info = core.generate(bpy.context, sc["generator"], seed=int(sc["seed"]), size=60, detail=160, mood=mood,
+                             layers=sc["layers"])
+        dutch = core.genre_grade(sc["layers"]).get("camera", {}).get("dutch_deg", 0.0)
         core.setup_render("BLENDER_EEVEE", res=o["res"], fast=True, ink=True)
         set_jpeg(scene)
         sc["focus_points_resolved"] = sorted(info.get("focus_points", {}))
@@ -149,7 +148,7 @@ def main():
             bdir = os.path.join(out, "beats", b["id"])
             os.makedirs(bdir, exist_ok=True)
             seed = int(sc["seed"]) * 101 + story["beats"].index(b)
-            n = render_beat(scene, info, b, seed, eye, bdir, o["res"], o["stills_only"])
+            n = render_beat(scene, info, b, seed, eye, bdir, o["res"], o["stills_only"], dutch)
             if not o["stills_only"]:
                 jobs.append((bdir, n))
             done_beats.append(b["id"])

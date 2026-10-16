@@ -143,7 +143,7 @@ def establishing(info):
     return loc, tgt, c.get("lens", 35)
 
 
-def compute_shot(info, shot, focus_name, seed=0, eye_height=1.62, skip=()):
+def compute_shot(info, shot, focus_name, seed=0, eye_height=1.62, skip=(), dutch_deg=0.0):
     """Return {"start": (loc, tgt), "end": (loc, tgt), "lens": mm, "focus_distance": d}."""
     scene = bpy.context.scene
     dg = bpy.context.evaluated_depsgraph_get()
@@ -152,10 +152,13 @@ def compute_shot(info, shot, focus_name, seed=0, eye_height=1.62, skip=()):
     rng = random.Random(f"{seed}:{focus_name}:{typ}:{move}")
     fps = info.get("focus_points", {})
     focus = fps.get(focus_name)
+    roll = math.radians(dutch_deg) * rng.choice((-1, 1)) if typ in ("low", "high", "OTS", "close", "POV") else 0.0
     if typ == "establishing" or focus is None:      # the generator's composed hero framing
         loc, tgt, lens = establishing(info)
         f = {"pos": tuple(tgt), "size": max(1.0, (loc - tgt).length / 3.0), "view": tuple((loc - tgt).normalized())}
-        return _with_move(scene, dg, f, loc, tgt, lens, move, rng, skip, place=False)
+        out = _with_move(scene, dg, f, loc, tgt, lens, move, rng, skip, place=False)
+        out["roll"] = 0.0
+        return out
     R = SHOT_RULES.get(typ, SHOT_RULES["medium"])
     f = Vector(focus["pos"])
     s = focus["size"]
@@ -181,7 +184,9 @@ def compute_shot(info, shot, focus_name, seed=0, eye_height=1.62, skip=()):
         cam.z = f.z + s * R["h"]
         tgt.z += s * R["lift"]
     cam = _place(scene, dg, focus, cam, skip)
-    return _with_move(scene, dg, focus, cam, tgt, R["lens"], move, rng, skip, place=True)
+    out = _with_move(scene, dg, focus, cam, tgt, R["lens"], move, rng, skip, place=True)
+    out["roll"] = roll
+    return out
 
 
 def _with_move(scene, dg, focus, cam, tgt, lens, move, rng, skip, place):
@@ -227,10 +232,14 @@ def _with_move(scene, dg, focus, cam, tgt, lens, move, rng, skip, place):
             "focus_distance": (cam - tgt).length}
 
 
-def apply_camera(cam_obj, loc, tgt, lens):
+def apply_camera(cam_obj, loc, tgt, lens, roll=0.0):
+    from mathutils import Quaternion
     cam_obj.constraints.clear()
     cam_obj.location = loc
-    cam_obj.rotation_euler = (Vector(tgt) - Vector(loc)).to_track_quat("-Z", "Y").to_euler()
+    q = (Vector(tgt) - Vector(loc)).to_track_quat("-Z", "Y")
+    if roll:
+        q = q @ Quaternion((0.0, 0.0, 1.0), roll)       # dutch angle around the view axis
+    cam_obj.rotation_euler = q.to_euler()
     cam_obj.data.lens = lens
 
 

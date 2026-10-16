@@ -193,11 +193,14 @@ def setup_render(engine="CYCLES", samples=64, res=(1920, 1080), fast=False, ink=
 
 
 def generate(context, scene_type, seed=1, size=60.0, detail=160, height=1.0,
-             mood="GOLDEN", clear=True, engine="CYCLES", ink=True):
+             mood="GOLDEN", clear=True, engine="CYCLES", ink=True, layers=None):
     """Build a scene. ink=True (default) applies the hand-inked graphic-novel style to whatever the
-    generator built (see ink.py); it needs EEVEE, so the engine is forced to BLENDER_EEVEE."""
+    generator built (see ink.py); it needs EEVEE, so the engine is forced to BLENDER_EEVEE.
+    layers: optional story layers dict (genre_mood, era, weather, ...); the genre grade is read from
+    presets/genre.json by the ink pass."""
     from . import scenes, ink as ink_style
     random.seed(seed)
+    context.scene["pw_layers"] = dict(layers or {})        # story layers (genre grade etc.), see presets/
     col = get_collection(clear)
     if clear:
         for o in list(context.scene.objects):
@@ -217,3 +220,16 @@ def generate(context, scene_type, seed=1, size=60.0, detail=160, height=1.0,
         ink_style.remove(context)
     setup_render(engine, ink=ink)
     return info
+
+
+def load_preset(kind):
+    """presets/<kind>.json as a dict (layers are data: adding a genre/era is adding data)."""
+    import json, os
+    path = os.path.join(os.path.dirname(__file__), "presets", kind + ".json")
+    with open(path, encoding="utf-8") as f:
+        return {k: v for k, v in json.load(f).items() if not k.startswith("_")}
+
+
+def genre_grade(layers):
+    g = load_preset("genre")
+    return g.get((layers or {}).get("genre_mood", "slice-of-life"), g["slice-of-life"])
