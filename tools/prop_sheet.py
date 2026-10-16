@@ -38,7 +38,7 @@ class Sheet:
     @staticmethod
     def build(col, seed, size, detail, height, mood="DAY", **kw):
         rng = random.Random(seed)
-        pal = era_palette(core.load_preset("era")[era], mood, {"grime": 1.0})
+        pal = era_palette(core.resolve_era({"era": era})[1], mood, {"grime": 1.0})
         mb = MB("PW_PropSheet")
         floor = MB("PW_PropFloor")
         W, D = COLS * CELL, ROWS * CELL

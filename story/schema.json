@@ -4,94 +4,330 @@
   "title": "Procedural Worlds story",
   "description": "Shared story format for all phases (comic, any setting, first-person walk). Extend only additively.",
   "type": "object",
-  "required": ["title", "slug", "logline", "protagonist", "scenes", "beats"],
+  "required": [
+    "title",
+    "slug",
+    "logline",
+    "protagonist",
+    "scenes",
+    "beats"
+  ],
   "properties": {
-    "title": {"type": "string", "minLength": 1},
-    "slug": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
-    "logline": {"type": "string"},
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "logline": {
+      "type": "string"
+    },
     "protagonist": {
       "type": "object",
-      "required": ["name", "eye_height_m"],
+      "required": [
+        "name",
+        "eye_height_m"
+      ],
       "properties": {
-        "name": {"type": "string"},
-        "eye_height_m": {"type": "number", "minimum": 0.5, "maximum": 2.5}
+        "name": {
+          "type": "string"
+        },
+        "eye_height_m": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2.5
+        }
       }
     },
     "scenes": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "layers", "generator", "seed"],
+        "required": [
+          "id",
+          "layers",
+          "generator",
+          "seed"
+        ],
         "properties": {
-          "id": {"type": "string", "pattern": "^[a-z0-9_-]+$"},
-          "name": {"type": "string"},
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
           "layers": {
             "type": "object",
-            "required": ["base", "setting", "era", "genre_mood", "weather", "time", "state"],
+            "required": [
+              "base",
+              "setting",
+              "era",
+              "genre_mood",
+              "weather",
+              "time",
+              "state"
+            ],
             "properties": {
-              "base": {"enum": ["interior", "street", "landscape", "vehicle", "underground", "rooftop", "water"]},
-              "setting": {"type": "string", "description": "coverage entry, e.g. kitchen, alley, coast, diner"},
-              "era": {"enum": ["ancient", "medieval", "1700s-1800s", "1920s-50s", "modern", "near-future", "far-future"]},
-              "genre_mood": {"enum": ["noir", "horror", "romance", "comedy", "adventure", "sci-fi", "fantasy", "war", "slice-of-life", "mystery"]},
-              "weather": {"enum": ["clear", "rain", "snow", "fog", "storm", "heat-haze"]},
-              "time": {"enum": ["dawn", "day", "golden", "dusk", "night"]},
-              "season": {"enum": ["spring", "summer", "autumn", "winter"]},
-              "state": {"enum": ["pristine", "lived-in", "abandoned", "ruined", "burning", "flooded"]}
+              "base": {
+                "enum": [
+                  "interior",
+                  "street",
+                  "landscape",
+                  "vehicle",
+                  "underground",
+                  "rooftop",
+                  "water"
+                ]
+              },
+              "setting": {
+                "type": "string",
+                "description": "coverage entry, e.g. kitchen, alley, coast, diner"
+              },
+              "era": {
+                "enum": [
+                  "ancient",
+                  "medieval",
+                  "1700s-1800s",
+                  "1920s-50s",
+                  "modern",
+                  "near-future",
+                  "far-future",
+                  "classical_antiquity",
+                  "early_high_middle_ages",
+                  "renaissance_discovery",
+                  "enlightenment_piracy",
+                  "victorian_industrial",
+                  "interwar",
+                  "cold_war",
+                  "analog_digital",
+                  "contemporary",
+                  "near_future",
+                  "cyberpunk",
+                  "solarpunk",
+                  "post_apocalyptic",
+                  "space_age",
+                  "far_future"
+                ]
+              },
+              "genre_mood": {
+                "enum": [
+                  "noir",
+                  "horror",
+                  "romance",
+                  "comedy",
+                  "adventure",
+                  "sci-fi",
+                  "fantasy",
+                  "war",
+                  "slice-of-life",
+                  "mystery"
+                ]
+              },
+              "weather": {
+                "enum": [
+                  "clear",
+                  "rain",
+                  "snow",
+                  "fog",
+                  "storm",
+                  "heat-haze"
+                ]
+              },
+              "time": {
+                "enum": [
+                  "dawn",
+                  "day",
+                  "golden",
+                  "dusk",
+                  "night"
+                ]
+              },
+              "season": {
+                "enum": [
+                  "spring",
+                  "summer",
+                  "autumn",
+                  "winter"
+                ]
+              },
+              "state": {
+                "enum": [
+                  "pristine",
+                  "lived-in",
+                  "abandoned",
+                  "ruined",
+                  "burning",
+                  "flooded"
+                ]
+              },
+              "culture": {
+                "type": "string",
+                "description": "regional culture of the era (procedural_worlds/presets/era.d/timeline.json cultures), e.g. roman, viking, heian_japan, wild_west, weimar_berlin, synthwave"
+              }
             }
           },
-          "generator": {"type": "string", "description": "resolved procedural_worlds.scenes.REGISTRY key, e.g. KITCHEN"},
-          "seed": {"type": "integer", "minimum": 0},
+          "generator": {
+            "type": "string",
+            "description": "resolved procedural_worlds.scenes.REGISTRY key, e.g. KITCHEN"
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0
+          },
           "spawn": {
             "type": "object",
             "description": "phase 3: where the protagonist starts (a focus point name or an explicit position)",
             "properties": {
-              "focus": {"type": "string"},
-              "position": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
-              "yaw_deg": {"type": "number"}
+              "focus": {
+                "type": "string"
+              },
+              "position": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "yaw_deg": {
+                "type": "number"
+              }
             }
           },
-          "focus_points": {"type": "array", "items": {"type": "string"},
-                           "description": "named focus points this scene's beats use (resolved from the generator)"}
+          "focus_points": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "named focus points this scene's beats use (resolved from the generator)"
+          }
         }
       }
     },
     "beats": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "scene_id", "shot"],
+        "required": [
+          "id",
+          "scene_id",
+          "shot"
+        ],
         "properties": {
-          "id": {"type": "string", "pattern": "^[a-z0-9_-]+$"},
-          "scene_id": {"type": "string"},
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_-]+$"
+          },
+          "scene_id": {
+            "type": "string"
+          },
           "shot": {
             "type": "object",
-            "required": ["type", "focus"],
+            "required": [
+              "type",
+              "focus"
+            ],
             "properties": {
-              "type": {"enum": ["establishing", "wide", "medium", "close", "POV", "low", "high", "OTS"]},
-              "focus": {"type": "string"},
-              "camera_move": {"enum": ["static", "push_in", "pull_out", "pan_left", "pan_right", "tilt_up", "tilt_down", "drift", "orbit"]},
-              "duration_s": {"type": "number", "minimum": 1.0, "maximum": 8.0}
+              "type": {
+                "enum": [
+                  "establishing",
+                  "wide",
+                  "medium",
+                  "close",
+                  "POV",
+                  "low",
+                  "high",
+                  "OTS"
+                ]
+              },
+              "focus": {
+                "type": "string"
+              },
+              "camera_move": {
+                "enum": [
+                  "static",
+                  "push_in",
+                  "pull_out",
+                  "pan_left",
+                  "pan_right",
+                  "tilt_up",
+                  "tilt_down",
+                  "drift",
+                  "orbit"
+                ]
+              },
+              "duration_s": {
+                "type": "number",
+                "minimum": 1.0,
+                "maximum": 8.0
+              }
             }
           },
-          "caption": {"type": "string"},
+          "caption": {
+            "type": "string"
+          },
           "dialogue": {
             "type": "array",
-            "items": {"type": "object", "required": ["speaker", "text"],
-                      "properties": {"speaker": {"type": "string"}, "text": {"type": "string"}}}
+            "items": {
+              "type": "object",
+              "required": [
+                "speaker",
+                "text"
+              ],
+              "properties": {
+                "speaker": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "trigger": {
             "type": "object",
             "description": "phase 3: when this beat fires while walking",
             "properties": {
-              "type": {"enum": ["enter", "focus", "area"]},
-              "focus": {"type": "string"},
-              "radius_m": {"type": "number"}
+              "type": {
+                "enum": [
+                  "enter",
+                  "focus",
+                  "area"
+                ]
+              },
+              "focus": {
+                "type": "string"
+              },
+              "radius_m": {
+                "type": "number"
+              }
             }
           },
           "interactables": {
             "type": "array",
-            "items": {"type": "object", "required": ["focus", "label"],
-                      "properties": {"focus": {"type": "string"}, "label": {"type": "string"}, "text": {"type": "string"}}}
+            "items": {
+              "type": "object",
+              "required": [
+                "focus",
+                "label"
+              ],
+              "properties": {
+                "focus": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }

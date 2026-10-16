@@ -1,0 +1,2101 @@
+{
+ "_doc": "Story timeline eras (Phase 2). family = legacy era key used by kit/prop group logic (ancient|medieval|1700s-1800s|1920s-50s|modern|near-future|far-future). cultures = regional overrides chosen by layers.culture (palette keys merge, other keys replace). roof: gable|flat|tiled|pagoda|dome|thatch.",
+ "classical_antiquity": {
+  "family": "ancient",
+  "years": "c. 800 BCE - 500 CE",
+  "palette": {
+   "wall": [
+    0.9,
+    0.86,
+    0.76
+   ],
+   "wall2": [
+    0.72,
+    0.62,
+    0.48
+   ],
+   "trim": [
+    0.62,
+    0.36,
+    0.24
+   ],
+   "floor_a": [
+    0.86,
+    0.8,
+    0.68
+   ],
+   "floor_b": [
+    0.62,
+    0.4,
+    0.3
+   ],
+   "wood": [
+    0.5,
+    0.34,
+    0.2
+   ],
+   "metal": [
+    0.7,
+    0.52,
+    0.24
+   ],
+   "fabric": [
+    0.66,
+    0.22,
+    0.2
+   ],
+   "accent": [
+    0.22,
+    0.4,
+    0.5
+   ],
+   "ceiling": [
+    0.8,
+    0.74,
+    0.62
+   ]
+  },
+  "floor": "stone",
+  "window": "arched",
+  "light": {
+   "type": "oil_lamp",
+   "color": [
+    1.0,
+    0.66,
+    0.32
+   ]
+  },
+  "signage": "painted",
+  "props": [
+   "ancient",
+   "classical"
+  ],
+  "roof": "tiled",
+  "cultures": {
+   "greek": {
+    "palette": {
+     "wall": [
+      0.94,
+      0.92,
+      0.86
+     ],
+     "accent": [
+      0.2,
+      0.38,
+      0.62
+     ],
+     "trim": [
+      0.7,
+      0.62,
+      0.48
+     ]
+    },
+    "props": [
+     "ancient",
+     "classical",
+     "greek"
+    ]
+   },
+   "roman": {
+    "palette": {
+     "wall": [
+      0.86,
+      0.7,
+      0.52
+     ],
+     "accent": [
+      0.62,
+      0.16,
+      0.16
+     ],
+     "floor_b": [
+      0.4,
+      0.3,
+      0.26
+     ]
+    },
+    "props": [
+     "ancient",
+     "classical",
+     "roman"
+    ]
+   },
+   "egyptian": {
+    "palette": {
+     "wall": [
+      0.9,
+      0.78,
+      0.56
+     ],
+     "wall2": [
+      0.8,
+      0.64,
+      0.4
+     ],
+     "accent": [
+      0.18,
+      0.48,
+      0.52
+     ],
+     "trim": [
+      0.72,
+      0.58,
+      0.22
+     ]
+    },
+    "roof": "flat",
+    "props": [
+     "ancient",
+     "egyptian"
+    ]
+   },
+   "han_china": {
+    "palette": {
+     "wall": [
+      0.84,
+      0.76,
+      0.62
+     ],
+     "trim": [
+      0.62,
+      0.14,
+      0.12
+     ],
+     "accent": [
+      0.2,
+      0.4,
+      0.3
+     ],
+     "wood": [
+      0.44,
+      0.2,
+      0.14
+     ]
+    },
+    "roof": "pagoda",
+    "window": "lattice",
+    "light": {
+     "type": "lantern",
+     "color": [
+      1.0,
+      0.55,
+      0.3
+     ]
+    },
+    "props": [
+     "ancient",
+     "chinese"
+    ]
+   }
+  }
+ },
+ "early_high_middle_ages": {
+  "family": "medieval",
+  "years": "c. 500 - 1300",
+  "palette": {
+   "wall": [
+    0.7,
+    0.66,
+    0.58
+   ],
+   "wall2": [
+    0.52,
+    0.48,
+    0.42
+   ],
+   "trim": [
+    0.4,
+    0.28,
+    0.18
+   ],
+   "floor_a": [
+    0.55,
+    0.5,
+    0.44
+   ],
+   "floor_b": [
+    0.44,
+    0.4,
+    0.35
+   ],
+   "wood": [
+    0.46,
+    0.31,
+    0.19
+   ],
+   "metal": [
+    0.38,
+    0.38,
+    0.4
+   ],
+   "fabric": [
+    0.55,
+    0.2,
+    0.18
+   ],
+   "accent": [
+    0.28,
+    0.4,
+    0.3
+   ],
+   "ceiling": [
+    0.36,
+    0.26,
+    0.17
+   ]
+  },
+  "floor": "stone",
+  "window": "arched",
+  "light": {
+   "type": "candle",
+   "color": [
+    1.0,
+    0.66,
+    0.32
+   ]
+  },
+  "signage": "painted",
+  "props": [
+   "medieval",
+   "old"
+  ],
+  "roof": "gable",
+  "cultures": {
+   "feudal_europe": {},
+   "islamic_golden_age": {
+    "palette": {
+     "wall": [
+      0.92,
+      0.86,
+      0.74
+     ],
+     "accent": [
+      0.12,
+      0.44,
+      0.56
+     ],
+     "trim": [
+      0.7,
+      0.56,
+      0.3
+     ],
+     "floor_a": [
+      0.8,
+      0.7,
+      0.56
+     ],
+     "floor_b": [
+      0.24,
+      0.42,
+      0.5
+     ]
+    },
+    "window": "lattice",
+    "roof": "dome",
+    "light": {
+     "type": "lantern",
+     "color": [
+      1.0,
+      0.7,
+      0.36
+     ]
+    },
+    "props": [
+     "medieval",
+     "islamic"
+    ]
+   },
+   "viking": {
+    "palette": {
+     "wall": [
+      0.48,
+      0.36,
+      0.24
+     ],
+     "wall2": [
+      0.38,
+      0.28,
+      0.18
+     ],
+     "trim": [
+      0.3,
+      0.2,
+      0.12
+     ],
+     "floor_a": [
+      0.46,
+      0.38,
+      0.28
+     ]
+    },
+    "floor": "planks",
+    "roof": "thatch",
+    "light": {
+     "type": "brazier",
+     "color": [
+      1.0,
+      0.58,
+      0.28
+     ]
+    },
+    "props": [
+     "medieval",
+     "norse"
+    ]
+   },
+   "heian_japan": {
+    "palette": {
+     "wall": [
+      0.92,
+      0.88,
+      0.78
+     ],
+     "trim": [
+      0.36,
+      0.22,
+      0.14
+     ],
+     "floor_a": [
+      0.78,
+      0.74,
+      0.52
+     ],
+     "floor_b": [
+      0.66,
+      0.62,
+      0.44
+     ],
+     "accent": [
+      0.66,
+      0.2,
+      0.22
+     ]
+    },
+    "floor": "tatami",
+    "window": "shoji",
+    "roof": "pagoda",
+    "light": {
+     "type": "lantern",
+     "color": [
+      1.0,
+      0.72,
+      0.42
+     ]
+    },
+    "props": [
+     "medieval",
+     "japanese"
+    ]
+   }
+  }
+ },
+ "renaissance_discovery": {
+  "family": "1700s-1800s",
+  "years": "c. 1400 - 1650",
+  "palette": {
+   "wall": [
+    0.86,
+    0.74,
+    0.56
+   ],
+   "wall2": [
+    0.56,
+    0.44,
+    0.32
+   ],
+   "trim": [
+    0.38,
+    0.26,
+    0.16
+   ],
+   "floor_a": [
+    0.72,
+    0.58,
+    0.42
+   ],
+   "floor_b": [
+    0.48,
+    0.34,
+    0.22
+   ],
+   "wood": [
+    0.44,
+    0.28,
+    0.16
+   ],
+   "metal": [
+    0.62,
+    0.5,
+    0.28
+   ],
+   "fabric": [
+    0.5,
+    0.16,
+    0.2
+   ],
+   "accent": [
+    0.22,
+    0.32,
+    0.5
+   ],
+   "ceiling": [
+    0.7,
+    0.6,
+    0.46
+   ]
+  },
+  "floor": "tiles",
+  "window": "arched",
+  "light": {
+   "type": "candle",
+   "color": [
+    1.0,
+    0.68,
+    0.34
+   ]
+  },
+  "signage": "painted",
+  "props": [
+   "renaissance",
+   "old"
+  ],
+  "roof": "tiled",
+  "cultures": {
+   "italian_city_state": {
+    "palette": {
+     "wall": [
+      0.9,
+      0.72,
+      0.52
+     ],
+     "accent": [
+      0.56,
+      0.14,
+      0.18
+     ]
+    },
+    "props": [
+     "renaissance",
+     "italian"
+    ]
+   },
+   "elizabethan": {
+    "palette": {
+     "wall": [
+      0.9,
+      0.86,
+      0.76
+     ],
+     "trim": [
+      0.26,
+      0.18,
+      0.12
+     ]
+    },
+    "floor": "planks",
+    "roof": "gable",
+    "props": [
+     "renaissance",
+     "tudor"
+    ]
+   },
+   "maritime": {
+    "palette": {
+     "wall": [
+      0.56,
+      0.44,
+      0.3
+     ],
+     "accent": [
+      0.2,
+      0.3,
+      0.44
+     ]
+    },
+    "floor": "planks",
+    "props": [
+     "renaissance",
+     "nautical"
+    ]
+   },
+   "sengoku_japan": {
+    "palette": {
+     "wall": [
+      0.9,
+      0.86,
+      0.76
+     ],
+     "trim": [
+      0.2,
+      0.16,
+      0.14
+     ],
+     "floor_a": [
+      0.78,
+      0.74,
+      0.52
+     ],
+     "accent": [
+      0.62,
+      0.16,
+      0.16
+     ]
+    },
+    "floor": "tatami",
+    "window": "shoji",
+    "roof": "pagoda",
+    "light": {
+     "type": "lantern",
+     "color": [
+      1.0,
+      0.7,
+      0.4
+     ]
+    },
+    "props": [
+     "renaissance",
+     "japanese"
+    ]
+   }
+  }
+ },
+ "enlightenment_piracy": {
+  "family": "1700s-1800s",
+  "years": "c. 1680 - 1780",
+  "palette": {
+   "wall": [
+    0.84,
+    0.78,
+    0.64
+   ],
+   "wall2": [
+    0.5,
+    0.56,
+    0.52
+   ],
+   "trim": [
+    0.36,
+    0.26,
+    0.17
+   ],
+   "floor_a": [
+    0.56,
+    0.42,
+    0.28
+   ],
+   "floor_b": [
+    0.46,
+    0.34,
+    0.22
+   ],
+   "wood": [
+    0.42,
+    0.28,
+    0.17
+   ],
+   "metal": [
+    0.58,
+    0.5,
+    0.32
+   ],
+   "fabric": [
+    0.42,
+    0.22,
+    0.3
+   ],
+   "accent": [
+    0.26,
+    0.42,
+    0.48
+   ],
+   "ceiling": [
+    0.86,
+    0.82,
+    0.72
+   ]
+  },
+  "floor": "planks",
+  "window": "sash",
+  "light": {
+   "type": "candle",
+   "color": [
+    1.0,
+    0.7,
+    0.38
+   ]
+  },
+  "signage": "painted",
+  "props": [
+   "georgian",
+   "old",
+   "nautical"
+  ],
+  "roof": "gable",
+  "cultures": {
+   "caribbean": {
+    "palette": {
+     "wall": [
+      0.92,
+      0.82,
+      0.62
+     ],
+     "wall2": [
+      0.4,
+      0.62,
+      0.58
+     ],
+     "accent": [
+      0.82,
+      0.48,
+      0.26
+     ]
+    },
+    "props": [
+     "georgian",
+     "nautical",
+     "pirate"
+    ]
+   },
+   "french_court": {
+    "palette": {
+     "wall": [
+      0.92,
+      0.88,
+      0.8
+     ],
+     "trim": [
+      0.76,
+      0.64,
+      0.34
+     ],
+     "accent": [
+      0.44,
+      0.56,
+      0.7
+     ],
+     "floor_a": [
+      0.7,
+      0.56,
+      0.38
+     ]
+    },
+    "props": [
+     "georgian",
+     "rococo"
+    ]
+   },
+   "colonial_america": {
+    "palette": {
+     "wall": [
+      0.86,
+      0.82,
+      0.72
+     ],
+     "wall2": [
+      0.3,
+      0.4,
+      0.42
+     ],
+     "trim": [
+      0.48,
+      0.2,
+      0.16
+     ]
+    },
+    "props": [
+     "georgian",
+     "colonial"
+    ]
+   },
+   "mughal_india": {
+    "palette": {
+     "wall": [
+      0.94,
+      0.88,
+      0.8
+     ],
+     "accent": [
+      0.18,
+      0.48,
+      0.42
+     ],
+     "trim": [
+      0.74,
+      0.4,
+      0.22
+     ],
+     "floor_b": [
+      0.62,
+      0.24,
+      0.2
+     ]
+    },
+    "window": "lattice",
+    "roof": "dome",
+    "light": {
+     "type": "lantern",
+     "color": [
+      1.0,
+      0.66,
+      0.32
+     ]
+    },
+    "props": [
+     "georgian",
+     "mughal"
+    ]
+   }
+  }
+ },
+ "victorian_industrial": {
+  "family": "1700s-1800s",
+  "years": "c. 1837 - 1901",
+  "palette": {
+   "wall": [
+    0.62,
+    0.5,
+    0.4
+   ],
+   "wall2": [
+    0.34,
+    0.3,
+    0.28
+   ],
+   "trim": [
+    0.24,
+    0.2,
+    0.16
+   ],
+   "floor_a": [
+    0.48,
+    0.36,
+    0.26
+   ],
+   "floor_b": [
+    0.36,
+    0.28,
+    0.2
+   ],
+   "wood": [
+    0.38,
+    0.24,
+    0.14
+   ],
+   "metal": [
+    0.3,
+    0.3,
+    0.32
+   ],
+   "fabric": [
+    0.42,
+    0.16,
+    0.18
+   ],
+   "accent": [
+    0.3,
+    0.38,
+    0.32
+   ],
+   "ceiling": [
+    0.7,
+    0.64,
+    0.54
+   ]
+  },
+  "floor": "planks",
+  "window": "sash",
+  "light": {
+   "type": "gas_lamp",
+   "color": [
+    1.0,
+    0.78,
+    0.48
+   ]
+  },
+  "signage": "enamel",
+  "props": [
+   "victorian",
+   "old",
+   "industrial"
+  ],
+  "roof": "gable",
+  "cultures": {
+   "london": {
+    "palette": {
+     "wall": [
+      0.5,
+      0.4,
+      0.34
+     ],
+     "wall2": [
+      0.3,
+      0.28,
+      0.28
+     ]
+    },
+    "props": [
+     "victorian",
+     "industrial",
+     "london"
+    ]
+   },
+   "wild_west": {
+    "palette": {
+     "wall": [
+      0.78,
+      0.62,
+      0.44
+     ],
+     "wall2": [
+      0.62,
+      0.46,
+      0.3
+     ],
+     "trim": [
+      0.44,
+      0.3,
+      0.18
+     ],
+     "accent": [
+      0.62,
+      0.24,
+      0.18
+     ]
+    },
+    "roof": "flat",
+    "light": {
+     "type": "oil_lamp",
+     "color": [
+      1.0,
+      0.7,
+      0.38
+     ]
+    },
+    "props": [
+     "victorian",
+     "western"
+    ]
+   },
+   "meiji_japan": {
+    "palette": {
+     "wall": [
+      0.88,
+      0.84,
+      0.74
+     ],
+     "trim": [
+      0.3,
+      0.2,
+      0.16
+     ],
+     "accent": [
+      0.56,
+      0.16,
+      0.18
+     ]
+    },
+    "window": "shoji",
+    "roof": "pagoda",
+    "props": [
+     "victorian",
+     "japanese"
+    ]
+   },
+   "imperial": {
+    "palette": {
+     "wall": [
+      0.9,
+      0.84,
+      0.7
+     ],
+     "accent": [
+      0.3,
+      0.44,
+      0.3
+     ]
+    },
+    "props": [
+     "victorian",
+     "colonial"
+    ]
+   }
+  }
+ },
+ "interwar": {
+  "family": "1920s-50s",
+  "years": "1918 - 1939",
+  "palette": {
+   "wall": [
+    0.84,
+    0.76,
+    0.58
+   ],
+   "wall2": [
+    0.3,
+    0.44,
+    0.4
+   ],
+   "trim": [
+    0.18,
+    0.16,
+    0.14
+   ],
+   "floor_a": [
+    0.92,
+    0.88,
+    0.78
+   ],
+   "floor_b": [
+    0.14,
+    0.13,
+    0.12
+   ],
+   "wood": [
+    0.42,
+    0.26,
+    0.16
+   ],
+   "metal": [
+    0.76,
+    0.7,
+    0.52
+   ],
+   "fabric": [
+    0.58,
+    0.16,
+    0.18
+   ],
+   "accent": [
+    0.78,
+    0.62,
+    0.3
+   ],
+   "ceiling": [
+    0.86,
+    0.82,
+    0.7
+   ]
+  },
+  "floor": "checker",
+  "window": "sash",
+  "light": {
+   "type": "bulb",
+   "color": [
+    1.0,
+    0.8,
+    0.52
+   ]
+  },
+  "signage": "enamel",
+  "props": [
+   "interwar",
+   "art_deco",
+   "retro"
+  ],
+  "roof": "flat",
+  "cultures": {
+   "prohibition_us": {
+    "props": [
+     "interwar",
+     "art_deco",
+     "speakeasy"
+    ]
+   },
+   "weimar_berlin": {
+    "palette": {
+     "wall": [
+      0.72,
+      0.66,
+      0.6
+     ],
+     "accent": [
+      0.7,
+      0.18,
+      0.2
+     ],
+     "trim": [
+      0.14,
+      0.14,
+      0.16
+     ]
+    },
+    "props": [
+     "interwar",
+     "cabaret"
+    ]
+   },
+   "paris": {
+    "palette": {
+     "wall": [
+      0.88,
+      0.82,
+      0.7
+     ],
+     "wall2": [
+      0.36,
+      0.46,
+      0.4
+     ],
+     "accent": [
+      0.66,
+      0.24,
+      0.2
+     ]
+    },
+    "props": [
+     "interwar",
+     "cafe"
+    ]
+   },
+   "shanghai": {
+    "palette": {
+     "wall": [
+      0.8,
+      0.68,
+      0.54
+     ],
+     "trim": [
+      0.52,
+      0.12,
+      0.12
+     ],
+     "accent": [
+      0.82,
+      0.6,
+      0.2
+     ]
+    },
+    "light": {
+     "type": "lantern",
+     "color": [
+      1.0,
+      0.58,
+      0.3
+     ]
+    },
+    "signage": "neon",
+    "props": [
+     "interwar",
+     "chinese",
+     "art_deco"
+    ]
+   }
+  }
+ },
+ "cold_war": {
+  "family": "1920s-50s",
+  "years": "c. 1947 - 1991",
+  "palette": {
+   "wall": [
+    0.8,
+    0.78,
+    0.7
+   ],
+   "wall2": [
+    0.46,
+    0.56,
+    0.52
+   ],
+   "trim": [
+    0.3,
+    0.32,
+    0.3
+   ],
+   "floor_a": [
+    0.66,
+    0.62,
+    0.52
+   ],
+   "floor_b": [
+    0.42,
+    0.4,
+    0.36
+   ],
+   "wood": [
+    0.52,
+    0.36,
+    0.22
+   ],
+   "metal": [
+    0.68,
+    0.68,
+    0.66
+   ],
+   "fabric": [
+    0.7,
+    0.46,
+    0.2
+   ],
+   "accent": [
+    0.82,
+    0.5,
+    0.22
+   ],
+   "ceiling": [
+    0.88,
+    0.86,
+    0.8
+   ]
+  },
+  "floor": "tiles",
+  "window": "industrial",
+  "light": {
+   "type": "bulb",
+   "color": [
+    1.0,
+    0.86,
+    0.62
+   ]
+  },
+  "signage": "printed",
+  "props": [
+   "midcentury",
+   "retro",
+   "cold_war"
+  ],
+  "roof": "flat",
+  "cultures": {
+   "divided_berlin": {
+    "palette": {
+     "wall": [
+      0.62,
+      0.62,
+      0.6
+     ],
+     "wall2": [
+      0.44,
+      0.44,
+      0.44
+     ]
+    },
+    "props": [
+     "cold_war",
+     "concrete"
+    ]
+   },
+   "soviet": {
+    "palette": {
+     "wall": [
+      0.7,
+      0.72,
+      0.66
+     ],
+     "wall2": [
+      0.4,
+      0.48,
+      0.42
+     ],
+     "accent": [
+      0.7,
+      0.16,
+      0.14
+     ]
+    },
+    "props": [
+     "cold_war",
+     "soviet"
+    ]
+   },
+   "vietnam": {
+    "palette": {
+     "wall": [
+      0.7,
+      0.62,
+      0.44
+     ],
+     "accent": [
+      0.36,
+      0.44,
+      0.26
+     ]
+    },
+    "roof": "thatch",
+    "props": [
+     "cold_war",
+     "military",
+     "tropical"
+    ]
+   },
+   "madison_avenue": {
+    "palette": {
+     "wall": [
+      0.9,
+      0.88,
+      0.82
+     ],
+     "wood": [
+      0.56,
+      0.36,
+      0.22
+     ],
+     "accent": [
+      0.86,
+      0.52,
+      0.2
+     ],
+     "fabric": [
+      0.62,
+      0.4,
+      0.24
+     ]
+    },
+    "props": [
+     "midcentury",
+     "office"
+    ]
+   },
+   "space_race": {
+    "palette": {
+     "wall": [
+      0.86,
+      0.88,
+      0.86
+     ],
+     "accent": [
+      0.2,
+      0.46,
+      0.7
+     ],
+     "metal": [
+      0.8,
+      0.8,
+      0.8
+     ]
+    },
+    "light": {
+     "type": "strip",
+     "color": [
+      0.92,
+      0.96,
+      1.0
+     ]
+    },
+    "props": [
+     "cold_war",
+     "aerospace"
+    ]
+   }
+  }
+ },
+ "analog_digital": {
+  "family": "modern",
+  "years": "late 1970s - 1990s",
+  "palette": {
+   "wall": [
+    0.8,
+    0.76,
+    0.7
+   ],
+   "wall2": [
+    0.46,
+    0.42,
+    0.52
+   ],
+   "trim": [
+    0.24,
+    0.22,
+    0.26
+   ],
+   "floor_a": [
+    0.52,
+    0.48,
+    0.46
+   ],
+   "floor_b": [
+    0.4,
+    0.36,
+    0.38
+   ],
+   "wood": [
+    0.58,
+    0.44,
+    0.3
+   ],
+   "metal": [
+    0.62,
+    0.62,
+    0.64
+   ],
+   "fabric": [
+    0.4,
+    0.3,
+    0.52
+   ],
+   "accent": {
+    "color": [
+     0.95,
+     0.3,
+     0.7
+    ],
+    "emission": [
+     0.95,
+     0.3,
+     0.7
+    ],
+    "strength": 2.5
+   },
+   "ceiling": [
+    0.82,
+    0.8,
+    0.78
+   ]
+  },
+  "floor": "tiles",
+  "window": "industrial",
+  "light": {
+   "type": "fluorescent",
+   "color": [
+    0.92,
+    0.96,
+    1.0
+   ]
+  },
+  "signage": "neon",
+  "props": [
+   "eighties",
+   "retro",
+   "analog"
+  ],
+  "roof": "flat",
+  "cultures": {
+   "silicon_valley": {
+    "palette": {
+     "wall": [
+      0.86,
+      0.82,
+      0.72
+     ],
+     "accent": [
+      0.3,
+      0.56,
+      0.7
+     ]
+    },
+    "signage": "printed",
+    "props": [
+     "eighties",
+     "garage",
+     "computers"
+    ]
+   },
+   "synthwave": {
+    "palette": {
+     "wall": [
+      0.3,
+      0.24,
+      0.4
+     ],
+     "wall2": [
+      0.2,
+      0.16,
+      0.3
+     ],
+     "accent": {
+      "color": [
+       0.2,
+       0.9,
+       0.95
+      ],
+      "emission": [
+       0.2,
+       0.9,
+       0.95
+      ],
+      "strength": 3.0
+     }
+    },
+    "props": [
+     "eighties",
+     "nightlife",
+     "arcade"
+    ]
+   },
+   "post_soviet": {
+    "palette": {
+     "wall": [
+      0.62,
+      0.64,
+      0.58
+     ],
+     "wall2": [
+      0.42,
+      0.44,
+      0.4
+     ],
+     "accent": [
+      0.7,
+      0.3,
+      0.2
+     ]
+    },
+    "signage": "printed",
+    "props": [
+     "eighties",
+     "concrete",
+     "soviet"
+    ]
+   },
+   "early_web": {
+    "palette": {
+     "wall": [
+      0.84,
+      0.84,
+      0.8
+     ],
+     "accent": [
+      0.3,
+      0.5,
+      0.7
+     ]
+    },
+    "props": [
+     "nineties",
+     "computers",
+     "office"
+    ]
+   }
+  }
+ },
+ "contemporary": {
+  "family": "modern",
+  "years": "2000s - 2020s",
+  "palette": {
+   "wall": [
+    0.86,
+    0.84,
+    0.78
+   ],
+   "wall2": [
+    0.56,
+    0.62,
+    0.62
+   ],
+   "trim": [
+    0.3,
+    0.32,
+    0.33
+   ],
+   "floor_a": [
+    0.62,
+    0.55,
+    0.45
+   ],
+   "floor_b": [
+    0.52,
+    0.46,
+    0.38
+   ],
+   "wood": [
+    0.62,
+    0.48,
+    0.34
+   ],
+   "metal": [
+    0.66,
+    0.68,
+    0.7
+   ],
+   "fabric": [
+    0.3,
+    0.4,
+    0.52
+   ],
+   "accent": [
+    0.8,
+    0.52,
+    0.24
+   ],
+   "ceiling": [
+    0.9,
+    0.89,
+    0.86
+   ]
+  },
+  "floor": "planks",
+  "window": "industrial",
+  "light": {
+   "type": "pendant",
+   "color": [
+    1.0,
+    0.88,
+    0.7
+   ]
+  },
+  "signage": "printed",
+  "props": [
+   "modern"
+  ],
+  "roof": "flat",
+  "cultures": {}
+ },
+ "near_future": {
+  "family": "near-future",
+  "years": "2030s - 2060s",
+  "palette": {
+   "wall": [
+    0.8,
+    0.82,
+    0.78
+   ],
+   "wall2": [
+    0.46,
+    0.58,
+    0.5
+   ],
+   "trim": [
+    0.26,
+    0.3,
+    0.3
+   ],
+   "floor_a": [
+    0.66,
+    0.64,
+    0.58
+   ],
+   "floor_b": [
+    0.5,
+    0.52,
+    0.48
+   ],
+   "wood": [
+    0.62,
+    0.5,
+    0.36
+   ],
+   "metal": [
+    0.7,
+    0.72,
+    0.74
+   ],
+   "fabric": [
+    0.36,
+    0.5,
+    0.46
+   ],
+   "accent": {
+    "color": [
+     0.4,
+     0.9,
+     0.7
+    ],
+    "emission": [
+     0.4,
+     0.9,
+     0.7
+    ],
+    "strength": 2.5
+   },
+   "ceiling": [
+    0.86,
+    0.88,
+    0.84
+   ]
+  },
+  "floor": "tiles",
+  "window": "sleek",
+  "light": {
+   "type": "strip",
+   "color": [
+    0.86,
+    0.96,
+    1.0
+   ]
+  },
+  "signage": "printed",
+  "props": [
+   "futuristic",
+   "modern",
+   "green"
+  ],
+  "roof": "flat",
+  "cultures": {
+   "smart_city": {},
+   "climate_refuge": {
+    "palette": {
+     "wall": [
+      0.7,
+      0.66,
+      0.56
+     ],
+     "accent": [
+      0.3,
+      0.62,
+      0.48
+     ]
+    },
+    "props": [
+     "futuristic",
+     "makeshift"
+    ]
+   }
+  }
+ },
+ "cyberpunk": {
+  "family": "near-future",
+  "years": "2070s - 2090s",
+  "palette": {
+   "wall": [
+    0.46,
+    0.52,
+    0.56
+   ],
+   "wall2": [
+    0.3,
+    0.34,
+    0.4
+   ],
+   "trim": [
+    0.18,
+    0.2,
+    0.24
+   ],
+   "floor_a": [
+    0.36,
+    0.38,
+    0.42
+   ],
+   "floor_b": [
+    0.26,
+    0.28,
+    0.32
+   ],
+   "wood": [
+    0.45,
+    0.38,
+    0.32
+   ],
+   "metal": [
+    0.58,
+    0.62,
+    0.66
+   ],
+   "fabric": [
+    0.28,
+    0.3,
+    0.42
+   ],
+   "accent": {
+    "color": [
+     0.95,
+     0.25,
+     0.65
+    ],
+    "emission": [
+     0.95,
+     0.25,
+     0.65
+    ],
+    "strength": 3.0
+   },
+   "ceiling": [
+    0.36,
+    0.4,
+    0.44
+   ]
+  },
+  "floor": "tiles",
+  "window": "sleek",
+  "light": {
+   "type": "strip",
+   "color": [
+    0.75,
+    0.92,
+    1.0
+   ]
+  },
+  "signage": "neon",
+  "props": [
+   "futuristic",
+   "cyberpunk"
+  ],
+  "roof": "flat",
+  "cultures": {
+   "megacity": {},
+   "corporate_arcology": {
+    "palette": {
+     "wall": [
+      0.8,
+      0.84,
+      0.88
+     ],
+     "accent": {
+      "color": [
+       0.3,
+       0.8,
+       1.0
+      ],
+      "emission": [
+       0.3,
+       0.8,
+       1.0
+      ],
+      "strength": 3.0
+     }
+    }
+   }
+  }
+ },
+ "solarpunk": {
+  "family": "near-future",
+  "years": "optimistic 2100s",
+  "palette": {
+   "wall": [
+    0.92,
+    0.88,
+    0.76
+   ],
+   "wall2": [
+    0.56,
+    0.7,
+    0.52
+   ],
+   "trim": [
+    0.44,
+    0.32,
+    0.2
+   ],
+   "floor_a": [
+    0.74,
+    0.64,
+    0.46
+   ],
+   "floor_b": [
+    0.58,
+    0.52,
+    0.36
+   ],
+   "wood": [
+    0.62,
+    0.46,
+    0.28
+   ],
+   "metal": [
+    0.76,
+    0.7,
+    0.52
+   ],
+   "fabric": [
+    0.4,
+    0.6,
+    0.44
+   ],
+   "accent": [
+    0.86,
+    0.66,
+    0.26
+   ],
+   "ceiling": [
+    0.92,
+    0.9,
+    0.8
+   ]
+  },
+  "floor": "planks",
+  "window": "sleek",
+  "light": {
+   "type": "pendant",
+   "color": [
+    1.0,
+    0.92,
+    0.74
+   ]
+  },
+  "signage": "painted",
+  "props": [
+   "futuristic",
+   "green",
+   "organic"
+  ],
+  "roof": "flat",
+  "cultures": {}
+ },
+ "post_apocalyptic": {
+  "family": "modern",
+  "years": "after the fall",
+  "palette": {
+   "wall": [
+    0.58,
+    0.52,
+    0.44
+   ],
+   "wall2": [
+    0.42,
+    0.38,
+    0.32
+   ],
+   "trim": [
+    0.28,
+    0.24,
+    0.2
+   ],
+   "floor_a": [
+    0.5,
+    0.44,
+    0.36
+   ],
+   "floor_b": [
+    0.38,
+    0.34,
+    0.28
+   ],
+   "wood": [
+    0.4,
+    0.3,
+    0.22
+   ],
+   "metal": [
+    0.46,
+    0.4,
+    0.34
+   ],
+   "fabric": [
+    0.46,
+    0.36,
+    0.26
+   ],
+   "accent": [
+    0.7,
+    0.4,
+    0.2
+   ],
+   "ceiling": [
+    0.52,
+    0.48,
+    0.42
+   ]
+  },
+  "floor": "tiles",
+  "window": "industrial",
+  "light": {
+   "type": "oil_lamp",
+   "color": [
+    1.0,
+    0.66,
+    0.32
+   ]
+  },
+  "signage": "painted",
+  "props": [
+   "makeshift",
+   "ruined",
+   "modern"
+  ],
+  "roof": "flat",
+  "cultures": {
+   "wasteland": {
+    "palette": {
+     "wall": [
+      0.7,
+      0.58,
+      0.42
+     ]
+    }
+   },
+   "overgrown": {
+    "palette": {
+     "wall": [
+      0.56,
+      0.58,
+      0.46
+     ],
+     "accent": [
+      0.36,
+      0.5,
+      0.3
+     ]
+    }
+   }
+  }
+ },
+ "space_age": {
+  "family": "far-future",
+  "years": "interplanetary 2200s",
+  "palette": {
+   "wall": [
+    0.84,
+    0.86,
+    0.88
+   ],
+   "wall2": [
+    0.56,
+    0.62,
+    0.7
+   ],
+   "trim": [
+    0.36,
+    0.4,
+    0.48
+   ],
+   "floor_a": [
+    0.72,
+    0.74,
+    0.78
+   ],
+   "floor_b": [
+    0.58,
+    0.62,
+    0.68
+   ],
+   "wood": [
+    0.62,
+    0.62,
+    0.64
+   ],
+   "metal": [
+    0.76,
+    0.8,
+    0.86
+   ],
+   "fabric": [
+    0.44,
+    0.52,
+    0.66
+   ],
+   "accent": {
+    "color": [
+     0.95,
+     0.6,
+     0.3
+    ],
+    "emission": [
+     0.95,
+     0.6,
+     0.3
+    ],
+    "strength": 3.0
+   },
+   "ceiling": [
+    0.8,
+    0.82,
+    0.86
+   ]
+  },
+  "floor": "tiles",
+  "window": "porthole",
+  "light": {
+   "type": "strip",
+   "color": [
+    0.9,
+    0.96,
+    1.0
+   ]
+  },
+  "signage": "holo",
+  "props": [
+   "futuristic",
+   "space"
+  ],
+  "roof": "flat",
+  "cultures": {
+   "orbital_station": {},
+   "mars_colony": {
+    "palette": {
+     "wall": [
+      0.8,
+      0.62,
+      0.48
+     ],
+     "floor_a": [
+      0.66,
+      0.44,
+      0.32
+     ],
+     "accent": {
+      "color": [
+       0.3,
+       0.8,
+       0.95
+      ],
+      "emission": [
+       0.3,
+       0.8,
+       0.95
+      ],
+      "strength": 3.0
+     }
+    }
+   }
+  }
+ },
+ "far_future": {
+  "family": "far-future",
+  "years": "post-human 3000s+",
+  "palette": {
+   "wall": [
+    0.9,
+    0.92,
+    0.94
+   ],
+   "wall2": [
+    0.66,
+    0.72,
+    0.82
+   ],
+   "trim": [
+    0.44,
+    0.48,
+    0.58
+   ],
+   "floor_a": [
+    0.82,
+    0.84,
+    0.88
+   ],
+   "floor_b": [
+    0.7,
+    0.72,
+    0.8
+   ],
+   "wood": [
+    0.72,
+    0.72,
+    0.76
+   ],
+   "metal": [
+    0.8,
+    0.84,
+    0.9
+   ],
+   "fabric": [
+    0.52,
+    0.58,
+    0.74
+   ],
+   "accent": {
+    "color": [
+     0.7,
+     0.5,
+     0.95
+    ],
+    "emission": [
+     0.7,
+     0.5,
+     0.95
+    ],
+    "strength": 3.0
+   },
+   "ceiling": [
+    0.86,
+    0.88,
+    0.92
+   ]
+  },
+  "floor": "tiles",
+  "window": "porthole",
+  "light": {
+   "type": "strip",
+   "color": [
+    0.92,
+    0.94,
+    1.0
+   ]
+  },
+  "signage": "holo",
+  "props": [
+   "futuristic",
+   "alien"
+  ],
+  "roof": "dome",
+  "cultures": {}
+ }
+}

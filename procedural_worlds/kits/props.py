@@ -13,6 +13,30 @@ MID = {"1920s-50s"}
 NOW = {"modern"}
 FUT = {"near-future", "far-future"}
 
+
+def _extend_era_groups():
+    """Timeline eras (presets/era.d) join the group of their legacy family, so every prop/kit
+    written against OLD/MID/NOW/FUT understands them; ANCIENT/MEDIEVAL/... give finer control."""
+    import json, os
+    d = os.path.join(os.path.dirname(os.path.dirname(__file__)), "presets", "era.d")
+    groups = {"ancient": OLD, "medieval": OLD, "1700s-1800s": OLD, "1920s-50s": MID, "modern": NOW,
+              "near-future": FUT, "far-future": FUT}
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) else []:
+        if f.endswith(".json"):
+            for k, v in json.load(open(os.path.join(d, f), encoding="utf-8")).items():
+                if isinstance(v, dict) and v.get("family") in groups:
+                    groups[v["family"]].add(k)
+                    FAMILY[k] = v["family"]
+
+
+FAMILY = {k: k for k in ("ancient", "medieval", "1700s-1800s", "1920s-50s", "modern", "near-future", "far-future")}
+_extend_era_groups()
+
+
+def in_family(era, *families):
+    """True if `era` (any timeline key) belongs to one of the legacy families."""
+    return FAMILY.get(era, era) in families
+
 PROPS = {}
 
 
