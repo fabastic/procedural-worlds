@@ -80,7 +80,7 @@
    "focus_points": [
     "lighthouse",
     "lantern",
-    "horizon"
+    "island"
    ]
   }
  ],
@@ -106,14 +106,14 @@
    "scene_id": "rock_dusk",
    "shot": {
     "type": "wide",
-    "focus": "sea_stack",
+    "focus": "horizon",
     "camera_move": "pan_right",
     "duration_s": 3.0
    },
    "caption": "The supply boat was three days late.",
    "trigger": {
     "type": "focus",
-    "focus": "sea_stack",
+    "focus": "horizon",
     "radius_m": 3.0
    }
   },
@@ -280,14 +280,14 @@
    "scene_id": "rock_night",
    "shot": {
     "type": "wide",
-    "focus": "horizon",
+    "focus": "island",
     "camera_move": "pull_out",
     "duration_s": 3.5
    },
    "caption": "For one more night, that was enough.",
    "trigger": {
     "type": "focus",
-    "focus": "horizon",
+    "focus": "island",
     "radius_m": 3.0
    }
   }
