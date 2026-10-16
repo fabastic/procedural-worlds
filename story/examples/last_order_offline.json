@@ -1,0 +1,275 @@
+{
+ "title": "The Last Order",
+ "slug": "the-last-order",
+ "logline": "Rosie's Diner stayed open until two, and in the summer of 1952 Dot Mancuso worked every one of those last hours.",
+ "protagonist": {
+  "name": "Dot",
+  "eye_height_m": 1.65
+ },
+ "scenes": [
+  {
+   "id": "diner_night_1",
+   "name": "Diner (night)",
+   "layers": {
+    "base": "interior",
+    "setting": "diner",
+    "era": "modern",
+    "genre_mood": "romance",
+    "weather": "clear",
+    "time": "night",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 7,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "door",
+    "counter",
+    "booth"
+   ]
+  },
+  {
+   "id": "alley_night_2",
+   "name": "Alley (night)",
+   "layers": {
+    "base": "street",
+    "setting": "alley",
+    "era": "modern",
+    "genre_mood": "romance",
+    "weather": "clear",
+    "time": "night",
+    "state": "lived-in"
+   },
+   "generator": "CYBERPUNK_ALLEY",
+   "seed": 7,
+   "spawn": {
+    "focus": "alley"
+   },
+   "focus_points": [
+    "stall",
+    "puddle",
+    "street_lamp",
+    "neon_sign",
+    "fire_escape"
+   ]
+  }
+ ],
+ "beats": [
+  {
+   "id": "b01",
+   "scene_id": "diner_night_1",
+   "shot": {
+    "type": "establishing",
+    "focus": "door",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "door",
+    "radius_m": 3.0
+   },
+   "caption": "Rosie's Diner stayed open until two, and in the summer of 1952 Dot Mancuso worked every one of those last hours."
+  },
+  {
+   "id": "b02",
+   "scene_id": "diner_night_1",
+   "shot": {
+    "type": "medium",
+    "focus": "counter",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "counter",
+    "radius_m": 3.0
+   },
+   "caption": "The neon over the counter buzzed like a trapped bee."
+  },
+  {
+   "id": "b03",
+   "scene_id": "diner_night_1",
+   "shot": {
+    "type": "close",
+    "focus": "booth",
+    "camera_move": "static",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "booth",
+    "radius_m": 3.0
+   },
+   "caption": "At half past midnight a man in a wet hat took the corner booth and ordered pie he never touched. He came back the next night, and the next."
+  },
+  {
+   "id": "b04",
+   "scene_id": "diner_night_1",
+   "shot": {
+    "type": "POV",
+    "focus": "door",
+    "camera_move": "pan_right",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "door",
+    "radius_m": 3.0
+   },
+   "caption": "Dot asked.",
+   "dialogue": [
+    {
+     "speaker": "DOT",
+     "text": "Cherry again?"
+    }
+   ]
+  },
+  {
+   "id": "b05",
+   "scene_id": "diner_night_1",
+   "shot": {
+    "type": "low",
+    "focus": "counter",
+    "camera_move": "tilt_up",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "counter",
+    "radius_m": 3.0
+   },
+   "caption": "he said, and for the first time he smiled. She learned his name was Walter.",
+   "dialogue": [
+    {
+     "speaker": "DOT",
+     "text": "Whatever you'd recommend"
+    }
+   ]
+  },
+  {
+   "id": "b06",
+   "scene_id": "alley_night_2",
+   "shot": {
+    "type": "establishing",
+    "focus": "stall",
+    "camera_move": "pull_out",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "stall",
+    "radius_m": 3.0
+   },
+   "caption": "He played piano at the hotel on Main Street and hated the songs they made him play."
+  },
+  {
+   "id": "b07",
+   "scene_id": "alley_night_2",
+   "shot": {
+    "type": "close",
+    "focus": "puddle",
+    "camera_move": "orbit",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "puddle",
+    "radius_m": 3.0
+   },
+   "caption": "On the fourth night it rained so hard the street outside turned to glass."
+  },
+  {
+   "id": "b08",
+   "scene_id": "alley_night_2",
+   "shot": {
+    "type": "high",
+    "focus": "street_lamp",
+    "camera_move": "pan_left",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "street_lamp",
+    "radius_m": 3.0
+   },
+   "caption": "The streetlights swam in it. Walter stood under the shop awning across the road with no umbrella, waiting for the last bus."
+  },
+  {
+   "id": "b09",
+   "scene_id": "alley_night_2",
+   "shot": {
+    "type": "OTS",
+    "focus": "neon_sign",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "neon_sign",
+    "radius_m": 3.0
+   },
+   "caption": "Dot locked the till, turned off the neon, and walked out into the rain with the diner's big striped umbrella."
+  },
+  {
+   "id": "b10",
+   "scene_id": "alley_night_2",
+   "shot": {
+    "type": "wide",
+    "focus": "neon_sign",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "neon_sign",
+    "radius_m": 3.0
+   },
+   "caption": "she said.  he said.",
+   "dialogue": [
+    {
+     "speaker": "DOT",
+     "text": "You'll catch your death"
+    },
+    {
+     "speaker": "DOT",
+     "text": "Then I'd better catch the bus with company"
+    }
+   ]
+  },
+  {
+   "id": "b11",
+   "scene_id": "alley_night_2",
+   "shot": {
+    "type": "medium",
+    "focus": "fire_escape",
+    "camera_move": "static",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "fire_escape",
+    "radius_m": 3.0
+   },
+   "caption": "They missed it."
+  },
+  {
+   "id": "b12",
+   "scene_id": "alley_night_2",
+   "shot": {
+    "type": "close",
+    "focus": "fire_escape",
+    "camera_move": "pan_right",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "fire_escape",
+    "radius_m": 3.0
+   },
+   "caption": "They walked the whole length of Main Street instead, past dark shop windows and humming lamps. Years later the diner was gone, but she kept the umbrella by t..."
+  }
+ ]
+}

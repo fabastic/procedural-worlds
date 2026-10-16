@@ -25,20 +25,63 @@ def _load_dotenv(path=os.path.join(os.path.dirname(HERE), ".env")):
 
 _load_dotenv()
 SCHEMA = json.load(open(os.path.join(HERE, "schema.json"), encoding="utf-8"))
-CATALOG = json.load(open(os.path.join(HERE, "catalog.json"), encoding="utf-8"))["generators"]
+_CAT = json.load(open(os.path.join(HERE, "catalog.json"), encoding="utf-8"))
+FOCUS_WORDS = {"counter": ["counter", "bar"], "bar_back": ["bottles", "shelf", "bartender"], "bottles": ["bottle", "whiskey", "wine"],
+               "booth": ["booth"], "table": ["table", "meal", "plate", "cards"], "fireplace": ["fire", "hearth", "fireplace", "embers"],
+               "crates": ["crate", "barrel", "box", "sack"], "desk": ["desk", "papers", "typewriter", "computer", "file"],
+               "shelves": ["shelf", "shelves", "books", "bookcase"], "cells": ["cell", "bars", "prisoner", "locked"],
+               "blackboard": ["blackboard", "chalk", "lesson"], "beds": ["bed", "patient", "ward"], "bed": ["bed", "pillow", "sleep"],
+               "sofa": ["sofa", "couch"], "pillars": ["pillar", "column"], "dais": ["dais", "court"], "throne": ["throne", "king", "queen"],
+               "banquet": ["feast", "banquet"], "machines": ["machine", "boiler", "engine", "pipes"], "door": ["door", "knock", "entered"],
+               "window": ["window", "outside", "glass"], "lamp": ["lamp", "light", "candle", "bulb"], "room": [],
+               "street": ["street", "road"], "far_end": ["distance", "end of the street"], "shopfront": ["shop", "store", "display"],
+               "sign": ["sign", "neon"], "street_lamp": ["streetlight", "lamppost"], "vehicle": ["car", "cart", "wagon", "taxi"],
+               "stall": ["stall", "vendor", "merchant"], "landmark": [], "path": ["path", "trail", "walked"], "horizon": ["horizon", "sky", "distance"],
+               "cabin": ["cabin", "hut"], "campfire": ["campfire", "fire", "tent"], "ruins": ["ruin", "ruins", "stones"], "graves": ["grave", "tomb", "headstone"],
+               "trench": ["trench", "wire", "sandbag"], "barn": ["barn", "hay"], "tree": ["tree", "oak"]}
+CATALOG = {}      # option key -> stage option (3 hand-built hero generators + every COMPOSED setting)
+for _g, _c in _CAT["generators"].items():
+    CATALOG[_g] = dict(_c, generator=_g, hero=True)
+for _n, _c in _CAT.get("composed", {}).items():
+    CATALOG["COMPOSED:" + _n] = dict(_c, generator="COMPOSED", hero=False, seeds=[7, 11, 23],
+                                     focus_keywords={f: FOCUS_WORDS.get(f, [f]) for f in _c["focus_points"]})
+
+
+def opt_key(sc):
+    g = sc.get("generator")
+    if g == "COMPOSED":
+        return "COMPOSED:" + str(sc.get("layers", {}).get("setting"))
+    return g
 GEMINI_MODELS = ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.5-flash", "gemini-flash-latest"]
 SHOT_CYCLE = ["wide", "medium", "close", "POV", "low", "medium", "close", "high", "OTS"]
 MOVE_CYCLE = ["push_in", "drift", "static", "pan_right", "tilt_up", "pull_out", "orbit", "pan_left"]
 TIME_WORDS = {"night": ["night", "midnight", "dark", "moon", "stars", "neon"], "dusk": ["dusk", "evening", "sunset", "twilight"],
               "dawn": ["dawn", "sunrise", "first light"], "golden": ["afternoon", "golden", "late sun"],
               "day": ["morning", "noon", "day", "breakfast", "sunlight", "bright"]}
-GENRE_WORDS = {"noir": ["detective", "debt", "gun", "cop", "smoke", "crime", "case", "dame"], "horror": ["ghost", "blood", "scream", "dead", "monster", "fear"],
-               "romance": ["love", "kiss", "heart", "wedding", "darling"], "comedy": ["laughed", "joke", "silly", "funny"],
-               "adventure": ["treasure", "map", "journey", "quest", "storm"], "sci-fi": ["robot", "android", "space", "cyber", "laser"],
-               "fantasy": ["dragon", "wizard", "magic", "spell", "castle"], "war": ["soldier", "war", "battle", "bomb"],
+GENRE_WORDS = {"noir": ["detective", "debt", "gun", "cop", "smoke", "crime", "case", "dame", "gangster"],
+               "horror": ["ghost", "blood", "scream", "dead", "monster", "fear", "graveyard", "grave", "headstone", "whisper", "nailed", "haunted", "footprints"],
+               "romance": ["love", "kiss", "heart", "wedding", "darling", "smiled", "together", "umbrella"], "comedy": ["laughed", "joke", "silly", "funny"],
+               "adventure": ["treasure", "journey", "quest", "expedition"], "sci-fi": ["robot", "android", "space", "cyber", "laser", "starship"],
+               "fantasy": ["dragon", "wizard", "magic", "spell", "castle", "tithe", "throne", "king"],
+               "war": ["soldier", "war", "battle", "bomb", "trench", "shell", "sergeant", "guns", "private", "wire"],
                "mystery": ["clue", "secret", "missing", "letter", "who"], "slice-of-life": []}
-ERA_WORDS = {"near-future": ["cyber", "neon", "android", "drone", "credits", "hologram"], "1920s-50s": ["radio", "telegram", "typewriter", "jazz", "1940", "1950"],
-             "1700s-1800s": ["candle", "carriage", "musket", "1800"], "medieval": ["castle", "knight", "sword"], "modern": []}
+ERA_WORDS = {"near-future": ["cyber", "android", "drone", "credits", "hologram"], "far-future": ["starship", "warp", "colony"],
+             "1920s-50s": ["radio", "telegram", "typewriter", "jazz", "jukebox"],
+             "1700s-1800s": ["carriage", "musket", "lantern-lit", "candlelight"], "medieval": ["castle", "knight", "sword", "dragon", "miller", "mead", "tavern"],
+             "ancient": ["pharaoh", "legion", "temple of"], "modern": []}
+
+
+def era_from_years(text):
+    """Explicit years beat keywords: 1952 -> 1920s-50s, 1987 -> modern, 2140 -> far-future."""
+    ys = [int(y) for y in re.findall(r"(1[0-9]{3}|2[0-9]{3})s?", text)]
+    if not ys:
+        return None
+    y = sorted(ys)[len(ys) // 2]
+    for lim, era in ((500, "ancient"), (1500, "medieval"), (1915, "1700s-1800s"), (1960, "1920s-50s"),
+                     (2035, "modern"), (2150, "near-future")):
+        if y < lim:
+            return era
+    return "far-future"
 
 
 # ----------------------------------------------------------------------------- validation
@@ -104,7 +147,7 @@ def sentences(text):
 # ----------------------------------------------------------------------------- offline parser
 def gen_score(blob, g):
     c = CATALOG[g]
-    return score(blob, c["keywords"]) + sum(score(blob, w) for w in c["focus_keywords"].values())
+    return score(blob, c["keywords"]) * 2 + sum(score(blob, w) for w in c["focus_keywords"].values()) * 0.5 + (0.75 if c["hero"] else 0)
 
 
 def speaker_for(blob, quote):
@@ -136,7 +179,7 @@ def offline_parse(text, n_beats=12, title=None):
     common = [w for w in prot if w not in stop]
     name = max(set(common), key=lambda w: (common.count(w), w)) if common else "Narrator"
     genre = pick(text, GENRE_WORDS, "slice-of-life")
-    era = pick(text, ERA_WORDS, "modern")
+    era = era_from_years(text) or pick(text, ERA_WORDS, "modern")
     # split into chunks, one beat per chunk, scene = best generator per chunk (merged when equal)
     n = max(10, min(14, n_beats, len(sents))) if len(sents) >= 10 else len(sents)
     chunks = [sents[int(i * len(sents) / n):int((i + 1) * len(sents) / n)] for i in range(n)]
@@ -146,22 +189,24 @@ def offline_parse(text, n_beats=12, title=None):
     for i, ch in enumerate(chunks):
         blob = " ".join(ch)
         gen = max(CATALOG, key=lambda g: gen_score(blob, g))
-        if gen_score(blob, gen) == 0 or (cur and gen_score(blob, cur["generator"]) >= gen_score(blob, gen)):
-            gen = cur["generator"] if cur else max(CATALOG, key=lambda g: gen_score(text, g))
+        if gen_score(blob, gen) < 2.0 or (cur and gen_score(blob, cur["_opt"]) >= gen_score(blob, gen) - 1.5):
+            gen = cur["_opt"] if cur else max(CATALOG, key=lambda g: gen_score(text, g))
         tod = pick(blob, TIME_WORDS, cur["layers"]["time"] if cur else pick(text, TIME_WORDS, "night"))
-        if cur is None or gen != cur["generator"] or tod != cur["layers"]["time"]:
+        if cur is None or gen != cur["_opt"] or tod != cur["layers"]["time"]:
             c = CATALOG[gen]
             sid = f"{c['setting']}_{tod}_{len(scenes) + 1}"
             cur = {"id": sid, "name": f"{c['setting'].title()} ({tod})",
-                   "layers": {"base": c["base"], "setting": c["setting"], "era": era, "genre_mood": genre,
+                   "layers": {"base": c["base"], "setting": c["setting"],
+                              "era": era if (c["hero"] or era != "modern" or "modern" in c.get("eras", [])) else c["eras"][0],
+                              "genre_mood": genre,
                               "weather": "rain" if "rain" in blob.lower() else "clear", "time": tod, "state": "lived-in"},
-                   "generator": gen, "seed": c["seeds"][len(scenes) % len(c["seeds"])],
+                   "generator": c["generator"], "_opt": gen, "seed": c["seeds"][len(scenes) % len(c["seeds"])],
                    "spawn": {"focus": c["focus_points"][0]}, "focus_points": []}
             scenes.append(cur)
             first = True
         else:
             first = False
-        c = CATALOG[cur["generator"]]
+        c = CATALOG[cur["_opt"]]
         focus = max(c["focus_keywords"], key=lambda f: score(blob, c["focus_keywords"][f]))
         if score(blob, c["focus_keywords"][focus]) == 0:
             focus = c["focus_points"][(i * 3 + 1) % len(c["focus_points"])]
@@ -180,6 +225,8 @@ def offline_parse(text, n_beats=12, title=None):
         beats.append(b)
         if focus not in cur["focus_points"]:
             cur["focus_points"].append(focus)
+    for sc in scenes:
+        sc.pop("_opt", None)
     return {"title": title, "slug": slugify(title), "logline": sents[0][:200],
             "protagonist": {"name": name, "eye_height_m": 1.65}, "scenes": scenes, "beats": beats}
 
@@ -191,13 +238,19 @@ def gemini_parse(text, n_beats=12):
         raise RuntimeError("GEMINI_API_KEY not set")
     models = [os.environ["GEMINI_MODEL"]] if os.environ.get("GEMINI_MODEL") else []
     models += [m for m in GEMINI_MODELS if m not in models]
-    catalog = {g: {"base": c["base"], "setting": c["setting"], "focus_points": c["focus_points"]} for g, c in CATALOG.items()}
+    catalog = {"hand_built_generators (best quality, prefer when they fit)":
+               {g: {"base": c["base"], "setting": c["setting"], "focus_points": c["focus_points"]} for g, c in CATALOG.items() if c["hero"]},
+               "COMPOSED settings (use generator \"COMPOSED\" and put the key in layers.setting)":
+               {c["setting"]: {"base": c["base"], "eras": c.get("eras"), "focus_points": c["focus_points"]}
+                for c in CATALOG.values() if not c["hero"]}}
     prompt = f"""You adapt stories into an animated, hand-inked graphic novel told WITHOUT drawn characters:
 only places, objects, point-of-view shots, narration captions and dialogue from OFF-PANEL speakers.
 Return ONLY a JSON object matching this JSON Schema:
 {json.dumps(SCHEMA)}
 
-Stageable generators (use ONLY these as scene.generator; a beat's shot.focus MUST be one of that generator's focus_points):
+Stageable places. scene.generator is either a hand-built generator name, or "COMPOSED" with layers.setting set to one of the
+COMPOSED setting keys. A beat's shot.focus MUST be one of that place's focus_points. Pick the place that best fits each scene of the
+story; set layers.era / genre_mood / weather / time / state to match the story (any era works for COMPOSED settings):
 {json.dumps(catalog)}
 
 Rules: {max(10, n_beats - 2)}-{min(14, n_beats + 2)} beats in story order. Each scene's first beat is an "establishing" shot.
@@ -248,10 +301,12 @@ def repair(story):
     sids = set()
     for sc in story["scenes"]:
         sc["id"] = re.sub(r"[^a-z0-9_-]", "_", str(sc.get("id", "scene")).lower())
-        if sc.get("generator") not in CATALOG:
+        if opt_key(sc) not in CATALOG:
             blob = json.dumps(sc)
-            sc["generator"] = max(CATALOG, key=lambda g: score(blob, CATALOG[g]["keywords"]))
-        c = CATALOG[sc["generator"]]
+            k = max(CATALOG, key=lambda g: gen_score(blob, g))
+            sc["generator"] = CATALOG[k]["generator"]
+            sc.setdefault("layers", {})["setting"] = CATALOG[k]["setting"]
+        c = CATALOG[opt_key(sc)]
         L = sc.setdefault("layers", {})
         defaults = {"base": c["base"], "setting": c["setting"], "era": "modern", "genre_mood": "slice-of-life",
                     "weather": "clear", "time": "night", "state": "lived-in"}
@@ -269,7 +324,7 @@ def repair(story):
         if b.get("scene_id") not in sids:
             b["scene_id"] = story["scenes"][0]["id"]
         sc = next(s for s in story["scenes"] if s["id"] == b["scene_id"])
-        c = CATALOG[sc["generator"]]
+        c = CATALOG[opt_key(sc)]
         sh = b.setdefault("shot", {})
         if sh.get("type") not in shot_enum["type"]["enum"]:
             sh["type"] = "medium"

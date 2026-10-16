@@ -10,3 +10,6 @@ story_out/*/beats/*/seq/
 .env
 .env.*
 !.env.example
+renders/coverage/*/
+renders/layers/
+story_out/

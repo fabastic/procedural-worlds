@@ -1,0 +1,344 @@
+{
+ "title": "The Dragon's Tithe",
+ "slug": "the-dragon-s-tithe",
+ "logline": "Every hundred years the village of Harrowmere paid the dragon its tithe, and this year the lot fell to Wren, the miller's youngest.",
+ "protagonist": {
+  "name": "Wren",
+  "eye_height_m": 1.65
+ },
+ "scenes": [
+  {
+   "id": "village_dawn_1",
+   "name": "Village (dawn)",
+   "layers": {
+    "base": "street",
+    "setting": "village",
+    "era": "medieval",
+    "genre_mood": "fantasy",
+    "weather": "clear",
+    "time": "dawn",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 7,
+   "spawn": {
+    "focus": "street"
+   },
+   "focus_points": [
+    "far_end"
+   ]
+  },
+  {
+   "id": "alley_dawn_2",
+   "name": "Alley (dawn)",
+   "layers": {
+    "base": "street",
+    "setting": "alley",
+    "era": "medieval",
+    "genre_mood": "fantasy",
+    "weather": "clear",
+    "time": "dawn",
+    "state": "lived-in"
+   },
+   "generator": "CYBERPUNK_ALLEY",
+   "seed": 7,
+   "spawn": {
+    "focus": "alley"
+   },
+   "focus_points": [
+    "stall"
+   ]
+  },
+  {
+   "id": "tavern_night_3",
+   "name": "Tavern (night)",
+   "layers": {
+    "base": "interior",
+    "setting": "tavern",
+    "era": "medieval",
+    "genre_mood": "fantasy",
+    "weather": "clear",
+    "time": "night",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 23,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "fireplace"
+   ]
+  },
+  {
+   "id": "castle_hall_dawn_4",
+   "name": "Castle_Hall (dawn)",
+   "layers": {
+    "base": "interior",
+    "setting": "castle_hall",
+    "era": "medieval",
+    "genre_mood": "fantasy",
+    "weather": "clear",
+    "time": "dawn",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 7,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "throne",
+    "pillars"
+   ]
+  },
+  {
+   "id": "ruins_dusk_5",
+   "name": "Ruins (dusk)",
+   "layers": {
+    "base": "landscape",
+    "setting": "ruins",
+    "era": "medieval",
+    "genre_mood": "fantasy",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 11,
+   "spawn": {
+    "focus": "landmark"
+   },
+   "focus_points": [
+    "ruins",
+    "landmark"
+   ]
+  }
+ ],
+ "beats": [
+  {
+   "id": "b01",
+   "scene_id": "village_dawn_1",
+   "shot": {
+    "type": "establishing",
+    "focus": "far_end",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "far_end",
+    "radius_m": 3.0
+   },
+   "caption": "Every hundred years the village of Harrowmere paid the dragon its tithe, and this year the lot fell to Wren, the miller's youngest."
+  },
+  {
+   "id": "b02",
+   "scene_id": "alley_dawn_2",
+   "shot": {
+    "type": "establishing",
+    "focus": "stall",
+    "camera_move": "drift",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "stall",
+    "radius_m": 3.0
+   },
+   "caption": "At dawn the market was silent. The stalls stood empty, the cobbles wet with dew, and no one would meet her eye."
+  },
+  {
+   "id": "b03",
+   "scene_id": "tavern_night_3",
+   "shot": {
+    "type": "establishing",
+    "focus": "fireplace",
+    "camera_move": "static",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "fireplace",
+    "radius_m": 3.0
+   },
+   "caption": "That night the tavern was full and no one drank. The innkeeper set a mug of mead before her by the fire and said nothing at all."
+  },
+  {
+   "id": "b04",
+   "scene_id": "tavern_night_3",
+   "shot": {
+    "type": "POV",
+    "focus": "fireplace",
+    "camera_move": "pan_right",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "fireplace",
+    "radius_m": 3.0
+   },
+   "caption": "muttered an old man by the hearth.",
+   "dialogue": [
+    {
+     "speaker": "VOICE",
+     "text": "They say it eats the gold and spits out the bones"
+    }
+   ]
+  },
+  {
+   "id": "b05",
+   "scene_id": "castle_hall_dawn_4",
+   "shot": {
+    "type": "establishing",
+    "focus": "throne",
+    "camera_move": "tilt_up",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "throne",
+    "radius_m": 3.0
+   },
+   "caption": "said Wren. Before sunrise she climbed the long road to the castle, where the old king kept the tithe in an iron chest.",
+   "dialogue": [
+    {
+     "speaker": "WREN",
+     "text": "They say a lot of things"
+    }
+   ]
+  },
+  {
+   "id": "b06",
+   "scene_id": "castle_hall_dawn_4",
+   "shot": {
+    "type": "medium",
+    "focus": "pillars",
+    "camera_move": "pull_out",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "pillars",
+    "radius_m": 3.0
+   },
+   "caption": "The great hall was cold. Banners hung in tatters between the pillars, and the throne sat empty on its dais."
+  },
+  {
+   "id": "b07",
+   "scene_id": "castle_hall_dawn_4",
+   "shot": {
+    "type": "close",
+    "focus": "throne",
+    "camera_move": "orbit",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "throne",
+    "radius_m": 3.0
+   },
+   "caption": "There was no king."
+  },
+  {
+   "id": "b08",
+   "scene_id": "castle_hall_dawn_4",
+   "shot": {
+    "type": "high",
+    "focus": "throne",
+    "camera_move": "pan_left",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "throne",
+    "radius_m": 3.0
+   },
+   "caption": "There had been no king for fifty years. The chest at the foot of the throne held nothing but a map."
+  },
+  {
+   "id": "b09",
+   "scene_id": "ruins_dusk_5",
+   "shot": {
+    "type": "establishing",
+    "focus": "ruins",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "ruins",
+    "radius_m": 3.0
+   },
+   "caption": "The map led to the ruins on the moor, where broken stones stood in a ring like the teeth of something buried. She waited there through the dusk with nothing ..."
+  },
+  {
+   "id": "b10",
+   "scene_id": "ruins_dusk_5",
+   "shot": {
+    "type": "wide",
+    "focus": "landmark",
+    "camera_move": "drift",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "landmark",
+    "radius_m": 3.0
+   },
+   "caption": "The wind came first, then the shadow, then the heat."
+  },
+  {
+   "id": "b11",
+   "scene_id": "ruins_dusk_5",
+   "shot": {
+    "type": "medium",
+    "focus": "ruins",
+    "camera_move": "static",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "ruins",
+    "radius_m": 3.0
+   },
+   "caption": "asked the dragon.  said Wren.",
+   "dialogue": [
+    {
+     "speaker": "WREN",
+     "text": "No gold?"
+    },
+    {
+     "speaker": "WREN",
+     "text": "Only a question"
+    }
+   ]
+  },
+  {
+   "id": "b12",
+   "scene_id": "ruins_dusk_5",
+   "shot": {
+    "type": "close",
+    "focus": "ruins",
+    "camera_move": "pan_right",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "ruins",
+    "radius_m": 3.0
+   },
+   "caption": "The dragon was quiet for a long time.  it said, and lay down among the stones to tell her.",
+   "dialogue": [
+    {
+     "speaker": "VOICE",
+     "text": "Why do you keep coming back?"
+    },
+    {
+     "speaker": "VOICE",
+     "text": "Because no one ever asked"
+    }
+   ]
+  }
+ ]
+}

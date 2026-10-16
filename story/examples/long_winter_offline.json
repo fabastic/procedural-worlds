@@ -1,0 +1,417 @@
+{
+ "title": "The Long Winter",
+ "slug": "the-long-winter",
+ "logline": "In the winter of 1917 the snow came early to the Argonne, and Private Tomas Weller learned to measure time in frozen boots.",
+ "protagonist": {
+  "name": "Tomas",
+  "eye_height_m": 1.65
+ },
+ "scenes": [
+  {
+   "id": "snowfield_dusk_1",
+   "name": "Snowfield (dusk)",
+   "layers": {
+    "base": "landscape",
+    "setting": "snowfield",
+    "era": "modern",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 7,
+   "spawn": {
+    "focus": "landmark"
+   },
+   "focus_points": [
+    "path"
+   ]
+  },
+  {
+   "id": "open_field_dusk_2",
+   "name": "Open_Field (dusk)",
+   "layers": {
+    "base": "landscape",
+    "setting": "open_field",
+    "era": "modern",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 11,
+   "spawn": {
+    "focus": "landmark"
+   },
+   "focus_points": [
+    "landmark"
+   ]
+  },
+  {
+   "id": "battlefield_dusk_3",
+   "name": "Battlefield (dusk)",
+   "layers": {
+    "base": "landscape",
+    "setting": "battlefield",
+    "era": "1920s-50s",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 23,
+   "spawn": {
+    "focus": "landmark"
+   },
+   "focus_points": [
+    "trench"
+   ]
+  },
+  {
+   "id": "police_station_dusk_4",
+   "name": "Police_Station (dusk)",
+   "layers": {
+    "base": "interior",
+    "setting": "police_station",
+    "era": "modern",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 7,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "lamp"
+   ]
+  },
+  {
+   "id": "hospital_ward_dusk_5",
+   "name": "Hospital_Ward (dusk)",
+   "layers": {
+    "base": "interior",
+    "setting": "hospital_ward",
+    "era": "modern",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 11,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "beds",
+    "window"
+   ]
+  },
+  {
+   "id": "kitchen_dusk_6",
+   "name": "Kitchen (dusk)",
+   "layers": {
+    "base": "interior",
+    "setting": "kitchen",
+    "era": "modern",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "dusk",
+    "state": "lived-in"
+   },
+   "generator": "KITCHEN",
+   "seed": 1,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "cork_board",
+    "counter",
+    "window"
+   ]
+  },
+  {
+   "id": "kitchen_day_7",
+   "name": "Kitchen (day)",
+   "layers": {
+    "base": "interior",
+    "setting": "kitchen",
+    "era": "modern",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "day",
+    "state": "lived-in"
+   },
+   "generator": "KITCHEN",
+   "seed": 7,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "kettle"
+   ]
+  },
+  {
+   "id": "snowfield_day_8",
+   "name": "Snowfield (day)",
+   "layers": {
+    "base": "landscape",
+    "setting": "snowfield",
+    "era": "modern",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "day",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 11,
+   "spawn": {
+    "focus": "landmark"
+   },
+   "focus_points": [
+    "path"
+   ]
+  },
+  {
+   "id": "hospital_ward_day_9",
+   "name": "Hospital_Ward (day)",
+   "layers": {
+    "base": "interior",
+    "setting": "hospital_ward",
+    "era": "modern",
+    "genre_mood": "war",
+    "weather": "clear",
+    "time": "day",
+    "state": "lived-in"
+   },
+   "generator": "COMPOSED",
+   "seed": 23,
+   "spawn": {
+    "focus": "room"
+   },
+   "focus_points": [
+    "beds"
+   ]
+  }
+ ],
+ "beats": [
+  {
+   "id": "b01",
+   "scene_id": "snowfield_dusk_1",
+   "shot": {
+    "type": "establishing",
+    "focus": "path",
+    "camera_move": "push_in",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "path",
+    "radius_m": 3.0
+   },
+   "caption": "In the winter of 1917 the snow came early to the Argonne, and Private Tomas Weller learned to measure time in frozen boots."
+  },
+  {
+   "id": "b02",
+   "scene_id": "open_field_dusk_2",
+   "shot": {
+    "type": "establishing",
+    "focus": "landmark",
+    "camera_move": "drift",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "landmark",
+    "radius_m": 3.0
+   },
+   "caption": "The field beyond the wire was white and perfectly quiet, the kind of quiet that made men whisper. At dusk the guns began again."
+  },
+  {
+   "id": "b03",
+   "scene_id": "battlefield_dusk_3",
+   "shot": {
+    "type": "establishing",
+    "focus": "trench",
+    "camera_move": "static",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "trench",
+    "radius_m": 3.0
+   },
+   "caption": "The trench shook, and the sandbags bled snow onto the duckboards."
+  },
+  {
+   "id": "b04",
+   "scene_id": "police_station_dusk_4",
+   "shot": {
+    "type": "establishing",
+    "focus": "lamp",
+    "camera_move": "pan_right",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "lamp",
+    "radius_m": 3.0
+   },
+   "caption": "said the sergeant.  A shell landed short.",
+   "dialogue": [
+    {
+     "speaker": "SERGEANT",
+     "text": "Keep your head down, Weller"
+    },
+    {
+     "speaker": "VOICE",
+     "text": "Keep it down and you'll see Christmas."
+    }
+   ]
+  },
+  {
+   "id": "b05",
+   "scene_id": "hospital_ward_dusk_5",
+   "shot": {
+    "type": "establishing",
+    "focus": "beds",
+    "camera_move": "tilt_up",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "beds",
+    "radius_m": 3.0
+   },
+   "caption": "When Tomas woke he was in the field hospital ward, under a grey blanket, between rows of iron beds."
+  },
+  {
+   "id": "b06",
+   "scene_id": "hospital_ward_dusk_5",
+   "shot": {
+    "type": "medium",
+    "focus": "window",
+    "camera_move": "pull_out",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "window",
+    "radius_m": 3.0
+   },
+   "caption": "A nurse with tired eyes wrote his name on a board by the window. Outside, the snow kept falling on the lorries."
+  },
+  {
+   "id": "b07",
+   "scene_id": "kitchen_dusk_6",
+   "shot": {
+    "type": "establishing",
+    "focus": "cork_board",
+    "camera_move": "orbit",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "cork_board",
+    "radius_m": 3.0
+   },
+   "caption": "He wrote a letter home on the back of a ration card."
+  },
+  {
+   "id": "b08",
+   "scene_id": "kitchen_dusk_6",
+   "shot": {
+    "type": "high",
+    "focus": "counter",
+    "camera_move": "pan_left",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "counter",
+    "radius_m": 3.0
+   },
+   "caption": "He told his mother the food was good. He told her it had stopped snowing."
+  },
+  {
+   "id": "b09",
+   "scene_id": "kitchen_dusk_6",
+   "shot": {
+    "type": "OTS",
+    "focus": "window",
+    "camera_move": "push_in",
+    "duration_s": 3.0
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "window",
+    "radius_m": 3.0
+   },
+   "caption": "On Christmas Eve someone found a candle and set it on the ward's long table."
+  },
+  {
+   "id": "b10",
+   "scene_id": "kitchen_day_7",
+   "shot": {
+    "type": "establishing",
+    "focus": "kettle",
+    "camera_move": "drift",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "kettle",
+    "radius_m": 3.0
+   },
+   "caption": "Nobody sang, but nobody slept either. In the morning the guns were silent."
+  },
+  {
+   "id": "b11",
+   "scene_id": "snowfield_day_8",
+   "shot": {
+    "type": "establishing",
+    "focus": "path",
+    "camera_move": "static",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "path",
+    "radius_m": 3.0
+   },
+   "caption": "Far across the snowfield, a single crow walked along the wire."
+  },
+  {
+   "id": "b12",
+   "scene_id": "hospital_ward_day_9",
+   "shot": {
+    "type": "establishing",
+    "focus": "beds",
+    "camera_move": "pan_right",
+    "duration_s": 3.5
+   },
+   "trigger": {
+    "type": "focus",
+    "focus": "beds",
+    "radius_m": 3.0
+   },
+   "caption": "Tomas asked.  said the nurse.",
+   "dialogue": [
+    {
+     "speaker": "TOMAS",
+     "text": "Is it over?"
+    },
+    {
+     "speaker": "NURSE",
+     "text": "For today"
+    }
+   ]
+  }
+ ]
+}
