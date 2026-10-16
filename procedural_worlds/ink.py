@@ -310,8 +310,8 @@ def ink_material(m, mood, opts):
         grp.inputs["Color"].default_value = (*src[:3], 1)
     else:
         nt.links.new(src, grp.inputs["Color"])
-    grp.inputs["Light Tint"].default_value = (*P["light"], 1)
-    grp.inputs["Shadow Tint"].default_value = (*P["shadow"], 1)
+    grp.inputs["Light Tint"].default_value = (*(opts.get("light_tint") or P["light"]), 1)
+    grp.inputs["Shadow Tint"].default_value = (*(opts.get("shadow_tint") or P["shadow"]), 1)
     grp.inputs["Hatch"].default_value = float(m.get("pw_hatch", 1.0)) * opts["hatch"]
     grp.inputs["Grime"].default_value = float(m.get("pw_grime", 1.0)) * opts["grime"]
     grp.inputs["AO Distance"].default_value = opts["ao_distance"]
@@ -640,7 +640,7 @@ def apply(context, col, seed, mood, info):
     scene["pw_ink"] = 1
     context.view_layer.update()          # camera/sun matrix_world are stale right after creation
     opts = dict(line_scale=1.0, wobble=1.0, grime=1.0, hatch=1.0, ao_distance=None, sea_color=None,
-                base_height=None)
+                base_height=None, light_tint=None, shadow_tint=None)
     opts.update(info.get("ink", {}))
     from .core import genre_grade
     grade = genre_grade(scene.get("pw_layers", {}))

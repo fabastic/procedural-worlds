@@ -4,6 +4,10 @@ name (diner, tavern, library, ...)."""
 import bpy
 from . import core
 from .kits.room import Room
+from .kits.street import Street
+from .kits.terrain import Terrain
+
+KITS = {"room": Room, "street": Street, "terrain": Terrain}
 
 
 class Composed:
@@ -18,6 +22,4 @@ class Composed:
         entry = dict(settings[name])
         entry["_name"] = name
         layers.setdefault("era", entry["eras"][0])
-        if entry["kit"] == "room":
-            return Room(col, entry, layers, seed, mood).run()
-        raise ValueError(f"kit {entry['kit']!r} not implemented yet for setting {name!r}")
+        return KITS[entry["kit"]](col, entry, layers, seed, mood).run()

@@ -73,7 +73,7 @@ class Room:
         self.lamps = []                      # (pos, color, energy, radius)
         self.openings = {"back": [], "left": [], "right": [], "front": []}
         # keep the camera corner clear (front-right): nothing tall gets scattered in its face
-        self.avoid.append((self.W - 0.9, 0.9, 1.9))
+        self.avoid += [(self.W - 0.9, 0.9, 1.9), (self.W - 2.2, 2.0, 1.3), (self.W - 3.4, 2.9, 1.0)]
 
     # ---------------------------------------------------------------- wall frames
     def wall(self, side):
@@ -234,14 +234,20 @@ class Room:
                     F.cyl((x, y, self.H - 0.75), 0.22, 0.2, "lampshade", r2=0.06)
                 self.lamps.append((Vector((x, y, self.H - (0.9 if lt != "strip" else 0.2))), lc, 220 * k, 0.15))
             self.add_focus("lamp", Vector((self.W / (n + 1), self.D * 0.5, self.H - 0.7)), 0.9)
-        else:
+        else:                                   # candles / oil lamps / braziers: sconces every ~3 m
             for side in ("left", "back", "right"):
-                u0 = self.reserve(side, 0.3)
-                if u0 is None:
-                    continue
-                p = self.wp(side, u0 + 0.15, 1.9, 0.08)
-                P.place_prop(F, "sconce", p.x, p.y, 1.9, self.yaw(side), self.rng, self.era)
-                self.lamps.append((self.wp(side, u0 + 0.15, 2.0, 0.35), lc, 70 * k, 0.05))
+                _, _, _, L = self.wall(side)
+                for i in range(max(1, int(L / 3.2))):
+                    u0 = self.reserve(side, 0.3, prefer=L * (i + 0.5) / max(1, int(L / 3.2)))
+                    if u0 is None:
+                        continue
+                    zl = min(2.2, self.H * 0.6)
+                    p = self.wp(side, u0 + 0.15, zl, 0.08)
+                    P.place_prop(F, "sconce", p.x, p.y, zl, self.yaw(side), self.rng, self.era)
+                    self.lamps.append((self.wp(side, u0 + 0.15, zl + 0.1, 0.35), lc, 90 * k, 0.05))
+        if night and on:                         # big rooms: a soft overhead fill so they never go black
+            vol = self.W * self.D * max(1.0, self.H / 3.0) ** 2
+            self.lamps.append((Vector((self.W / 2, self.D / 2, self.H * 0.8)), lc, 25.0 * vol / 30.0, 1.5))
         if self.state.get("fire"):
             for _ in range(3):
                 x, y = self.rng.uniform(1, self.W - 1), self.rng.uniform(1, self.D - 1)
@@ -304,7 +310,14 @@ class Room:
         return {"objects": len(self.col.objects), "focus_points": self.focus, "spawn": {"focus": "room"},
                 "camera": {"location": tuple(cam), "target": tuple(tgt), "lens": 18 if self.W < 9 else 20, "clip_end": 200.0},
                 "sun_dir": (34.0, az + self.rng.uniform(-15, 15)), "sun_scale": 1.0 if win else 0.0, "sky_scale": 0.6,
-                "ink": {"grime": self.state.get("grime", 1.0), "base_height": 0.25}}
+                "ink": self.ink_hints()}
+
+    def ink_hints(self):
+        h = {"grime": self.state.get("grime", 1.0), "base_height": 0.25}
+        if self.mood in ("DUSK", "NIGHT") and not self.state.get("lights_off"):
+            h["light_tint"] = srgb(0.98, 0.88, 0.72)        # lamp-lit room, not moonlight
+            h["shadow_tint"] = srgb(0.46, 0.43, 0.58)
+        return h
 
     # ---------------------------------------------------------------- clutter + state
     def clutter(self):
@@ -616,6 +629,8 @@ def f_pillars(R):
         for j in range(ny):
             x = R.W * (0.25 if i == 0 else 0.75)
             y = 2.5 + j * (R.D - 4) / max(1, ny - 1)
+            if any((x - ax) ** 2 + (y - ay) ** 2 < ar ** 2 for ax, ay, ar in R.avoid[:3]):
+                continue                                          # never in the camera's face
             F.cyl((x, y, R.H / 2), 0.35, R.H, "stone", seg=10)
             F.box((x, y, 0.15), (0.95, 0.95, 0.3), "stone")
             F.box((x, y, R.H - 0.15), (0.95, 0.95, 0.3), "stone")

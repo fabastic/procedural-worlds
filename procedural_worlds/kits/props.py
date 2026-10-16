@@ -73,7 +73,7 @@ def table(mb, x, y, z, rot, rng, era):
     return [(Vector((x, y, z + 0.765)), 0.45)]          # surface for clutter
 
 
-@prop("crate", "floor", (0.7, 0.7, 0.6), rooms=("any", "storage", "outdoor", "shop", "dock", "tavern", "factory"))
+@prop("crate", "floor", (0.7, 0.7, 0.6), rooms=("storage", "outdoor", "shop", "dock", "tavern", "factory", "dungeon"))
 def crate(mb, x, y, z, rot, rng, era):
     M = Matrix.Translation((0, 0, z)) @ _rot(x, y, rot)
     s = rng.uniform(0.45, 0.75)
@@ -84,7 +84,7 @@ def crate(mb, x, y, z, rot, rng, era):
         _box(mb, M, (rng.uniform(-0.08, 0.08), rng.uniform(-0.08, 0.08), s + s2 / 2), (s2, s2, s2), "wood")
 
 
-@prop("barrel", "floor", (0.6, 0.6, 0.9), eras=OLD | MID, rooms=("any", "storage", "tavern", "outdoor", "dock", "dungeon", "factory"))
+@prop("barrel", "floor", (0.6, 0.6, 0.9), eras=OLD | MID, rooms=("storage", "tavern", "outdoor", "dock", "dungeon", "factory"))
 def barrel(mb, x, y, z, rot, rng, era):
     M = Matrix.Translation((0, 0, z)) @ _rot(x, y, rot)
     _cyl(mb, M, (0, 0, 0.45), 0.28, 0.9, "wood", seg=12)
