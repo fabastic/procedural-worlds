@@ -133,18 +133,33 @@ export interface Blot {
 export function makeBlot(seed: number, splashy = 1): Blot {
   const r = rng(seed);
   const harmonics = [];
-  for (let k = 2; k <= 11; k++) {
-    harmonics.push({ k, amp: between(r, 0.015, 0.075) / Math.sqrt(k / 2), phase: r() * Math.PI * 2, speed: between(r, -1.2, 1.2) });
+  // low harmonics stay gentle (big lobes read as a silhouette, not ink)...
+  for (let k = 3; k <= 9; k++) {
+    harmonics.push({ k, amp: between(r, 0.01, 0.045) / Math.sqrt(k / 3), phase: r() * Math.PI * 2, speed: between(r, -0.9, 0.9) });
+  }
+  // ...while fine ones give the wet, bleeding edge of ink soaking into paper
+  for (let k = 13; k <= 61; k += 2 + Math.floor(r() * 4)) {
+    harmonics.push({ k, amp: between(r, 0.004, 0.014), phase: r() * Math.PI * 2, speed: 0 });
   }
   const tendrils = [];
-  const nt = 5 + Math.floor(r() * 5);
+  const nt = 9 + Math.floor(r() * 8);
   for (let i = 0; i < nt; i++) {
-    tendrils.push({ angle: r() * Math.PI * 2, width: between(r, 0.035, 0.11), reach: between(r, 0.08, 0.32) * splashy });
+    const thin = r() < 0.65;
+    tendrils.push({
+      angle: r() * Math.PI * 2,
+      width: thin ? between(r, 0.008, 0.022) : between(r, 0.03, 0.07),
+      reach: (thin ? between(r, 0.06, 0.22) : between(r, 0.05, 0.16)) * splashy,
+    });
   }
   const drops = [];
-  const nd = Math.round((14 + r() * 14) * splashy);
+  const nd = Math.round((26 + r() * 22) * splashy);
   for (let i = 0; i < nd; i++) {
-    drops.push({ angle: r() * Math.PI * 2, dist: between(r, 1.04, 1.5), size: between(r, 0.004, 0.022) });
+    const near = r() < 0.6;
+    drops.push({
+      angle: r() * Math.PI * 2,
+      dist: near ? between(r, 1.02, 1.16) : between(r, 1.16, 1.55),
+      size: near ? between(r, 0.003, 0.012) : between(r, 0.002, 0.008),
+    });
   }
   return { harmonics, tendrils, drops };
 }
@@ -167,7 +182,7 @@ export function blotRadius(b: Blot, theta: number, time: number): number {
 }
 
 /** Trace a closed, smooth blot outline into the current canvas path. */
-export function traceBlot(ctx: CanvasRenderingContext2D, b: Blot, cx: number, cy: number, R: number, time = 0, steps = 120): void {
+export function traceBlot(ctx: CanvasRenderingContext2D, b: Blot, cx: number, cy: number, R: number, time = 0, steps = 360): void {
   const pts: Pt[] = [];
   for (let i = 0; i < steps; i++) {
     const th = (i / steps) * Math.PI * 2;
@@ -186,7 +201,7 @@ export function traceBlot(ctx: CanvasRenderingContext2D, b: Blot, cx: number, cy
 }
 
 /** The same blot as an SVG path string (for static ink splats in the page chrome). */
-export function blotPath(b: Blot, cx: number, cy: number, R: number, steps = 96, drops = true): string {
+export function blotPath(b: Blot, cx: number, cy: number, R: number, steps = 300, drops = true): string {
   const pts: Pt[] = [];
   for (let i = 0; i < steps; i++) {
     const th = (i / steps) * Math.PI * 2;

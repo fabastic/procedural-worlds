@@ -3,6 +3,8 @@
 import { easeInCubic, easeInOut, easeOutCubic, makeBlot, traceBlot, traceDrops, type Blot } from "./ink";
 
 const INK = "#15110e";
+// ?slow=4 stretches every transition (handy for reviewing / capturing them mid-way)
+const SLOW = Math.min(20, Math.max(1, Number(new URLSearchParams(location.search).get("slow")) || 1));
 
 function frame(): Promise<number> {
   return new Promise((res) => requestAnimationFrame(res));
@@ -10,6 +12,7 @@ function frame(): Promise<number> {
 
 async function animate(duration: number, step: (t: number, now: number) => void): Promise<void> {
   const start = performance.now();
+  duration *= SLOW;
   for (;;) {
     const now = await frame();
     const t = Math.min(1, (now - start) / duration);
@@ -67,6 +70,8 @@ export async function inkWipe(opts: WipeOptions): Promise<void> {
     { b: makeBlot(opts.seed, 1), x: ox, y: oy, delay: 0, scale: 1.45 },
     { b: makeBlot(opts.seed + 1, 0.8), x: ox - direction * W * 0.28, y: H * 0.18, delay: 0.16, scale: 0.62 },
     { b: makeBlot(opts.seed + 2, 0.7), x: ox - direction * W * 0.5, y: H * 0.92, delay: 0.3, scale: 0.5 },
+    { b: makeBlot(opts.seed + 3, 1.2), x: ox - direction * W * 0.62, y: H * 0.34, delay: 0.42, scale: 0.22 },
+    { b: makeBlot(opts.seed + 4, 1.3), x: ox - direction * W * 0.8, y: H * 0.7, delay: 0.55, scale: 0.16 },
   ];
   const cover = 520;
   await animate(cover, (t, now) => {
@@ -152,7 +157,7 @@ export async function inkReveal(opts: RevealOptions): Promise<void> {
     ctx.clearRect(0, 0, w, h);
     ctx.save();
     ctx.beginPath();
-    traceBlot(ctx, b, cx, cy, R, now / 700, 90);
+    traceBlot(ctx, b, cx, cy, R, now / 700, 240);
     ctx.clip();
     try {
       ctx.drawImage(image, dx, dy, dw, dh);
@@ -163,7 +168,7 @@ export async function inkReveal(opts: RevealOptions): Promise<void> {
     ctx.restore();
     // wet ink rim on the spreading edge
     ctx.beginPath();
-    traceBlot(ctx, b, cx, cy, R, now / 700, 90);
+    traceBlot(ctx, b, cx, cy, R, now / 700, 240);
     ctx.lineWidth = rim * (1 - t);
     ctx.strokeStyle = INK;
     ctx.globalAlpha = Math.min(1, (1 - t) * 1.6);

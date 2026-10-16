@@ -38,7 +38,7 @@ export async function mountLibrary(main: HTMLElement): Promise<View> {
 
   shelf.innerHTML = "";
   const list = document.createElement("ul");
-  list.className = "shelf-list";
+  list.className = `shelf-list${stories.length <= 4 ? " is-few" : ""}`;
   shelf.append(list);
   stories.forEach((s, i) => list.append(card(s, i)));
 

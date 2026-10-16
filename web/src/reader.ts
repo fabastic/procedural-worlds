@@ -54,6 +54,8 @@ const KEN_BURNS: Record<string, [string, string]> = {
   tilt_down: ["scale(1.07) translateY(2%)", "scale(1.07) translateY(-2%)"],
   crane_up: ["scale(1.07) translateY(-2%)", "scale(1.07) translateY(2%)"],
   orbit: ["scale(1.05) rotate(-0.4deg)", "scale(1.07) rotate(0.4deg)"],
+  drift: ["scale(1.04) translate(-1%, 0.6%)", "scale(1.06) translate(1%, -0.6%)"],
+  handheld: ["scale(1.04) translate(-0.6%, 0.4%)", "scale(1.05) translate(0.6%, -0.4%)"],
   static: ["scale(1.01)", "scale(1.04)"],
 };
 
@@ -217,7 +219,6 @@ class Reader {
     else this.afterMove();
     this.updateRule();
     if (!this.reduced) this.boilTimer = window.setInterval(() => this.boil(), 167);
-    requestAnimationFrame(() => this.stage.focus({ preventScroll: true }));
   }
 
   destroy(): void {
@@ -473,7 +474,9 @@ class Reader {
       onCovered: async () => {
         for (const p of this.panels) this.stopMotion(p);
         this.pageIdx = page;
+        this.panelIdx = target.kind === "panels" ? slot : 0;
         this.renderPage(page, forward ? slot - 1 : slot);
+        this.updateChrome();
         if (target.kind === "panels") {
           const imgs = this.panels.slice(0, slot + 1).map((p) => decodeWithTimeout(p.img, 1200));
           await Promise.all(imgs);
@@ -815,6 +818,30 @@ class Reader {
   // -------------------------------------------------------------- chrome
 
   private afterMove(announce = true): void {
+    this.updateChrome();
+    const page = this.pages[this.pageIdx];
+    const beatIdx = page.kind === "panels" ? page.beats[this.panelIdx] : -1;
+    // keep the URL pointing at the current beat (no history spam)
+    const id = page.kind === "panels" ? this.m.beats[beatIdx].id : page.kind === "end" ? "end" : "";
+    const hashUrl = `#/read/${encodeURIComponent(this.m.slug)}${id ? `/${encodeURIComponent(id)}` : ""}`;
+    if (location.hash !== hashUrl) history.replaceState(history.state, "", hashUrl);
+
+    if (announce) {
+      if (page.kind === "panels") {
+        const beat = this.m.beats[beatIdx];
+        this.live.textContent = `Page ${this.pageNumber(this.pageIdx)}, panel ${this.panelIdx + 1} of ${page.beats.length}. ${this.describe(beat)}`;
+      } else if (page.kind === "cover") {
+        this.live.textContent = `${this.m.title}. ${this.m.logline ?? ""}`;
+      } else {
+        this.live.textContent = "The end.";
+      }
+    }
+    this.scheduleAuto();
+    if (page.kind === "end") this.setAutoplay(false);
+  }
+
+  /** Progress bar, chapter label, page count and button states. */
+  private updateChrome(): void {
     const page = this.pages[this.pageIdx];
     const beatIdx = page.kind === "panels" ? page.beats[this.panelIdx] : -1;
     const total = this.m.beats.length;
@@ -843,24 +870,6 @@ class Reader {
     this.ctlPrev.disabled = this.pageIdx === 0;
     this.ctlNext.disabled = page.kind === "end";
     this.root.dataset.page = page.kind;
-
-    // keep the URL pointing at the current beat (no history spam)
-    const id = page.kind === "panels" ? this.m.beats[beatIdx].id : page.kind === "end" ? "end" : "";
-    const hashUrl = `#/read/${encodeURIComponent(this.m.slug)}${id ? `/${encodeURIComponent(id)}` : ""}`;
-    if (location.hash !== hashUrl) history.replaceState(history.state, "", hashUrl);
-
-    if (announce) {
-      if (page.kind === "panels") {
-        const beat = this.m.beats[beatIdx];
-        this.live.textContent = `Page ${this.pageNumber(this.pageIdx)}, panel ${this.panelIdx + 1} of ${page.beats.length}. ${this.describe(beat)}`;
-      } else if (page.kind === "cover") {
-        this.live.textContent = `${this.m.title}. ${this.m.logline ?? ""}`;
-      } else {
-        this.live.textContent = "The end.";
-      }
-    }
-    this.scheduleAuto();
-    if (page.kind === "end") this.setAutoplay(false);
   }
 
   private pageNumber(idx: number): number {

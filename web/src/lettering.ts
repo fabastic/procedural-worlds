@@ -28,12 +28,12 @@ export function isDevice(speaker: string): boolean {
 
 /** Lettering size for a panel of width w, nudged down when there is a lot to say. */
 export function letterSize(w: number, h: number, chars: number): number {
-  let px = Math.min(Math.max(w * 0.027, 12.5), 22);
+  let px = Math.min(Math.max(w * 0.03, 13.5), 24);
   // short panels need smaller type or the art disappears behind words
-  px = Math.min(px, Math.max(12, h * 0.062));
-  if (chars > 90) px *= 0.93;
-  if (chars > 150) px *= 0.9;
-  return Math.max(11.5, Math.round(px * 10) / 10);
+  px = Math.min(px, Math.max(13.5, h * 0.075));
+  if (chars > 90) px *= 0.94;
+  if (chars > 150) px *= 0.92;
+  return Math.max(12.5, Math.round(px * 10) / 10);
 }
 
 const overlaps = (a: Rect, b: Rect, pad = 6) => a.x < b.x + b.w + pad && b.x < a.x + a.w + pad && a.y < b.y + b.h + pad && b.y < a.y + a.h + pad;
@@ -65,14 +65,18 @@ export function letterPanel(layer: HTMLElement, spec: LetterSpec, lt: number): H
     out.push(cap);
   }
 
+  // reading order: each balloon starts lower than the one before it, whichever side it is on
+  let minY = 0;
   for (const line of spec.lines) {
-    const el = balloon(layer, line, spec, lt, margin, placed, r);
+    const el = balloon(layer, line, spec, lt, margin, placed, r, minY);
     out.push(el);
+    const last = placed[placed.length - 1];
+    minY = last.y + last.h * 0.62;
   }
   return out;
 }
 
-function balloon(layer: HTMLElement, line: LineSpec, spec: LetterSpec, lt: number, margin: number, placed: Rect[], r: Rng): HTMLElement {
+function balloon(layer: HTMLElement, line: LineSpec, spec: LetterSpec, lt: number, margin: number, placed: Rect[], r: Rng, minY: number): HTMLElement {
   const device = isDevice(line.speaker);
   const el = document.createElement("div");
   el.className = `balloon${device ? " balloon--device" : ""}`;
@@ -110,7 +114,7 @@ function balloon(layer: HTMLElement, line: LineSpec, spec: LetterSpec, lt: numbe
 
   let x = line.side === "right" ? spec.w - bw - tailRoom : tailRoom;
   x = Math.max(4, Math.min(spec.w - bw - 4, x));
-  let y = margin * 0.7;
+  let y = Math.max(margin * 0.7, minY);
   for (let guard = 0; guard < 8; guard++) {
     const box = { x, y, w: bw, h: bh };
     const hit = placed.find((p) => overlaps(p, box));

@@ -169,19 +169,35 @@
   margin-top: 18px;
 }
 
-/* the first story on the shelf gets a big feature spread */
+/* the first story (or every story, when the shelf is short) gets a big spread;
+   spreads alternate sides like facing pages */
 @media (min-width: 860px) {
-  .card:first-child {
+  .card:first-child,
+  .is-few .card {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
     gap: clamp(32px, 4vw, 56px);
     align-items: center;
   }
-  .card:first-child .card-title {
+  .is-few .card:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+  }
+  .is-few .card:nth-child(even) .card-cover {
+    order: 2;
+  }
+  .is-few .card:nth-child(even) .card-body {
+    text-align: right;
+  }
+  .is-few .card:nth-child(even) .card-actions {
+    justify-content: flex-end;
+  }
+  .card:first-child .card-title,
+  .is-few .card .card-title {
     font-size: clamp(44px, 4.6vw, 64px);
   }
-  .card:first-child .card-logline {
+  .card:first-child .card-logline,
+  .is-few .card .card-logline {
     font-size: 22px;
   }
 }

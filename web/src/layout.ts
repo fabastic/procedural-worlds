@@ -43,6 +43,18 @@ export function planPages(beats: Beat[]): number[][] {
     cur.push(i);
   });
   flush();
+  // Rebalance: a full page followed by a lone small panel that closes the scene reads
+  // better as 3 + 2 than 4 + 1.
+  for (let p = 0; p + 1 < pages.length; p++) {
+    const a = pages[p];
+    const b = pages[p + 1];
+    const sameScene = beats[a[0]].scene_id === beats[b[0]].scene_id;
+    const nextScene = pages[p + 2] ? beats[pages[p + 2][0]].scene_id !== beats[b[0]].scene_id : true;
+    const lastA = a[a.length - 1];
+    if (sameScene && nextScene && a.length >= 3 && b.length === 1 && panelKind(beats[b[0]]) === "small" && panelKind(beats[lastA]) === "small") {
+      b.unshift(a.pop()!);
+    }
+  }
   return pages;
 }
 

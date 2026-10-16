@@ -82,7 +82,7 @@ body[data-route="animatic"] #app {
 }
 .panel-clip {
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.22s ease;
 }
 .panel-clip.is-playing {
   opacity: 1;
