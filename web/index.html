@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#efe5cf" />
+    <meta name="description" content="Procedural Worlds: stories told as hand-inked graphic novels that quietly move." />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23efe5cf'/%3E%3Cpath d='M32 9c7 1 9 8 15 9s10 7 7 14-1 12-7 16-12 8-18 6-12-3-15-10-5-13-1-19 9-6 11-11 3-6 8-5z' fill='%23161311'/%3E%3Ccircle cx='54' cy='12' r='3' fill='%23161311'/%3E%3Ccircle cx='10' cy='54' r='2' fill='%23161311'/%3E%3C/svg%3E"
+    />
+    <title>Procedural Worlds</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <!-- Rough ink edge: displaces a clean stroke so it reads as brush/pen work. -->
+        <filter id="ink-rough" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <!-- "Boil" variants with other seeds: cycled on the active panel at 6 fps. -->
+        <filter id="ink-boil-0" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="11" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="ink-boil-1" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="27" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="ink-boil-2" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="58" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <!-- Softer roughening for lettering boxes and balloons. -->
+        <filter id="ink-rough-soft" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="7" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+    </svg>
+    <div id="app"></div>
+    <noscript>
+      <p style="padding: 2rem; font: 18px/1.5 sans-serif">Procedural Worlds needs JavaScript to play its motion comics.</p>
+    </noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

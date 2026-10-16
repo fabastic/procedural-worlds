@@ -1,0 +1,10 @@
+{
+  "stories": [
+    {
+      "slug": "demo",
+      "title": "The Last Watch",
+      "logline": "On a rock in the North Sea, the last lighthouse keeper keeps one rule through the worst storm in eleven years.",
+      "cover": "beats/b01/still.jpg"
+    }
+  ]
+}

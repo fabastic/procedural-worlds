@@ -1,0 +1,113 @@
+{
+  "slug": "demo",
+  "title": "The Last Watch",
+  "logline": "On a rock in the North Sea, the last lighthouse keeper keeps one rule through the worst storm in eleven years.",
+  "protagonist": { "name": "Mara", "eye_height_m": 1.62 },
+  "cover": "beats/b01/still.jpg",
+  "scenes": [
+    { "id": "island_day", "name": "Gull Rock, morning", "generator": "COASTAL_ISLAND", "layers": { "seed": 1, "mood": "DAY" } },
+    { "id": "kitchen_golden", "name": "The keeper's kitchen", "generator": "KITCHEN", "layers": { "seed": 7, "mood": "GOLDEN" } },
+    { "id": "island_dusk", "name": "The weather turns", "generator": "COASTAL_ISLAND", "layers": { "seed": 42, "mood": "DUSK" } },
+    { "id": "alley_memory", "name": "The city she left", "generator": "CYBERPUNK_ALLEY", "layers": { "seed": 7, "mood": "DUSK" } },
+    { "id": "kitchen_night", "name": "Midnight", "generator": "KITCHEN", "layers": { "seed": 42, "mood": "NIGHT" } },
+    { "id": "island_night", "name": "The light", "generator": "COASTAL_ISLAND", "layers": { "seed": 7, "mood": "NIGHT" } }
+  ],
+  "beats": [
+    {
+      "id": "b01", "scene_id": "island_day",
+      "shot": { "type": "establishing", "focus": "lighthouse", "camera_move": "push_in", "duration_s": 3.5 },
+      "caption": "The last keeper of Gull Rock had one rule.",
+      "still": "beats/b01/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b02", "scene_id": "island_day",
+      "shot": { "type": "wide", "focus": "island", "camera_move": "pan_right", "duration_s": 3.0 },
+      "caption": "Keep the lamp lit. Whatever comes across the water.",
+      "still": "beats/b02/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b03", "scene_id": "kitchen_golden",
+      "shot": { "type": "establishing", "focus": "kitchen", "camera_move": "push_in", "duration_s": 3.0 },
+      "caption": "Eleven years of tea, tide tables and silence.",
+      "still": "beats/b03/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b04", "scene_id": "kitchen_golden",
+      "shot": { "type": "medium", "focus": "stove", "camera_move": "static", "duration_s": 2.5 },
+      "dialogue": [{ "speaker": "RADIO", "text": "...Gull Rock, this is Harbour Control. Do you read?" }],
+      "still": "beats/b04/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b05", "scene_id": "kitchen_golden",
+      "shot": { "type": "close", "focus": "window", "camera_move": "push_in", "duration_s": 2.5 },
+      "dialogue": [{ "speaker": "MARA", "text": "I read you, Harbour. Go ahead." }],
+      "still": "beats/b05/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b06", "scene_id": "kitchen_golden",
+      "shot": { "type": "POV", "focus": "cork_board", "camera_move": "pan_left", "duration_s": 3.0 },
+      "dialogue": [
+        { "speaker": "RADIO", "text": "Storm front by nightfall. The supply boat isn't coming. Over." },
+        { "speaker": "MARA", "text": "Understood. Out." }
+      ],
+      "still": "beats/b06/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b07", "scene_id": "island_dusk",
+      "shot": { "type": "establishing", "focus": "island", "camera_move": "pull_out", "duration_s": 3.5 },
+      "caption": "By dusk the sky had gone the colour of an old bruise.",
+      "still": "beats/b07/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b08", "scene_id": "island_dusk",
+      "shot": { "type": "low", "focus": "lighthouse", "camera_move": "tilt_up", "duration_s": 3.0 },
+      "caption": "A hundred and twelve steps to the lamp room. She counted every one.",
+      "still": "beats/b08/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b09", "scene_id": "alley_memory",
+      "shot": { "type": "wide", "focus": "alley", "camera_move": "push_in", "duration_s": 3.0 },
+      "caption": "She had come out here to get away from the noise.",
+      "still": "beats/b09/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b10", "scene_id": "alley_memory",
+      "shot": { "type": "low", "focus": "neon_signs", "camera_move": "static", "duration_s": 3.0 },
+      "caption": "Daniel had said it the night she left.",
+      "dialogue": [{ "speaker": "DANIEL", "text": "You'll go mad out there, Mara. Alone on a rock." }],
+      "still": "beats/b10/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b11", "scene_id": "kitchen_night",
+      "shot": { "type": "wide", "focus": "kitchen", "camera_move": "static", "duration_s": 3.0 },
+      "caption": "Midnight. The kettle had long gone cold.",
+      "still": "beats/b11/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b12", "scene_id": "kitchen_night",
+      "shot": { "type": "close", "focus": "window", "camera_move": "push_in", "duration_s": 2.5 },
+      "dialogue": [{ "speaker": "RADIO", "text": "...anyone... lost our engine... can't see the rocks..." }],
+      "still": "beats/b12/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b13", "scene_id": "kitchen_night",
+      "shot": { "type": "medium", "focus": "doorway", "camera_move": "push_in", "duration_s": 2.5 },
+      "caption": "She took the stairs two at a time.",
+      "dialogue": [{ "speaker": "MARA", "text": "Hold on. I'm lighting it now." }],
+      "still": "beats/b13/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b14", "scene_id": "island_night",
+      "shot": { "type": "establishing", "focus": "lighthouse", "camera_move": "pull_out", "duration_s": 4.0 },
+      "caption": "Out on the black water, a small boat turned toward the light.",
+      "still": "beats/b14/still.jpg", "width": 1280, "height": 720
+    },
+    {
+      "id": "b15", "scene_id": "island_night",
+      "shot": { "type": "close", "focus": "lamp", "camera_move": "push_in", "duration_s": 3.5 },
+      "caption": "Whatever comes across the water.",
+      "dialogue": [{ "speaker": "MARA", "text": "There you are." }],
+      "still": "beats/b15/still.jpg", "width": 1280, "height": 720
+    }
+  ]
+}
