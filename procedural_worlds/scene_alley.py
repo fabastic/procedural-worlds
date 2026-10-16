@@ -139,10 +139,10 @@ class Mats:
         self.far_lit = mk("PW_Alley_FarLit", srgb("#ffc77a"), emission=srgb("#ffc77a"),
                           strength=1.6 * ef)
         self.shutter = mk("PW_Alley_Shutter", srgb("#5b5e5a"), rough=.5, metallic=.4)
-        self.road = mk("PW_Alley_Road", srgb("#17191b"), rough=.15)
-        self.patch = mk("PW_Alley_RoadPatch", srgb("#24272a"), rough=.25)
+        self.road = mk("PW_Alley_Road", srgb("#2c333c"), rough=.15)
+        self.patch = mk("PW_Alley_RoadPatch", srgb("#373e46"), rough=.25)
         self.pave = mk("PW_Alley_Pavement", srgb("#4a4f4c"), rough=.7)
-        self.puddle = mk("PW_Alley_Puddle", srgb("#1f2a36"), rough=.04)
+        self.puddle = mk("PW_Alley_Puddle", srgb("#41566b"), rough=.04)
         self.board = mk("PW_Alley_SignBoard", srgb("#221e24"), rough=.6)
         self.neon = {k: mk(f"PW_Alley_Neon_{k}", srgb(c), rough=.3, emission=srgb(c),
                            strength=6.5 * ef) for k, c in NEON.items()}
@@ -1528,9 +1528,9 @@ class _Alley:
             x0, x1 = max(-xlim, sg["x0"]), min(xlim, sg["x1"])
             xc = (sg["x0"] + sg["x1"]) / 2
             # pull the streak inward a little (mirror image sits below the source, nearer centre)
-            if x1 - x0 < .35:
-                xc = max(-xlim + .25, min(xlim - .25, xc - math.copysign(.35, xc)))
-                x0, x1 = xc - .2, xc + .2
+            if x1 - x0 < .9:
+                xc = max(-xlim + .5, min(xlim - .5, xc - math.copysign(.45, xc)))
+                x0, x1 = xc - .45, xc + .45
             hsrc = sg["zt"] - sg["zb"]
             ln = min(9.0, max(1.5, hsrc * 1.1 + .06 * (y_src - cy)))
             if sg["kind"] in ("shop", "stall"):

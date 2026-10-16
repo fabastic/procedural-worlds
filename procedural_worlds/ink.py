@@ -264,7 +264,11 @@ def ink_material(m, mood, opts):
     estr = bsdf.inputs["Emission Strength"].default_value
     if m.get("pw_flat") or estr > 0.01:
         # neon / signs / sky cards: flat unshaded ink colour; strong emitters glow a little
-        col = tuple(bsdf.inputs["Emission Color"].default_value)[:3] if estr > 0.01 else src
+        ec = bsdf.inputs["Emission Color"]
+        if estr > 0.01:
+            col = ec.links[0].from_socket if ec.is_linked else tuple(ec.default_value)[:3]
+        else:
+            col = src
         em = nt.nodes.new("ShaderNodeEmission")
         em.name = "PW_InkFlat"
         if isinstance(col, tuple):
