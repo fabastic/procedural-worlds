@@ -14,7 +14,7 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
 
 ## Status (read this first)
 - **Milestone 1 done â€” ink style module (`ink.py`), verified headless on Blender 5.2.2 (Windows):** coastal island seed x mood grid (1/7/42 x DAY/GOLDEN/DUSK/NIGHT) renders in ink style, looked at: bold wobbly Line Art outlines, cel shadows with hatching, paper grain/mottling, outlined clouds, per-mood palettes. Also checked on a close-range box-room test (cabinets, sphere): clean bold strokes. `tools/check_invariants.py` passes for the island (deterministic, seed differs, leak-free incl. toggling ink on/off, PW_ names).
-- **Known look issues (next):** island geometry is weak (faceted ico-sphere rocks show facet bands, flat plain sea with visible edge at horizon, sky only a thin strip at the top of the frame, no focal point/foliage); NIGHT still reads pale grey-blue on bright bases; an unlit interior goes entirely to shadow tone (scenes must light their rooms).
+- **Milestone 2 done — coastal island hero quality (`scene_island.py`):** cliffed heightfield (cliff side + gentle side, stepped ledges), slope/height terrain material with inked strata + fissures, striped octagonal lighthouse (lantern lit + point light at DUSK/NIGHT) and keeper's cottage, angular rocks and sea stacks, GN grass tufts (`PW_IslandGrass`, slope+height masks, instance proto `PW_TuftProto` hidden), ink-authored sea material (`mat["pw_ink_custom"]`: flat distance bands, shallows + foam rings from a baked `pw_shore` vertex attribute, wave dashes; one mesh grid + far ring so no edge; world below-horizon = sea colour), GP seagull strokes, 3/4 framing over the water. Grid looked at for seeds 1/7/42 x 4 moods; 4 heroes in `renders/hero/coastal_island_*.jpg`. Invariants pass. Known nits: gulls tiny; sea stacks small; sun-glint path was tried and removed (read as a speckled column).
 - **Kitchen and cyberpunk alley:** `scene_kitchen.py` / `scene_alley.py` are stubs on master (being built on separate branches).
 - Previous realistic Cycles path still works with `generate(..., ink=False)`.
 
@@ -41,13 +41,15 @@ procedural_worlds/        the add-on package (zip this folder to install)
   __init__.py             bl_info, PropertyGroup, operators (generate / random seed), panel
   core.py                 collection mgmt + purge, fbm noise, material helpers, mood lighting, camera, render setup, generate()
   ink.py                  ink style: toon group, wobble GN group, Line Art outlines, inked sky world, compositor
-  scenes.py               CoastalIsland + REGISTRY (imports scene_kitchen.Kitchen, scene_alley.CyberpunkAlley)
+  scenes.py               REGISTRY only
+  scene_island.py         coastal island generator
   scene_kitchen.py        kitchen interior generator
   scene_alley.py          cyberpunk alley generator
 tools/blender.sh          headless Blender wrapper (see above)
 tools/smoke_test.py       one EEVEE ink render + invariant asserts
 tools/grid.py             seed x mood grid + contact sheet
 tools/check_invariants.py determinism / leak / naming check
+tools/hero.py             1920x1080 full-quality JPEG heroes -> renders/hero/
 renders/                  output stills (png gitignored except renders/hero/)
 ```
 
@@ -64,7 +66,7 @@ renders/                  output stills (png gitignored except renders/hero/)
 
 ## Roadmap (in order)
 1. ~~Ink style module~~ (done).
-2. Coastal island hero quality in ink style: no ocean edge (ink waves + foam lines), stylized sky, dramatic cliffs, varied wonky rocks, inked grass tufts via GN, lighthouse/ruin focal point, composed framing; 4 hero renders in `renders/hero/`.
+2. ~~Coastal island hero quality~~ (done).
 3. Kitchen interior showpiece (2 hero renders). 4. Cyberpunk alley (2 hero renders).
 5. Camera fly-through operator + low-res MP4; lines boil every 2 frames (GP noise `use_random`, compositor wobble keyed to frame).
 6. Panel presets incl. Ink/Realistic toggle, `blender_manifest.toml`, README with hero renders; reinstall into the user add-ons folder.
