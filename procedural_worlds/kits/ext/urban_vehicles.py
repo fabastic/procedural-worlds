@@ -7,12 +7,34 @@ props), wheels on z=0. Palette keys only (body colours come from fabric/accent/w
 import math
 import bmesh
 from mathutils import Vector, Matrix
-from ..props import prop, _box, _cyl, _rot, OLD, MID, NOW, FUT
+from ..props import prop, _box, _cyl, _rot, OLD, MID, NOW, FUT, FAMILY
 
 ALL = OLD | MID | NOW | FUT
-V18 = {"1700s-1800s"}
-RAIL = V18 | MID | NOW | FUT                  # railway age onwards
+# finer era groups over the 15-era timeline (legacy keys kept so old stories still match)
+ANC = {"ancient", "classical_antiquity"}
+MED = {"medieval", "early_high_middle_ages"}
+PREIND = {"1700s-1800s", "renaissance_discovery", "enlightenment_piracy"}
+STEAM = {"1700s-1800s", "victorian_industrial"}
+V18 = STEAM                                   # gas-lamp / steam age
+INTER = {"1920s-50s", "interwar"}
+COLD = {"1920s-50s", "cold_war"}
+EIGHTIES = {"analog_digital"}
+NOWISH = {"modern", "contemporary", "post_apocalyptic"}
+NEAR = {"near-future", "near_future", "cyberpunk", "solarpunk"}
+FAR = {"far-future", "space_age", "far_future"}
+RAIL = STEAM | MID | NOW | FUT                # railway age onwards
 BODY = ("fabric", "accent", "wall2", "metal", "trim", "fabric2")
+
+
+def body_key(rng, era, choices=BODY):
+    """A vehicle body colour; future eras' accent is emissive neon, so it is kept for trim only."""
+    c = [k for k in choices if not (k == "accent" and era in FUT)] or ["metal"]
+    return rng.choice(c)
+
+
+def acc(era):
+    """'accent' for big painted surfaces, swapped for fabric where accent glows (future eras)."""
+    return "fabric" if era in FUT else "accent"
 
 
 # ----------------------------------------------------------------------------- geometry helpers
@@ -114,7 +136,7 @@ def lights(mb, M, y, z, W, front=True, era="modern", r=0.09):
 
 def car(mb, M, rng, era, style, body=None, L=4.3, W=1.76):
     """Era cars from blocks: '30s', '50s', 'hatch', 'sedan', 'taxi', 'hover'."""
-    body = body or rng.choice(BODY)
+    body = body or body_key(rng, era)
     if style == "30s":
         r = 0.38
         for sy in (-1.25, 1.35):
@@ -205,7 +227,7 @@ def handcart(mb, x, y, z, rot, rng, era):
         _box(mb, M, (rng.uniform(-0.2, 0.2), rng.uniform(-0.3, 0.3), 0.78), (0.3, 0.35, 0.3), rng.choice(("wood2", "fabric2", "paper")))
 
 
-@prop("horse_cart", "floor", (1.8, 4.2, 1.6), eras=OLD, rooms=("street", "market", "farm", "dock"))
+@prop("horse_cart", "floor", (1.8, 4.2, 1.6), eras=MED | PREIND | STEAM, rooms=("street", "market", "farm", "dock"))
 def horse_cart(mb, x, y, z, rot, rng, era):
     """Farm cart with shafts (the horse stays off-panel)."""
     M = M_at(x, y, z, rot)
@@ -228,7 +250,7 @@ def horse_cart(mb, x, y, z, rot, rng, era):
             _box(mb, M, (rng.uniform(-0.4, 0.4), rng.uniform(0, 1.3), 1.3), (0.4, 0.4, 0.4), "wood2")
 
 
-@prop("carriage", "floor", (2.0, 4.6, 2.6), eras={"medieval", "1700s-1800s"}, rooms=("street", "market"))
+@prop("carriage", "floor", (2.0, 4.6, 2.6), eras=MED | PREIND | STEAM, rooms=("street", "market"))
 def carriage(mb, x, y, z, rot, rng, era):
     """Enclosed coach on four spoked wheels, lamps, driver's box."""
     M = M_at(x, y, z, rot)
@@ -255,34 +277,34 @@ def carriage(mb, x, y, z, rot, rng, era):
         rod(mb, M, (sx, -1.3, 0.75), (sx * 0.8, -3.0, 0.9), 0.04, "wood2")
 
 
-@prop("sedan_1930s", "floor", (1.8, 4.2, 1.9), eras=MID, rooms=("street", "parking", "garage"))
+@prop("sedan_1930s", "floor", (1.8, 4.2, 1.9), eras=INTER, rooms=("street", "parking", "garage"))
 def sedan_1930s(mb, x, y, z, rot, rng, era):
     car(mb, M_at(x, y, z, rot), rng, era, "30s", body=rng.choice(("dark", "trim", "fabric", "wall2")))
 
 
-@prop("car_1950s", "floor", (2.0, 5.1, 1.6), eras=MID, rooms=("street", "parking", "garage"))
+@prop("car_1950s", "floor", (2.0, 5.1, 1.6), eras=COLD | {"analog_digital"}, rooms=("street", "parking", "garage"))
 def car_1950s(mb, x, y, z, rot, rng, era):
     car(mb, M_at(x, y, z, rot), rng, era, "50s", body=rng.choice(("accent", "wall2", "fabric", "trim")))
 
 
-@prop("hatchback", "floor", (1.8, 3.9, 1.55), eras=NOW | {"near-future"}, rooms=("street", "parking", "garage"))
+@prop("hatchback", "floor", (1.8, 3.9, 1.55), eras=NOWISH | NEAR, rooms=("street", "parking", "garage"))
 def hatchback(mb, x, y, z, rot, rng, era):
     car(mb, M_at(x, y, z, rot), rng, era, "hatch")
 
 
-@prop("sedan", "floor", (1.8, 4.5, 1.5), eras=NOW | {"near-future"}, rooms=("street", "parking", "garage"))
+@prop("sedan", "floor", (1.8, 4.5, 1.5), eras=NOW | NEAR, rooms=("street", "parking", "garage"))
 def sedan(mb, x, y, z, rot, rng, era):
     car(mb, M_at(x, y, z, rot), rng, era, "sedan")
 
 
-@prop("taxi", "floor", (1.8, 4.5, 1.7), eras=MID | NOW | {"near-future"}, rooms=("street", "parking"))
+@prop("taxi", "floor", (1.8, 4.5, 1.7), eras=MID | NOW | NEAR, rooms=("street", "parking"))
 def taxi(mb, x, y, z, rot, rng, era):
     M = M_at(x, y, z, rot)
     if era in MID:
         car(mb, M, rng, era, "30s", body="accent")
         _box(mb, M, (0, 0.6, 1.92), (0.5, 0.2, 0.16), "lampshade")
     else:
-        car(mb, M, rng, era, "taxi", body="accent")
+        car(mb, M, rng, era, "taxi", body=acc(era))
 
 
 @prop("hover_car", "floor", (2.2, 4.7, 1.7), eras=FUT, rooms=("street", "parking", "garage"))
@@ -293,7 +315,7 @@ def hover_car(mb, x, y, z, rot, rng, era):
 @prop("van", "floor", (2.0, 5.0, 2.3), eras=MID | NOW | FUT, rooms=("street", "parking", "garage", "construction"))
 def van(mb, x, y, z, rot, rng, era):
     M = M_at(x, y, z, rot)
-    body = rng.choice(("paper", "wall2", "metal", "accent"))
+    body = body_key(rng, era, ("paper", "wall2", "metal", "accent"))
     r = 0.36
     for sy in (-1.55, 1.6):
         for sx in (-0.85, 0.85):
@@ -319,7 +341,7 @@ def van(mb, x, y, z, rot, rng, era):
 @prop("delivery_truck", "floor", (2.4, 7.0, 3.2), eras=MID | NOW | FUT, rooms=("street", "construction", "dock", "parking"))
 def delivery_truck(mb, x, y, z, rot, rng, era):
     M = M_at(x, y, z, rot)
-    body = rng.choice(("fabric", "accent", "wall2", "trim"))
+    body = body_key(rng, era, ("fabric", "accent", "wall2", "trim"))
     box_k = rng.choice(("paper", "metal", "wall"))
     r = 0.48
     for sy in (-2.3, 1.6, 2.6):
@@ -343,7 +365,7 @@ def delivery_truck(mb, x, y, z, rot, rng, era):
 @prop("bus", "floor", (2.6, 11.0, 3.2), eras=MID | NOW | FUT, rooms=("street", "station"))
 def bus(mb, x, y, z, rot, rng, era):
     M = M_at(x, y, z, rot)
-    body = rng.choice(("fabric", "accent", "wall2")) if era not in FUT else "metal"
+    body = body_key(rng, era, ("fabric", "accent", "wall2")) if era not in FUT else "metal"
     L, W = (9.5 if era in MID else 11.0), 2.5
     r = 0.5
     for sy in (-L / 2 + 2.0, L / 2 - 2.2):
@@ -368,16 +390,16 @@ def bus(mb, x, y, z, rot, rng, era):
     _box(mb, M, (0, -L / 2 - 0.05, 0.45), (W, 0.1, 0.3), "metal2")
 
 
-@prop("tram", "floor", (2.6, 12.0, 3.8), eras=V18 | MID | NOW | FUT, rooms=("street", "station"))
+@prop("tram", "floor", (2.6, 12.0, 3.8), eras=STEAM | MID | NOW | FUT, rooms=("street", "station"))
 def tram(mb, x, y, z, rot, rng, era):
     M = M_at(x, y, z, rot)
-    rail_car(mb, M, rng, era, 12.0 if era not in V18 else 7.0, kind="tram")
+    rail_car(mb, M, rng, era, 12.0 if era not in STEAM else 7.0, kind="tram")
 
 
 def rail_car(mb, M, rng, era, L, kind="train", body=None):
     """Long rail/tram car body along local Y (centred), on bogies, with window band + doors."""
     W = 2.6 if kind == "tram" else 2.9
-    body = body or ("wood" if era in OLD else rng.choice(("wall2", "fabric", "accent", "trim")) if era in MID | NOW else "metal")
+    body = body or ("wood" if era in OLD else body_key(rng, era, ("wall2", "fabric", "accent", "trim")) if era in MID | NOW else "metal")
     H = 3.3 if kind == "tram" else 3.6
     z0 = 0.45 if kind == "tram" else 0.9
     for sy in (-L / 2 + 1.6, L / 2 - 1.6):                                            # bogies
@@ -412,8 +434,8 @@ def rail_car(mb, M, rng, era, L, kind="train", body=None):
 @prop("bicycle", "floor", (0.6, 1.8, 1.1), eras=RAIL, rooms=("street", "parking", "station"))
 def bicycle(mb, x, y, z, rot, rng, era):
     M = M_at(x, y, z, rot)
-    k = rng.choice(("fabric", "accent", "trim", "dark"))
-    if era in V18:                                         # penny-farthing
+    k = body_key(rng, era, ("fabric", "accent", "trim", "dark"))
+    if era in STEAM:                                       # penny-farthing
         _ring(mb, M, (0, -0.15, 0.7), 0.7, 0.04, "dark", n=18)
         _ring(mb, M, (0, 0.75, 0.22), 0.22, 0.04, "dark", n=10)
         rod(mb, M, (0, -0.15, 1.4), (0, 0.75, 0.3), 0.03, k)
@@ -444,7 +466,7 @@ def _ring(mb, M, c, r, t, key, n=14):
 @prop("motorbike", "floor", (0.8, 2.1, 1.2), eras=MID | NOW | FUT, rooms=("street", "parking", "garage"))
 def motorbike(mb, x, y, z, rot, rng, era):
     M = M_at(x, y, z, rot)
-    k = rng.choice(("fabric", "accent", "dark", "trim"))
+    k = body_key(rng, era, ("fabric", "accent", "dark", "trim"))
     if era in FUT:
         tbox(mb, M, (0, 0, 0.75), (0.5, 1.9, 0.5), k, top=(0.6, 0.8), shift=(0, 0.1))
         for sy in (-0.75, 0.75):
@@ -467,7 +489,7 @@ def motorbike(mb, x, y, z, rot, rng, era):
 @prop("wheelbarrow", "floor", (0.7, 1.5, 0.7), eras=ALL, rooms=("construction", "farm", "street", "market"))
 def wheelbarrow(mb, x, y, z, rot, rng, era):
     M = M_at(x, y, z, rot)
-    k = "wood" if era in OLD else rng.choice(("accent", "metal", "fabric"))
+    k = "wood" if era in OLD else body_key(rng, era, ("accent", "metal", "fabric"))
     tbox(mb, M, (0, 0.05, 0.45), (0.45, 0.65, 0.3), k, top=(1.35, 1.35))
     for sx in (-0.22, 0.22):
         rod(mb, M, (sx, -0.45, 0.3), (sx * 1.3, 0.75, 0.55), 0.025, "wood2" if era in OLD else "metal2")
@@ -478,3 +500,274 @@ def wheelbarrow(mb, x, y, z, rot, rng, era):
         wheel(mb, M, (0, -0.48, 0.2), 0.2, 0.08, era)
     if rng.random() < 0.6:
         mb.sphere(M @ Vector((0, 0.05, 0.58)), 0.24, rng.choice(("stone", "wood2", "fabric2")), sub=1, squash=0.6)
+
+
+# ----------------------------------------------------------------------------- more eras
+def disc_wheel(mb, M, c, r, w, key="wood2"):
+    """Solid plank wheel (ox carts): disc + hub + a cross batten."""
+    cylx(mb, M, c, r, w, key, seg=14)
+    cylx(mb, M, c, r * 0.22, w * 1.8, "wood", seg=8)
+    rbox(mb, M, (c[0] + math.copysign(w * 0.55, c[0] or 1), c[1], c[2]), (0.02, r * 1.7, r * 0.18), "wood")
+
+
+@prop("chariot", "floor", (1.4, 3.6, 1.2), eras=ANC, rooms=("street", "arena", "forum"))
+def chariot(mb, x, y, z, rot, rng, era):
+    M = M_at(x, y, z, rot)
+    k = rng.choice(("accent", "fabric", "metal"))
+    _box(mb, M, (0, 0.35, 0.62), (1.0, 0.8, 0.06), "wood")
+    tbox(mb, M, (0, 0.05, 0.92), (1.0, 0.12, 0.6), k, top=(0.85, 1.0))              # curved breastwork
+    for sx in (-1, 1):
+        tbox(mb, M, (sx * 0.48, 0.35, 0.82), (0.05, 0.7, 0.4), k, top=(1.0, 0.6), shift=(0, -0.2))
+    _box(mb, M, (0, 0.05, 1.24), (0.9, 0.05, 0.05), "metal")
+    for sx in (-0.68, 0.68):
+        spoked(mb, M, (sx, 0.5, 0.5), 0.5, 0.06, "wood2", n=6)
+    cylx(mb, M, (0, 0.5, 0.5), 0.04, 1.45, "wood2", seg=6)
+    rod(mb, M, (0, 0.1, 0.6), (0, -2.0, 0.95), 0.05, "wood2")                       # draught pole + yoke
+    _box(mb, M, (0, -2.0, 0.98), (1.2, 0.08, 0.06), "wood2")
+
+
+@prop("ox_cart", "floor", (1.8, 4.0, 1.4), eras=ANC | MED | PREIND, rooms=("street", "market", "farm", "forum"))
+def ox_cart(mb, x, y, z, rot, rng, era):
+    M = M_at(x, y, z, rot)
+    _box(mb, M, (0, 0.3, 0.85), (1.3, 2.2, 0.1), "wood")
+    for sx in (-0.65, 0.65):
+        for k in range(6):                                                           # stake sides
+            _box(mb, M, (sx, -0.6 + k * 0.36, 1.15), (0.06, 0.06, 0.55), "wood2")
+        _box(mb, M, (sx, 0.3, 1.38), (0.06, 2.2, 0.06), "wood2")
+    for sx in (-0.82, 0.82):
+        disc_wheel(mb, M, (sx, 0.4, 0.6), 0.6, 0.14)
+    cylx(mb, M, (0, 0.4, 0.6), 0.06, 1.9, "wood2", seg=6)
+    rod(mb, M, (0, -0.7, 0.8), (0, -2.6, 0.7), 0.06, "wood2")
+    _box(mb, M, (0, -2.6, 0.75), (1.4, 0.12, 0.1), "wood2")                         # yoke
+    for i in range(rng.randint(2, 5)):
+        p = M @ Vector((rng.uniform(-0.35, 0.35), rng.uniform(-0.4, 1.1), 1.1))
+        if rng.random() < 0.5:
+            mb.sphere(p, rng.uniform(0.22, 0.3), "fabric2", sub=1, squash=1.2)
+        else:
+            mb.sphere(p, 0.3, "leaf" if rng.random() < 0.3 else "wood2", sub=1, squash=0.8)
+
+
+@prop("stagecoach", "floor", (2.0, 5.0, 2.9), eras=PREIND | STEAM, rooms=("street", "market"))
+def stagecoach(mb, x, y, z, rot, rng, era):
+    """Wild-west / mail coach: egg-shaped body on thoroughbraces, luggage on the roof, boot behind."""
+    M = M_at(x, y, z, rot)
+    body = rng.choice(("fabric", "accent", "wall2"))
+    tbox(mb, M, (0, 0.3, 0.95), (1.5, 2.0, 0.5), body, top=(1.0, 1.2))
+    tbox(mb, M, (0, 0.3, 1.75), (1.5, 2.4, 1.1), body, top=(0.95, 0.85))
+    for sx in (-1, 1):
+        _box(mb, M, (sx * 0.76, 0.3, 1.85), (0.04, 0.6, 0.55), "dark")                # window opening
+        _box(mb, M, (sx * 0.77, 0.3, 1.25), (0.03, 0.7, 0.55), "trim")
+        _box(mb, M, (sx * 0.77, 0.3, 1.18), (0.01, 2.0, 0.08), "paper")
+    _box(mb, M, (0, 0.3, 2.34), (1.55, 2.2, 0.08), "trim")
+    for sx in (-0.75, 0.75):
+        rod(mb, M, (sx, -0.8, 2.38), (sx, 1.4, 2.38), 0.025, "metal")                 # roof rail
+    for i in range(rng.randint(2, 4)):
+        _box(mb, M, (rng.uniform(-0.35, 0.35), -0.4 + i * 0.5, 2.55), (0.55, 0.42, 0.3), rng.choice(("wood2", "fabric2", "paper")))
+    tbox(mb, M, (0, 1.75, 1.2), (1.3, 0.6, 0.8), "dark", top=(1.0, 0.7))              # boot
+    _box(mb, M, (0, -1.25, 1.85), (1.4, 0.6, 0.12), "wood2")                          # driver's box
+    _box(mb, M, (0, -1.0, 2.1), (1.4, 0.08, 0.45), "wood2")
+    _box(mb, M, (0, -1.6, 1.4), (1.2, 0.08, 0.6), "wood2")                            # footboard
+    _box(mb, M, (0, 0.3, 0.6), (0.3, 3.8, 0.12), "wood2")
+    for sy, r in ((-1.05, 0.55), (1.5, 0.75)):
+        for sx in (-0.92, 0.92):
+            spoked(mb, M, (sx, sy, r), r, 0.08, "accent" if body != "accent" else "trim", n=12)
+    for sx in (-0.45, 0.45):
+        rod(mb, M, (sx, -1.4, 0.7), (sx * 0.6, -3.2, 0.85), 0.04, "wood2")
+
+
+@prop("model_t", "floor", (1.7, 3.6, 2.1), eras=INTER, rooms=("street", "parking", "garage"))
+def model_t(mb, x, y, z, rot, rng, era):
+    """Tall upright 1910s-20s car: spoked wheels, brass radiator, flat roof on posts."""
+    M = M_at(x, y, z, rot)
+    k = rng.choice(("dark", "dark", "trim"))
+    for sy in (-1.05, 1.1):
+        for sx in (-0.72, 0.72):
+            spoked(mb, M, (sx, sy, 0.38), 0.38, 0.07, "dark", n=10)
+            tbox(mb, M, (sx * 0.95, sy, 0.82), (0.24, 0.85, 0.05), k, top=(1.0, 0.7))   # mudguards
+    _box(mb, M, (0, 0.05, 0.68), (1.1, 3.1, 0.18), k)
+    tbox(mb, M, (0, -1.0, 0.98), (0.75, 0.9, 0.45), k, top=(0.9, 1.0))              # bonnet
+    _box(mb, M, (0, -1.47, 1.0), (0.72, 0.08, 0.6), "metal")                          # brass radiator
+    _box(mb, M, (0, 0.4, 1.05), (1.25, 1.7, 0.6), k)                                  # tub
+    _box(mb, M, (0, -0.42, 1.6), (1.15, 0.04, 0.6), "glass")                          # upright windscreen
+    for sx in (-0.6, 0.6):
+        for sy in (-0.42, 1.2):
+            _box(mb, M, (sx, sy, 1.65), (0.04, 0.04, 0.7), "dark")
+    _box(mb, M, (0, 0.4, 2.02), (1.3, 1.8, 0.05), "dark")
+    for sx in (-0.42, 0.42):
+        cylx(mb, M, (sx, -1.52, 1.12), 0.1, 0.14, "lampshade", seg=10, axis="Y")
+    cylx(mb, M, (0, -0.25, 1.3), 0.18, 0.03, "dark", seg=12, axis="Y")               # steering wheel
+
+
+@prop("trabant", "floor", (1.6, 3.6, 1.45), eras=COLD | EIGHTIES, rooms=("street", "parking"))
+def trabant(mb, x, y, z, rot, rng, era):
+    """Small boxy two-door with a pale body and white roof (East-bloc everyman car)."""
+    M = M_at(x, y, z, rot)
+    body = rng.choice(("wall2", "paper", "wall", "fabric2"))
+    for sy in (-1.1, 1.1):
+        for sx in (-0.68, 0.68):
+            wheel(mb, M, (sx, sy, 0.27), 0.27, 0.16, "modern")
+    tbox(mb, M, (0, 0, 0.6), (1.5, 3.5, 0.5), body, top=(1.0, 0.99))
+    cabin(mb, M, 0.25, 0.85, 1.9, 1.42, 0.55, body, top=(0.9, 0.78), band=(0.08, 0.9), pillars=0)
+    _box(mb, M, (0, 0.25, 1.42), (1.25, 1.5, 0.04), "paper")
+    _box(mb, M, (0, -1.76, 0.6), (1.1, 0.04, 0.2), "dark")
+    lights(mb, M, -1.76, 0.72, 1.5, True, "1920s-50s", r=0.08)
+    _box(mb, M, (0, -1.78, 0.4), (1.5, 0.06, 0.1), "metal")
+    _box(mb, M, (0, 1.78, 0.4), (1.5, 0.06, 0.1), "metal")
+
+
+@prop("hatchback_80s", "floor", (1.7, 3.8, 1.45), eras=EIGHTIES | {"modern", "post_apocalyptic"}, rooms=("street", "parking", "garage"))
+def hatchback_80s(mb, x, y, z, rot, rng, era):
+    """Boxy wedge hatch: flat panels, black bumpers, square lamps."""
+    M = M_at(x, y, z, rot)
+    body = body_key(rng, era, ("accent", "fabric", "wall2", "paper", "trim"))
+    for sy in (-1.15, 1.2):
+        for sx in (-0.74, 0.74):
+            wheel(mb, M, (sx, sy, 0.29), 0.29, 0.2, "modern")
+    tbox(mb, M, (0, 0, 0.57), (1.66, 3.75, 0.5), body, top=(1.0, 0.99))
+    cabin(mb, M, 0.45, 0.82, 2.4, 1.62, 0.6, body, top=(0.9, 0.82), shift=0.12, band=(0.08, 0.9))
+    _box(mb, M, (0, -1.9, 0.38), (1.7, 0.1, 0.18), "dark")
+    _box(mb, M, (0, 1.9, 0.38), (1.7, 0.1, 0.18), "dark")
+    for sx in (-1, 1):
+        _box(mb, M, (sx * 0.84, 0, 0.5), (0.02, 3.4, 0.08), "dark")                    # rubbing strip
+        _box(mb, M, (sx * 0.55, -1.88, 0.66), (0.4, 0.04, 0.16), "lampshade")
+        _box(mb, M, (sx * 0.62, 1.88, 0.68), (0.3, 0.04, 0.2), "fabric")
+    _box(mb, M, (0, -1.88, 0.66), (0.5, 0.04, 0.14), "dark")
+
+
+@prop("electric_car", "floor", (1.9, 4.7, 1.5), eras={"contemporary", "modern"} | NEAR, rooms=("street", "parking", "garage"))
+def electric_car(mb, x, y, z, rot, rng, era):
+    """Smooth modern EV: one-piece glass roof, full-width light bars, flush wheels, a charge flap."""
+    M = M_at(x, y, z, rot)
+    body = rng.choice(("paper", "metal", "trim", "wall2", "dark"))
+    for sy in (-1.45, 1.45):
+        for sx in (-0.8, 0.8):
+            wheel(mb, M, (sx, sy, 0.34), 0.34, 0.24, "modern", hub="metal2")
+    tbox(mb, M, (0, 0, 0.62), (1.88, 4.7, 0.56), body, top=(0.99, 0.96))
+    cabin(mb, M, 0.2, 0.9, 2.9, 1.78, 0.56, "glass", glass="glass", top=(0.8, 0.52), shift=0.25, band=(0.0, 1.0), pillars=0)
+    _box(mb, M, (0, -2.36, 0.8), (1.6, 0.03, 0.05), "lampshade")
+    _box(mb, M, (0, 2.36, 0.85), (1.7, 0.03, 0.06), "fabric")
+    _box(mb, M, (0.95, 1.6, 0.85), (0.02, 0.18, 0.12), "accent" if era in NEAR else "dark")
+
+
+@prop("steam_locomotive", "floor", (2.8, 11.0, 4.3), eras=STEAM | INTER, rooms=("station", "rail"))
+def steam_locomotive(mb, x, y, z, rot, rng, era):
+    """Steam engine: boiler, smokebox + chimney, dome, cab, big driving wheels, tender behind."""
+    M = M_at(x, y, z, rot)
+    k = rng.choice(("dark", "accent", "trim", "fabric"))
+    _box(mb, M, (0, 0, 0.95), (2.0, 7.0, 0.35), "dark")                             # frame
+    cylx(mb, M, (0, -0.9, 2.15), 0.85, 4.6, k, seg=16, axis="Y")                       # boiler
+    cylx(mb, M, (0, -3.35, 2.15), 0.92, 0.6, "dark", seg=16, axis="Y")                 # smokebox
+    cylx(mb, M, (0, -3.66, 2.15), 0.5, 0.05, "metal2", seg=12, axis="Y")
+    _cyl(mb, M, (0, -3.2, 3.3), 0.24, 0.9, "dark", seg=10, r2=0.34)                   # chimney
+    _cyl(mb, M, (0, -1.4, 3.1), 0.28, 0.4, "metal", seg=10, r2=0.2)                   # dome
+    _cyl(mb, M, (0, 0.0, 3.05), 0.18, 0.35, "metal", seg=8)
+    _box(mb, M, (0, 2.3, 2.45), (2.6, 2.2, 2.6), k)                                   # cab
+    _box(mb, M, (0, 2.3, 3.82), (2.8, 2.5, 0.12), "dark")
+    for sx in (-1, 1):
+        _box(mb, M, (sx * 1.31, 2.1, 2.9), (0.03, 0.8, 0.7), "dark")                   # cab window
+        _box(mb, M, (sx * 1.0, -0.9, 1.3), (0.5, 5.2, 0.06), "dark")                   # running board
+        for sy in (-1.6, -0.2, 1.2):
+            spoked(mb, M, (sx * 0.8, sy, 0.75), 0.75, 0.1, "accent" if k != "accent" else "trim", n=12)
+        for sy in (-3.0, -2.4):
+            wheel(mb, M, (sx * 0.8, sy, 0.42), 0.42, 0.1, "1920s-50s")
+        rod(mb, M, (sx * 0.95, -1.6, 0.85), (sx * 0.95, 1.2, 0.85), 0.05, "metal")      # coupling rod
+        cylx(mb, M, (sx * 0.95, -2.7, 1.25), 0.32, 1.0, "dark", seg=10, axis="Y")       # cylinders
+    if era in STEAM and rng.random() < 0.6:                                         # cowcatcher
+        tbox(mb, M, (0, -3.9, 0.55), (2.0, 0.9, 0.7), "metal2", top=(1.0, 0.2), shift=(0, 0.35))
+    else:
+        _box(mb, M, (0, -3.75, 0.95), (2.6, 0.2, 0.3), "fabric")                       # buffer beam
+    cylx(mb, M, (0, -3.72, 2.95), 0.18, 0.2, "lampshade", seg=10, axis="Y")
+    _box(mb, M, (0, 5.0, 1.75), (2.6, 3.4, 1.9), k)                                   # tender + coal
+    mb.sphere(M @ Vector((0, 5.0, 2.65)), 1.1, "dark", sub=1, squash=0.35)
+    for sy in (4.0, 6.0):
+        for sx in (-0.8, 0.8):
+            wheel(mb, M, (sx, sy, 0.48), 0.48, 0.1, "1920s-50s")
+
+
+@prop("rickshaw", "floor", (1.2, 2.6, 1.7), eras=STEAM | INTER, rooms=("street", "market"))
+def rickshaw(mb, x, y, z, rot, rng, era):
+    """Pulled rickshaw (Meiji Tokyo / Shanghai): seat with folding hood on two tall wheels."""
+    M = M_at(x, y, z, rot)
+    k = rng.choice(("dark", "fabric", "accent"))
+    _box(mb, M, (0, 0.3, 0.75), (0.8, 0.6, 0.1), k)
+    _box(mb, M, (0, 0.62, 1.05), (0.8, 0.08, 0.6), k)
+    tbox(mb, M, (0, 0.5, 1.5), (0.85, 0.6, 0.5), "fabric2", top=(1.0, 0.4), shift=(0, 0.2))    # hood
+    for sx in (-0.5, 0.5):
+        spoked(mb, M, (sx, 0.45, 0.62), 0.62, 0.05, "dark", n=12)
+        rod(mb, M, (sx * 0.7, 0.2, 0.75), (sx * 0.55, -1.6, 0.85), 0.025, "wood2")
+    _box(mb, M, (0, -1.6, 0.86), (0.6, 0.04, 0.04), "wood2")
+    _box(mb, M, (0, 0.0, 0.45), (0.5, 0.25, 0.04), k)                                  # footrest
+
+
+def hull_shell(mb, M, L, B, H, key, inner="wood2", bow_lift=0.3, stern_lift=0.0, stern_w=0.45, n=12, t=0.06,
+               rail="trim", deck=False, bow_t=0.55):
+    """Open (or decked) boat hull along local Y, bow at -Y: plank sides following a fair waterline
+    curve, a bottom, a transom, a gunwale rail. Returns the half-width function w(u), u 0=bow..1=stern."""
+    def w(u):
+        if u <= bow_t:
+            return B / 2 * math.sin(math.pi / 2 * u / bow_t) ** 0.75
+        return B / 2 * (1 - (1 - stern_w) * ((u - bow_t) / (1 - bow_t)) ** 2)
+
+    def zt(u):
+        return H + bow_lift * max(0.0, 1 - u / 0.35) ** 2 + stern_lift * max(0.0, (u - 0.7) / 0.3) ** 2
+    pts = [(u, -L / 2 + L * u) for u in (i / n for i in range(n + 1))]
+    for (u0, y0), (u1, y1) in zip(pts, pts[1:]):
+        for sx in (-1, 1):
+            a, b = Vector((sx * w(u0), y0, 0)), Vector((sx * w(u1), y1, 0))
+            d = b - a
+            h0 = (zt(u0) + zt(u1)) / 2
+            ang = math.atan2(d.x, d.y)
+            rbox(mb, M, ((a + b) / 2) + Vector((0, 0, h0 / 2 + 0.02)), (t, d.length + 0.03, h0), key, rz=-ang)
+            rbox(mb, M, ((a + b) / 2) + Vector((0, 0, h0 + 0.03)), (t * 1.8, d.length + 0.04, 0.05), rail, rz=-ang)
+        ww = min(w(u0), w(u1))
+        if ww > 0.05:
+            _box(mb, M, (0, (y0 + y1) / 2, 0.06 if not deck else H - 0.05), (2 * ww - t, y1 - y0 + 0.02, 0.1), inner)
+    ws = w(1.0)
+    _box(mb, M, (0, L / 2, zt(1.0) / 2 + 0.02), (2 * ws + t, t, zt(1.0)), key)
+    return w
+
+
+@prop("gondola", "floor", (1.4, 10.0, 1.4), eras=PREIND | STEAM | MID | NOW, rooms=("canal", "dock"))
+def gondola(mb, x, y, z, rot, rng, era):
+    """Venetian gondola: long black hull with raised ends, iron ferro at the bow, a red seat."""
+    M = M_at(x, y, z, rot)
+    hull_shell(mb, M, 10.0, 1.4, 0.45, "dark", inner="wood2", bow_lift=0.8, stern_lift=0.6, stern_w=0.08, bow_t=0.5, rail="dark")
+    _box(mb, M, (0, -5.05, 1.05), (0.05, 0.2, 0.75), "metal")                         # ferro
+    for k in range(5):
+        _box(mb, M, (0, -4.96, 0.85 + k * 0.1), (0.04, 0.32, 0.035), "metal")
+    _box(mb, M, (0, 0.6, 0.4), (0.8, 0.9, 0.18), "fabric")                            # seat
+    _box(mb, M, (0, 1.0, 0.6), (0.8, 0.1, 0.35), "fabric")
+    _box(mb, M, (0, -0.4, 0.13), (0.9, 0.6, 0.04), "fabric2")                          # carpet
+    rod(mb, M, (0.6, 3.6, 0.5), (0.45, 3.8, 1.1), 0.04, "wood2")                       # forcola + oar
+    rod(mb, M, (0.45, 3.8, 1.1), (1.2, 0.8, -0.1), 0.03, "wood2")
+
+
+@prop("rowboat", "floor", (1.4, 3.6, 0.8), eras=ALL, rooms=("dock", "canal", "beach", "ship"))
+def rowboat(mb, x, y, z, rot, rng, era):
+    M = M_at(x, y, z, rot)
+    k = rng.choice(("wood", "accent", "wall2", "paper")) if era not in FUT else rng.choice(("wood", "wall2", "paper"))
+    hull_shell(mb, M, 3.6, 1.35, 0.5, k, inner="wood2", bow_lift=0.18, stern_w=0.5)
+    for yy in (-0.5, 0.5):
+        _box(mb, M, (0, yy, 0.38), (1.15, 0.22, 0.05), "wood2")                        # thwarts
+    for sx in (-1, 1):
+        rod(mb, M, (sx * 0.62, 0.0, 0.58), (sx * 0.3, 1.5, 0.35), 0.025, "wood2")      # oars
+
+
+# ----------------------------------------------------------------------------- era picks for kits
+VEHICLES = ("chariot", "ox_cart", "horse_cart", "carriage", "stagecoach", "rickshaw", "model_t", "sedan_1930s",
+            "car_1950s", "trabant", "hatchback_80s", "hatchback", "sedan", "electric_car", "taxi", "van",
+            "hover_car", "motorbike", "bicycle", "handcart")
+BIG = ("delivery_truck", "bus", "tram")
+
+
+def era_vehicles(era, big=False, culture=None):
+    """Vehicle prop names valid for an era (cars first; carts for pre-industrial eras)."""
+    from ..props import PROPS
+    names = [n for n in VEHICLES + (BIG if big else ()) if n in PROPS and (PROPS[n]["eras"] is None or era in PROPS[n]["eras"])]
+    if culture not in ("meiji_japan", "shanghai") and "rickshaw" in names and len(names) > 2:
+        names.remove("rickshaw")
+    if culture in ("soviet", "divided_berlin", "post_soviet") and "trabant" in names:
+        names += ["trabant"] * 3
+    if culture == "wild_west":
+        names = [n for n in names if n in ("stagecoach", "horse_cart", "handcart")] or names
+    return names or ["handcart"]
