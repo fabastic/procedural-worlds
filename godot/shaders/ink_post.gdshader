@@ -11,7 +11,9 @@ uniform vec3 paper = vec3(0.95, 0.91, 0.82);
 uniform float line_px = 2.2;
 uniform float boil_fps = 6.0;
 uniform float hatch = 1.0;
-uniform int debug_mode = 0;   // 1 = edges only, 2 = raw screen
+uniform int debug_mode = 0;
+uniform int weather = 0;      // 0 clear, 1 rain, 2 snow, 3 fog, 4 storm
+uniform float mist = 0.0;   // 1 = edges only, 2 = raw screen
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float vnoise(vec2 p) {
@@ -60,6 +62,30 @@ void fragment() {
 	col *= mix(vec3(1.0), paper, 0.6);
 	col *= mix(0.92, 1.04, hash(floor(px))) * mix(0.94, 1.03, vnoise(SCREEN_UV * 3.0));
 	col = mix(col, ink, edge);
+	// weather, matching the Blender ink compositor: slanted rain strokes / inked snow / mist band
+	if (mist > 0.0) {
+		float band = mix(1.0, 0.25, clamp(abs(SCREEN_UV.y - 0.5) / 0.45, 0.0, 1.0));
+		col = mix(col, vec3(0.70, 0.69, 0.62), band * mist * 0.75);
+	}
+	if (weather == 1 || weather == 4) {
+		float sx = px.x + px.y * 0.22;
+		float cid = floor(sx / 9.0);
+		float r = hash(vec2(cid, step_t));
+		float on = step(r, weather == 4 ? 0.14 : 0.08);
+		float thin = step(fract(sx / 9.0), 0.3);
+		float seg = step(fract(SCREEN_UV.y * 2.6 + r * 13.0), weather == 4 ? 0.22 : 0.16);
+		col = mix(col, vec3(0.80, 0.83, 0.88), on * thin * seg * 0.75);
+	}
+	if (weather == 2) {
+		vec2 sp = px / 34.0 + vec2(step_t * 0.13, step_t * 0.45);
+		vec2 ci = floor(sp);
+		vec2 c = vec2(hash(ci), hash(ci + 7.3));
+		float d = length(fract(sp) - c);
+		float keep = step(0.45, hash(ci + 3.1));
+		float rad = 0.10 + hash(ci + 1.7) * 0.10;
+		col = mix(col, ink, step(d, rad + 0.05) * (1.0 - step(d, rad)) * keep * 0.7);
+		col = mix(col, vec3(0.94, 0.94, 0.92), step(d, rad) * keep);
+	}
 	float r = length(SCREEN_UV - 0.5);
 	col = mix(col, col * vec3(0.62, 0.52, 0.40), smoothstep(0.45, 0.85, r) * 0.5);
 	if (debug_mode == 1) { col = vec3(edge); }
