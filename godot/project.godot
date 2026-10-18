@@ -1,0 +1,16 @@
+; Procedural Worlds - walk the story (Godot 4.x). Loads Blender-built worlds from ../story_out at runtime.
+config_version=5
+
+[application]
+config/name="Procedural Worlds - Walk the Story"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.4", "Forward Plus")
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="forward_plus"
+anti_aliasing/quality/msaa_3d=1
