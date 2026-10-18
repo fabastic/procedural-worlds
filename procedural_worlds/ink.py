@@ -536,6 +536,56 @@ def build_world(mood, sun_obj, seed, sea_color=None):
 
 
 # ----------------------------------------------------------------------------- compositor
+def _weather(t, img, scene, uv, uvs, step):
+    from .core import load_preset
+    layers = scene.get("pw_layers", {}) or {}
+    wname = layers.get("weather", "clear")
+    W = load_preset("conditions")["weather"].get(wname, {})
+    if not W:
+        return img
+    ncoord = t.node("CompositorNodeImageCoordinates", {"Image": img}).outputs["Normalized"]
+    nsep = t.node("ShaderNodeSeparateXYZ", {"Vector": ncoord})
+    ny = nsep.outputs["Y"]
+    mist = float(W.get("mist", 0.0))
+    if mist > 0:
+        band = t.maprange(t.math("ABSOLUTE", t.math("SUBTRACT", ny, 0.5)), 0.0, 0.45, 1.0, 0.25)
+        k = t.math("MULTIPLY", band, mist * 0.75)
+        img = t.mix(k, img, (*srgb(0.86, 0.85, 0.80), 1))
+    tm = (lambda s: t.math("MULTIPLY", step, s)) if step is not None else (lambda s: 0.0)
+    if W.get("overlay") == "rain":
+        heavy = W.get("heavy", False)
+        sep = t.node("ShaderNodeSeparateXYZ", {"Vector": uvs})
+        px = t.math("ADD", sep.outputs["X"], t.math("MULTIPLY", sep.outputs["Y"], 0.22))   # slanted
+        cols = 120.0
+        cid = t.math("FLOOR", t.math("MULTIPLY", px, cols))
+        cell = t.node("ShaderNodeCombineXYZ", {"X": cid, "Y": tm(1.0), "Z": 3.0}).outputs[0]
+        r = t.node("ShaderNodeTexWhiteNoise", {"Vector": cell}, noise_dimensions="3D").outputs["Value"]
+        on = t.math("GREATER_THAN", r, 0.86 if heavy else 0.92)
+        thin = t.math("LESS_THAN", t.math("FRACT", t.math("MULTIPLY", px, cols)), 0.3)
+        seg = t.math("LESS_THAN", t.math("FRACT", t.math("ADD", t.math("MULTIPLY", sep.outputs["Y"], 2.6),
+                                                          t.math("MULTIPLY", r, 13.0))), 0.22 if heavy else 0.16)
+        streak = t.math("MULTIPLY", t.math("MULTIPLY", on, thin), seg)
+        img = t.mix(t.math("MULTIPLY", streak, 0.75), img, (*srgb(0.90, 0.92, 0.95), 1))
+        dark = t.math("MULTIPLY", streak, t.math("GREATER_THAN", r, 0.985))           # a few inked strokes
+        img = t.mix(t.math("MULTIPLY", dark, 0.6), img, (*INK, 1))
+    elif W.get("overlay") == "snow":
+        drift = t.node("ShaderNodeCombineXYZ", {"X": tm(0.013), "Y": tm(-0.045), "Z": 0.0}).outputs[0]
+        vo = t.node("ShaderNodeTexVoronoi", {"Vector": t.vmath("ADD", uvs, drift), "Scale": 20.0, "Randomness": 1.0})
+        d = vo.outputs["Distance"]
+        sz = t.node("ShaderNodeSeparateXYZ", {"Vector": vo.outputs["Color"]}).outputs["X"]
+        keep = t.math("GREATER_THAN", sz, 0.45)
+        rad = t.math("ADD", 0.035, t.math("MULTIPLY", sz, 0.05))
+        flake = t.math("MULTIPLY", t.math("LESS_THAN", d, rad), keep)
+        rim = t.math("MULTIPLY", t.math("MULTIPLY", t.math("LESS_THAN", d, t.math("ADD", rad, 0.02)),
+                                        t.math("SUBTRACT", 1.0, flake)), keep)
+        img = t.mix(t.math("MULTIPLY", rim, 0.7), img, (*INK, 1))
+        img = t.mix(flake, img, (*srgb(0.97, 0.97, 0.95), 1))
+    elif W.get("overlay") == "haze":
+        hz = t.node("ShaderNodeTexNoise", {"Vector": t.vmath("MULTIPLY", uvs, (1.0, 6.0, 1.0)), "Scale": 3.0}).outputs["Fac"]
+        img = t.mix(t.maprange(hz, 0.4, 0.7, 0.0, 0.12), img, (*srgb(0.98, 0.90, 0.72), 1))
+    return img
+
+
 def build_compositor(scene, seed, frame_boil=True, grade=None):
     name = "PW_InkComp"
     g = bpy.data.node_groups.get(name)
@@ -605,6 +655,9 @@ def build_compositor(scene, seed, frame_boil=True, grade=None):
     splat = t.math("MULTIPLY", t.math("GREATER_THAN", sp.outputs["Value"], 0.9985), edge)
     dark = t.math("MINIMUM", t.math("ADD", t.math("MULTIPLY", t.math("MAXIMUM", blot, splat), 0.85), smudge), 0.9)
     img = t.mix(dark, img, (*INK, 1))
+    # 4b. weather (presets/conditions.json via the scene's story layers): inked rain strokes,
+    # snow flakes with an ink rim, and a paper-coloured mist band around the horizon
+    img = _weather(t, img, scene, uv, uvs, step if frame_boil else None)
     # 5. warm grimy vignette
     g = grade or {}
     vig = t.maprange(r, 0.55, 1.15, 0.0, min(0.85, 0.45 * g.get("vignette", 1.0)))
