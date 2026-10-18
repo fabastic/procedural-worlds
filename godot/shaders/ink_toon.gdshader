@@ -6,6 +6,7 @@ render_mode cull_back, specular_disabled;
 uniform vec3 light_tint : source_color = vec3(1.0);
 uniform float band_hi = 0.55;
 uniform float band_lo = 0.12;
+uniform bool debug_albedo = false;
 varying vec4 vcol;
 
 void vertex() {
@@ -20,10 +21,12 @@ void fragment() {
 		ALBEDO = vcol.rgb;
 	}
 	ROUGHNESS = 1.0;
+	if (debug_albedo) { EMISSION = vcol.rgb; ALBEDO = vec3(0.0); }
 }
 
 void light() {
 	float ndl = clamp(dot(NORMAL, LIGHT), 0.0, 1.0) * ATTENUATION;
 	float band = ndl > band_hi ? 1.0 : (ndl > band_lo ? 0.55 : 0.0);
-	DIFFUSE_LIGHT += LIGHT_COLOR / PI * band * light_tint;
+	// lit ~= base colour, shadow ~= ambient (shadow tint) like the Blender ink pass; no blow-outs
+	DIFFUSE_LIGHT += min(LIGHT_COLOR / PI, vec3(1.2)) * band * light_tint * 0.6;
 }

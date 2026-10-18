@@ -21,6 +21,10 @@ var sun: DirectionalLight3D
 var fired := {}
 var next_beat := 0
 var focus_nodes := {}
+var shot_path := ""
+var shot_frames := 0
+var shot_scene := -1
+var _frame := 0
 
 
 func _ready() -> void:
@@ -32,6 +36,16 @@ func _ready() -> void:
 	sun = DirectionalLight3D.new()
 	sun.shadow_enabled = true
 	add_child(sun)
+	var ua := OS.get_cmdline_user_args()
+	for i in ua.size():
+		if ua[i] == "--shot" and i + 1 < ua.size():
+			shot_path = _abs(ua[i + 1])
+		if ua[i] == "--frames" and i + 1 < ua.size():
+			shot_frames = int(ua[i + 1])
+		if ua[i] == "--scene" and i + 1 < ua.size():
+			shot_scene = int(ua[i + 1])
+	if shot_path != "" and shot_frames == 0:
+		shot_frames = 90
 	var dir := _story_arg()
 	if dir == "":
 		_show_picker()
@@ -112,7 +126,7 @@ func _load_world(dir: String) -> void:
 		push_error("Bad world.json in " + dir)
 		return
 	hud.show_title(String(world.get("title", "")).to_upper(), 3.0)
-	_enter_scene(0)
+	_enter_scene(max(0, shot_scene))
 
 
 func _enter_scene(i: int) -> void:
@@ -158,6 +172,13 @@ func _dress(root: Node) -> void:
 	var mat := ShaderMaterial.new()
 	mat.shader = TOON
 	mat.set_shader_parameter("light_tint", Color(tint[0], tint[1], tint[2]))
+	mat.set_shader_parameter("debug_albedo", OS.get_cmdline_user_args().has("--debug-albedo"))
+	if OS.get_cmdline_user_args().has("--debug-lights"):
+		var nl := 0
+		for n in root.find_children("*", "Light3D", true, false):
+			print("LIGHT ", n.name, " ", n.get_class(), " e=", n.light_energy, " c=", n.light_color, " at ", n.global_position)
+			nl += 1
+		print("LIGHTS ", nl)
 	var stack: Array = [root]
 	while not stack.is_empty():
 		var n: Node = stack.pop_back()
@@ -176,8 +197,15 @@ func _dress(root: Node) -> void:
 		elif n is Light3D:
 			var l: Light3D = n
 			l.shadow_enabled = l is OmniLight3D
-			if l is OmniLight3D:
-				l.light_energy = clampf(l.light_energy, 0.0, 16.0)
+			if l is OmniLight3D:                       # glTF candela -> calm game lamps
+				var indoor: bool = world["scenes"][scene_index].get("interior", false)
+				l.light_energy = 2.4 if indoor else 1.4
+				if indoor:
+					var ltw: Array = world["scenes"][scene_index]["sky"].get("light_tint", [1, 0.9, 0.75])
+					l.light_color = Color(ltw[0], ltw[1], ltw[2])
+				(l as OmniLight3D).omni_range = 9.0 if indoor else 7.0
+			elif l is SpotLight3D:
+				l.light_energy = 1.0
 
 
 func _setup_environment(sc: Dictionary) -> void:
@@ -195,15 +223,25 @@ func _setup_environment(sc: Dictionary) -> void:
 	e.sky = sky
 	e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	var sh: Array = s.get("shadow_tint", [0.6, 0.62, 0.75])
-	e.ambient_light_color = Color(sh[0], sh[1], sh[2]) * (0.55 if not sc.get("interior", false) else 0.45)
+	var lt0: Array = s.get("light_tint", [1, 1, 1])
+	var shc := Color(sh[0], sh[1], sh[2])
+	if sc.get("interior", false):                  # lamp-lit rooms: warm fill, never a blue cave
+		e.ambient_light_color = shc.lerp(Color(lt0[0], lt0[1], lt0[2]), 0.5) * 0.75
+	else:
+		e.ambient_light_color = shc * 0.62
 	e.ambient_light_energy = 1.0
+	e.ambient_light_sky_contribution = 0.0       # ambient = our shadow/lamp tint, not the night sky
 	e.tonemap_mode = Environment.TONE_MAPPER_LINEAR
 	env.environment = e
 	var d: Array = s["sun_dir"]
 	var dirv := Vector3(d[0], d[1], d[2]).normalized()
 	sun.look_at_from_position(Vector3.ZERO, dirv, Vector3.UP if abs(dirv.y) < 0.99 else Vector3.FORWARD)
-	sun.light_energy = 1.2 if sc.get("mood", "DAY") != "NIGHT" else 0.45
-	sun.visible = not sc.get("interior", false) or true
+	var mood: String = sc.get("mood", "DAY")
+	sun.light_energy = {"DAY": 1.3, "GOLDEN": 1.1, "DUSK": 0.8, "NIGHT": 0.25}.get(mood, 1.0)
+	var lt: Array = s.get("light_tint", [1, 1, 1])
+	sun.light_color = Color(lt[0], lt[1], lt[2]) if mood != "NIGHT" else Color(0.6, 0.68, 0.85)
+	if sc.get("interior", false) and mood in ["DUSK", "NIGHT"]:
+		sun.light_energy = 0.0
 
 
 func _col(a: Array) -> Color:
@@ -218,13 +256,25 @@ func _add_post(cam: Camera3D) -> void:
 	q.extra_cull_margin = 16384.0
 	var pm := ShaderMaterial.new()
 	pm.shader = POST
+	pm.set_shader_parameter("ink", Vector3(0.02, 0.017, 0.015))
+	pm.set_shader_parameter("paper", Vector3(0.95, 0.91, 0.82))
 	q.material_override = pm
+	var ua := OS.get_cmdline_user_args()
+	if ua.has("--debug-edges"):
+		pm.set_shader_parameter("debug_mode", 1)
+	if ua.has("--debug-raw"):
+		pm.set_shader_parameter("debug_mode", 2)
 	q.position = Vector3(0, 0, -0.5)
 	cam.add_child(q)
 
 
 # ------------------------------------------------------------------ story flow
 func _process(_delta: float) -> void:
+	_frame += 1
+	if shot_path != "" and _frame == shot_frames:      # test hook: screenshot + quit
+		get_viewport().get_texture().get_image().save_png(shot_path)
+		print("SHOT ", shot_path)
+		get_tree().quit()
 	if player == null or world.is_empty():
 		return
 	var sc: Dictionary = world["scenes"][scene_index]
@@ -233,15 +283,16 @@ func _process(_delta: float) -> void:
 	if next_beat < beats.size():
 		var b: Dictionary = beats[next_beat]
 		var t: Array = b["trigger"]["pos"]
-		var near := player.global_position.distance_to(Vector3(t[0], t[1], t[2])) < float(b["trigger"]["radius_m"]) + 1.0
-		if next_beat == 0 or near:
+		var r: float = float(b["trigger"]["radius_m"]) * (0.55 if sc.get("interior", false) else 1.0)
+		var near := player.global_position.distance_to(Vector3(t[0], t[1], t[2])) < r
+		if next_beat == 0 or (near and not hud._busy):
 			hud.show_beat(b)
 			next_beat += 1
 			if next_beat < beats.size():
 				var f = beats[next_beat]["trigger"].get("focus")
 				hud.set_prompt(("Find: %s" % String(f).replace("_", " ")) if f else "")
 	else:
-		var last := scene_index + 1 >= world["scenes"].size()
+		var last: bool = scene_index + 1 >= world["scenes"].size()
 		hud.set_prompt("THE END" if last else "Press E to continue the story")
 		if not last and Input.is_action_just_pressed("interact"):
 			hud.ink_wipe(func(): _enter_scene(scene_index + 1))

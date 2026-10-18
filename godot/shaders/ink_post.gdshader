@@ -11,6 +11,7 @@ uniform vec3 paper = vec3(0.95, 0.91, 0.82);
 uniform float line_px = 2.2;
 uniform float boil_fps = 6.0;
 uniform float hatch = 1.0;
+uniform int debug_mode = 0;   // 1 = edges only, 2 = raw screen
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float vnoise(vec2 p) {
@@ -61,5 +62,7 @@ void fragment() {
 	col = mix(col, ink, edge);
 	float r = length(SCREEN_UV - 0.5);
 	col = mix(col, col * vec3(0.62, 0.52, 0.40), smoothstep(0.45, 0.85, r) * 0.5);
+	if (debug_mode == 1) { col = vec3(edge); }
+	if (debug_mode == 2) { col = texture(screen_tex, SCREEN_UV).rgb; }
 	ALBEDO = col;
 }
