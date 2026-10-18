@@ -1,0 +1,2483 @@
+{
+ "alien_landscape": {
+  "category": "fantasy",
+  "kit": "terrain",
+  "eras": [
+   "far-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "alien_landscape",
+     "era": "far-future",
+     "genre_mood": "noir",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/alien_landscape_0_far-future_noir_day_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 5.0
+   },
+   {
+    "layers": {
+     "setting": "alien_landscape",
+     "era": "far-future",
+     "genre_mood": "romance",
+     "time": "night",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/alien_landscape_1_far-future_romance_night_fog.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 2.0
+   },
+   {
+    "layers": {
+     "setting": "alien_landscape",
+     "era": "far-future",
+     "genre_mood": "mystery",
+     "time": "golden",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/alien_landscape_2_far-future_mystery_golden_snow.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 2.1
+   }
+  ]
+ },
+ "bar": {
+  "category": "civic",
+  "kit": "room",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "bar",
+     "era": "1920s-50s",
+     "genre_mood": "fantasy",
+     "time": "night",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/bar_0_1920s-50s_fantasy_night_rain.jpg",
+    "focus": [
+     "bar_back",
+     "bottles",
+     "counter",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 13,
+    "seconds": 2.7
+   },
+   {
+    "layers": {
+     "setting": "bar",
+     "era": "modern",
+     "genre_mood": "adventure",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/bar_1_modern_adventure_golden_clear.jpg",
+    "focus": [
+     "bar_back",
+     "bottles",
+     "counter",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 12,
+    "seconds": 2.7
+   },
+   {
+    "layers": {
+     "setting": "bar",
+     "era": "near-future",
+     "genre_mood": "war",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/bar_2_near-future_war_dusk_clear.jpg",
+    "focus": [
+     "bar_back",
+     "bottles",
+     "counter",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 13,
+    "seconds": 2.2
+   }
+  ]
+ },
+ "basement": {
+  "category": "domestic",
+  "kit": "room",
+  "eras": [
+   "modern",
+   "1920s-50s",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "basement",
+     "era": "modern",
+     "genre_mood": "horror",
+     "time": "golden",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/basement_0_modern_horror_golden_fog.jpg",
+    "focus": [
+     "crates",
+     "door",
+     "lamp",
+     "machines",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 11,
+    "seconds": 1.6
+   },
+   {
+    "layers": {
+     "setting": "basement",
+     "era": "1920s-50s",
+     "genre_mood": "sci-fi",
+     "time": "dusk",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/basement_1_1920s-50s_sci-fi_dusk_snow.jpg",
+    "focus": [
+     "crates",
+     "door",
+     "lamp",
+     "machines",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 12,
+    "seconds": 2.1
+   },
+   {
+    "layers": {
+     "setting": "basement",
+     "era": "near-future",
+     "genre_mood": "comedy",
+     "time": "day",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/basement_2_near-future_comedy_day_rain.jpg",
+    "focus": [
+     "crates",
+     "door",
+     "lamp",
+     "machines",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 12,
+    "seconds": 4.0
+   }
+  ]
+ },
+ "battlefield": {
+  "category": "dramatic",
+  "kit": "terrain",
+  "eras": [
+   "1920s-50s",
+   "medieval",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "battlefield",
+     "era": "1920s-50s",
+     "genre_mood": "romance",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/dramatic/battlefield_0_1920s-50s_romance_dusk_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "trench"
+    ],
+    "objects": 7,
+    "seconds": 1.8
+   },
+   {
+    "layers": {
+     "setting": "battlefield",
+     "era": "medieval",
+     "genre_mood": "mystery",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/dramatic/battlefield_1_medieval_mystery_day_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "trench"
+    ],
+    "objects": 7,
+    "seconds": 2.5
+   },
+   {
+    "layers": {
+     "setting": "battlefield",
+     "era": "near-future",
+     "genre_mood": "slice-of-life",
+     "time": "night",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/dramatic/battlefield_2_near-future_slice-of-life_night_fog.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "trench"
+    ],
+    "objects": 7,
+    "seconds": 3.7
+   }
+  ]
+ },
+ "bedroom": {
+  "category": "domestic",
+  "kit": "room",
+  "eras": [
+   "modern",
+   "1920s-50s",
+   "1700s-1800s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "bedroom",
+     "era": "modern",
+     "genre_mood": "adventure",
+     "time": "day",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/bedroom_0_modern_adventure_day_snow.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 11,
+    "seconds": 1.4
+   },
+   {
+    "layers": {
+     "setting": "bedroom",
+     "era": "1920s-50s",
+     "genre_mood": "war",
+     "time": "night",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/bedroom_1_1920s-50s_war_night_rain.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 12,
+    "seconds": 1.0
+   },
+   {
+    "layers": {
+     "setting": "bedroom",
+     "era": "1700s-1800s",
+     "genre_mood": "noir",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/bedroom_2_1700s-1800s_noir_golden_clear.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "room",
+     "window"
+    ],
+    "objects": 13,
+    "seconds": 2.6
+   }
+  ]
+ },
+ "cabin": {
+  "category": "settlement",
+  "kit": "terrain",
+  "eras": [
+   "modern",
+   "1700s-1800s",
+   "1920s-50s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "cabin",
+     "era": "modern",
+     "genre_mood": "sci-fi",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/cabin_0_modern_sci-fi_night_clear.jpg",
+    "focus": [
+     "cabin",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 8,
+    "seconds": 3.1
+   },
+   {
+    "layers": {
+     "setting": "cabin",
+     "era": "1700s-1800s",
+     "genre_mood": "comedy",
+     "time": "golden",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/cabin_1_1700s-1800s_comedy_golden_fog.jpg",
+    "focus": [
+     "cabin",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 7,
+    "seconds": 2.7
+   },
+   {
+    "layers": {
+     "setting": "cabin",
+     "era": "1920s-50s",
+     "genre_mood": "fantasy",
+     "time": "dusk",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/cabin_2_1920s-50s_fantasy_dusk_snow.jpg",
+    "focus": [
+     "cabin",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 8,
+    "seconds": 4.4
+   }
+  ]
+ },
+ "camp": {
+  "category": "settlement",
+  "kit": "terrain",
+  "eras": [
+   "medieval",
+   "modern",
+   "ancient"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "camp",
+     "era": "medieval",
+     "genre_mood": "mystery",
+     "time": "golden",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/camp_0_medieval_mystery_golden_rain.jpg",
+    "focus": [
+     "campfire",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 9,
+    "seconds": 2.8
+   },
+   {
+    "layers": {
+     "setting": "camp",
+     "era": "modern",
+     "genre_mood": "slice-of-life",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/camp_1_modern_slice-of-life_dusk_clear.jpg",
+    "focus": [
+     "campfire",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 9,
+    "seconds": 3.2
+   },
+   {
+    "layers": {
+     "setting": "camp",
+     "era": "ancient",
+     "genre_mood": "horror",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/camp_2_ancient_horror_day_clear.jpg",
+    "focus": [
+     "campfire",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 7,
+    "seconds": 4.5
+   }
+  ]
+ },
+ "castle_hall": {
+  "category": "fantasy",
+  "kit": "room",
+  "eras": [
+   "medieval",
+   "ancient",
+   "1700s-1800s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "castle_hall",
+     "era": "medieval",
+     "genre_mood": "war",
+     "time": "dusk",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/castle_hall_0_medieval_war_dusk_fog.jpg",
+    "focus": [
+     "banquet",
+     "dais",
+     "door",
+     "fireplace",
+     "pillars",
+     "room",
+     "throne",
+     "window"
+    ],
+    "objects": 31,
+    "seconds": 3.6
+   },
+   {
+    "layers": {
+     "setting": "castle_hall",
+     "era": "ancient",
+     "genre_mood": "noir",
+     "time": "day",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/castle_hall_1_ancient_noir_day_snow.jpg",
+    "focus": [
+     "banquet",
+     "dais",
+     "door",
+     "fireplace",
+     "pillars",
+     "room",
+     "throne",
+     "window"
+    ],
+    "objects": 26,
+    "seconds": 4.3
+   },
+   {
+    "layers": {
+     "setting": "castle_hall",
+     "era": "1700s-1800s",
+     "genre_mood": "romance",
+     "time": "night",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/castle_hall_2_1700s-1800s_romance_night_rain.jpg",
+    "focus": [
+     "banquet",
+     "dais",
+     "door",
+     "fireplace",
+     "pillars",
+     "room",
+     "throne",
+     "window"
+    ],
+    "objects": 29,
+    "seconds": 3.6
+   }
+  ]
+ },
+ "classroom": {
+  "category": "civic",
+  "kit": "room",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "1700s-1800s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "classroom",
+     "era": "1920s-50s",
+     "genre_mood": "comedy",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/classroom_0_1920s-50s_comedy_day_clear.jpg",
+    "focus": [
+     "blackboard",
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 14,
+    "seconds": 5.3
+   },
+   {
+    "layers": {
+     "setting": "classroom",
+     "era": "modern",
+     "genre_mood": "fantasy",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/classroom_1_modern_fantasy_night_clear.jpg",
+    "focus": [
+     "blackboard",
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 15,
+    "seconds": 3.2
+   },
+   {
+    "layers": {
+     "setting": "classroom",
+     "era": "1700s-1800s",
+     "genre_mood": "adventure",
+     "time": "golden",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/classroom_2_1700s-1800s_adventure_golden_fog.jpg",
+    "focus": [
+     "blackboard",
+     "desk",
+     "door",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 18,
+    "seconds": 5.2
+   }
+  ]
+ },
+ "desert": {
+  "category": "nature",
+  "kit": "terrain",
+  "eras": [
+   "modern",
+   "ancient",
+   "far-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "desert",
+     "era": "modern",
+     "genre_mood": "slice-of-life",
+     "time": "night",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/desert_0_modern_slice-of-life_night_snow.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 2.2
+   },
+   {
+    "layers": {
+     "setting": "desert",
+     "era": "ancient",
+     "genre_mood": "horror",
+     "time": "golden",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/desert_1_ancient_horror_golden_rain.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 1.8
+   },
+   {
+    "layers": {
+     "setting": "desert",
+     "era": "far-future",
+     "genre_mood": "sci-fi",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/desert_2_far-future_sci-fi_dusk_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 1.4
+   }
+  ]
+ },
+ "detective_office": {
+  "category": "civic",
+  "kit": "room",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "detective_office",
+     "era": "1920s-50s",
+     "genre_mood": "noir",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/detective_office_0_1920s-50s_noir_golden_clear.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "sofa",
+     "window"
+    ],
+    "objects": 11,
+    "seconds": 2.0
+   },
+   {
+    "layers": {
+     "setting": "detective_office",
+     "era": "modern",
+     "genre_mood": "romance",
+     "time": "dusk",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/detective_office_1_modern_romance_dusk_fog.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "sofa",
+     "window"
+    ],
+    "objects": 12,
+    "seconds": 4.3
+   },
+   {
+    "layers": {
+     "setting": "detective_office",
+     "era": "near-future",
+     "genre_mood": "mystery",
+     "time": "day",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/detective_office_2_near-future_mystery_day_snow.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "sofa",
+     "window"
+    ],
+    "objects": 11,
+    "seconds": 3.0
+   }
+  ]
+ },
+ "diner": {
+  "category": "civic",
+  "kit": "room",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "diner",
+     "era": "1920s-50s",
+     "genre_mood": "fantasy",
+     "time": "dusk",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/diner_0_1920s-50s_fantasy_dusk_rain.jpg",
+    "focus": [
+     "bar_back",
+     "booth",
+     "bottles",
+     "counter",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 16,
+    "seconds": 3.0
+   },
+   {
+    "layers": {
+     "setting": "diner",
+     "era": "modern",
+     "genre_mood": "adventure",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/diner_1_modern_adventure_day_clear.jpg",
+    "focus": [
+     "bar_back",
+     "booth",
+     "bottles",
+     "counter",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 15,
+    "seconds": 3.1
+   },
+   {
+    "layers": {
+     "setting": "diner",
+     "era": "near-future",
+     "genre_mood": "war",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/diner_2_near-future_war_night_clear.jpg",
+    "focus": [
+     "bar_back",
+     "booth",
+     "bottles",
+     "counter",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 16,
+    "seconds": 1.9
+   }
+  ]
+ },
+ "dungeon": {
+  "category": "fantasy",
+  "kit": "room",
+  "eras": [
+   "medieval",
+   "ancient",
+   "1700s-1800s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "dungeon",
+     "era": "medieval",
+     "genre_mood": "horror",
+     "time": "day",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/dungeon_0_medieval_horror_day_fog.jpg",
+    "focus": [
+     "cells",
+     "crates",
+     "door",
+     "pillars",
+     "room"
+    ],
+    "objects": 15,
+    "seconds": 4.6
+   },
+   {
+    "layers": {
+     "setting": "dungeon",
+     "era": "ancient",
+     "genre_mood": "sci-fi",
+     "time": "night",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/dungeon_1_ancient_sci-fi_night_snow.jpg",
+    "focus": [
+     "cells",
+     "crates",
+     "door",
+     "pillars",
+     "room"
+    ],
+    "objects": 16,
+    "seconds": 1.9
+   },
+   {
+    "layers": {
+     "setting": "dungeon",
+     "era": "1700s-1800s",
+     "genre_mood": "comedy",
+     "time": "golden",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/dungeon_2_1700s-1800s_comedy_golden_rain.jpg",
+    "focus": [
+     "cells",
+     "crates",
+     "door",
+     "pillars",
+     "room"
+    ],
+    "objects": 15,
+    "seconds": 1.9
+   }
+  ]
+ },
+ "farmstead": {
+  "category": "settlement",
+  "kit": "terrain",
+  "eras": [
+   "1700s-1800s",
+   "1920s-50s",
+   "modern"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "farmstead",
+     "era": "1700s-1800s",
+     "genre_mood": "romance",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/farmstead_0_1700s-1800s_romance_night_clear.jpg",
+    "focus": [
+     "barn",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 6,
+    "seconds": 2.9
+   },
+   {
+    "layers": {
+     "setting": "farmstead",
+     "era": "1920s-50s",
+     "genre_mood": "mystery",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/farmstead_1_1920s-50s_mystery_golden_clear.jpg",
+    "focus": [
+     "barn",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 6,
+    "seconds": 2.7
+   },
+   {
+    "layers": {
+     "setting": "farmstead",
+     "era": "modern",
+     "genre_mood": "slice-of-life",
+     "time": "dusk",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/farmstead_2_modern_slice-of-life_dusk_fog.jpg",
+    "focus": [
+     "barn",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 6,
+    "seconds": 1.7
+   }
+  ]
+ },
+ "forest": {
+  "category": "nature",
+  "kit": "terrain",
+  "eras": [
+   "modern",
+   "medieval",
+   "far-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "forest",
+     "era": "modern",
+     "genre_mood": "adventure",
+     "time": "golden",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/forest_0_modern_adventure_golden_snow.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 3.1
+   },
+   {
+    "layers": {
+     "setting": "forest",
+     "era": "medieval",
+     "genre_mood": "war",
+     "time": "dusk",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/forest_1_medieval_war_dusk_rain.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 3.9
+   },
+   {
+    "layers": {
+     "setting": "forest",
+     "era": "far-future",
+     "genre_mood": "noir",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/forest_2_far-future_noir_day_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 2.6
+   }
+  ]
+ },
+ "graveyard": {
+  "category": "dramatic",
+  "kit": "terrain",
+  "eras": [
+   "1700s-1800s",
+   "modern",
+   "medieval"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "graveyard",
+     "era": "1700s-1800s",
+     "genre_mood": "sci-fi",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/dramatic/graveyard_0_1700s-1800s_sci-fi_dusk_clear.jpg",
+    "focus": [
+     "graves",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 6,
+    "seconds": 3.4
+   },
+   {
+    "layers": {
+     "setting": "graveyard",
+     "era": "modern",
+     "genre_mood": "comedy",
+     "time": "day",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/dramatic/graveyard_1_modern_comedy_day_fog.jpg",
+    "focus": [
+     "graves",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 6,
+    "seconds": 3.2
+   },
+   {
+    "layers": {
+     "setting": "graveyard",
+     "era": "medieval",
+     "genre_mood": "fantasy",
+     "time": "night",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/dramatic/graveyard_2_medieval_fantasy_night_snow.jpg",
+    "focus": [
+     "graves",
+     "horizon",
+     "landmark",
+     "path"
+    ],
+    "objects": 6,
+    "seconds": 2.6
+   }
+  ]
+ },
+ "harbour_town": {
+  "category": "settlement",
+  "kit": "street",
+  "eras": [
+   "1700s-1800s",
+   "1920s-50s",
+   "modern"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "harbour_town",
+     "era": "1700s-1800s",
+     "genre_mood": "mystery",
+     "time": "day",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/harbour_town_0_1700s-1800s_mystery_day_rain.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 7,
+    "seconds": 5.8
+   },
+   {
+    "layers": {
+     "setting": "harbour_town",
+     "era": "1920s-50s",
+     "genre_mood": "slice-of-life",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/harbour_town_1_1920s-50s_slice-of-life_night_clear.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 17,
+    "seconds": 6.8
+   },
+   {
+    "layers": {
+     "setting": "harbour_town",
+     "era": "modern",
+     "genre_mood": "horror",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/harbour_town_2_modern_horror_golden_clear.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 17,
+    "seconds": 3.2
+   }
+  ]
+ },
+ "hospital_ward": {
+  "category": "civic",
+  "kit": "room",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "hospital_ward",
+     "era": "1920s-50s",
+     "genre_mood": "war",
+     "time": "night",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/hospital_ward_0_1920s-50s_war_night_fog.jpg",
+    "focus": [
+     "beds",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 15,
+    "seconds": 2.2
+   },
+   {
+    "layers": {
+     "setting": "hospital_ward",
+     "era": "modern",
+     "genre_mood": "noir",
+     "time": "golden",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/hospital_ward_1_modern_noir_golden_snow.jpg",
+    "focus": [
+     "beds",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 15,
+    "seconds": 4.0
+   },
+   {
+    "layers": {
+     "setting": "hospital_ward",
+     "era": "near-future",
+     "genre_mood": "romance",
+     "time": "dusk",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/hospital_ward_2_near-future_romance_dusk_rain.jpg",
+    "focus": [
+     "beds",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 15,
+    "seconds": 2.0
+   }
+  ]
+ },
+ "jungle": {
+  "category": "nature",
+  "kit": "terrain",
+  "eras": [
+   "modern",
+   "ancient",
+   "1920s-50s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "jungle",
+     "era": "modern",
+     "genre_mood": "comedy",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/jungle_0_modern_comedy_golden_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 5,
+    "seconds": 4.3
+   },
+   {
+    "layers": {
+     "setting": "jungle",
+     "era": "ancient",
+     "genre_mood": "fantasy",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/jungle_1_ancient_fantasy_dusk_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 5,
+    "seconds": 3.5
+   },
+   {
+    "layers": {
+     "setting": "jungle",
+     "era": "1920s-50s",
+     "genre_mood": "adventure",
+     "time": "day",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/jungle_2_1920s-50s_adventure_day_fog.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 5,
+    "seconds": 5.0
+   }
+  ]
+ },
+ "library": {
+  "category": "civic",
+  "kit": "room",
+  "eras": [
+   "1700s-1800s",
+   "1920s-50s",
+   "modern"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "library",
+     "era": "1700s-1800s",
+     "genre_mood": "slice-of-life",
+     "time": "dusk",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/library_0_1700s-1800s_slice-of-life_dusk_snow.jpg",
+    "focus": [
+     "door",
+     "room",
+     "shelves",
+     "table",
+     "window"
+    ],
+    "objects": 19,
+    "seconds": 4.4
+   },
+   {
+    "layers": {
+     "setting": "library",
+     "era": "1920s-50s",
+     "genre_mood": "horror",
+     "time": "day",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/library_1_1920s-50s_horror_day_rain.jpg",
+    "focus": [
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "table",
+     "window"
+    ],
+    "objects": 14,
+    "seconds": 6.1
+   },
+   {
+    "layers": {
+     "setting": "library",
+     "era": "modern",
+     "genre_mood": "sci-fi",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/library_2_modern_sci-fi_night_clear.jpg",
+    "focus": [
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "table",
+     "window"
+    ],
+    "objects": 16,
+    "seconds": 2.7
+   }
+  ]
+ },
+ "living_room": {
+  "category": "domestic",
+  "kit": "room",
+  "eras": [
+   "modern",
+   "1920s-50s",
+   "1700s-1800s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "living_room",
+     "era": "modern",
+     "genre_mood": "noir",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/living_room_0_modern_noir_day_clear.jpg",
+    "focus": [
+     "door",
+     "fireplace",
+     "lamp",
+     "room",
+     "shelves",
+     "sofa",
+     "window"
+    ],
+    "objects": 12,
+    "seconds": 1.2
+   },
+   {
+    "layers": {
+     "setting": "living_room",
+     "era": "1920s-50s",
+     "genre_mood": "romance",
+     "time": "night",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/living_room_1_1920s-50s_romance_night_fog.jpg",
+    "focus": [
+     "door",
+     "fireplace",
+     "lamp",
+     "room",
+     "shelves",
+     "sofa",
+     "window"
+    ],
+    "objects": 14,
+    "seconds": 1.6
+   },
+   {
+    "layers": {
+     "setting": "living_room",
+     "era": "1700s-1800s",
+     "genre_mood": "mystery",
+     "time": "golden",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/domestic/living_room_2_1700s-1800s_mystery_golden_snow.jpg",
+    "focus": [
+     "door",
+     "fireplace",
+     "room",
+     "shelves",
+     "sofa",
+     "window"
+    ],
+    "objects": 15,
+    "seconds": 1.1
+   }
+  ]
+ },
+ "main_street": {
+  "category": "urban",
+  "kit": "street",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "near-future",
+   "1700s-1800s",
+   "medieval"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "main_street",
+     "era": "1920s-50s",
+     "genre_mood": "fantasy",
+     "time": "night",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/main_street_0_1920s-50s_fantasy_night_rain.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 17,
+    "seconds": 2.7
+   },
+   {
+    "layers": {
+     "setting": "main_street",
+     "era": "modern",
+     "genre_mood": "adventure",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/main_street_1_modern_adventure_golden_clear.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 17,
+    "seconds": 2.7
+   },
+   {
+    "layers": {
+     "setting": "main_street",
+     "era": "near-future",
+     "genre_mood": "war",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/main_street_2_near-future_war_dusk_clear.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 15,
+    "seconds": 4.0
+   }
+  ]
+ },
+ "market": {
+  "category": "urban",
+  "kit": "street",
+  "eras": [
+   "medieval",
+   "modern",
+   "near-future",
+   "ancient"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "market",
+     "era": "medieval",
+     "genre_mood": "horror",
+     "time": "golden",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/market_0_medieval_horror_golden_fog.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "stall",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 19,
+    "seconds": 3.5
+   },
+   {
+    "layers": {
+     "setting": "market",
+     "era": "modern",
+     "genre_mood": "sci-fi",
+     "time": "dusk",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/market_1_modern_sci-fi_dusk_snow.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "stall",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 17,
+    "seconds": 2.3
+   },
+   {
+    "layers": {
+     "setting": "market",
+     "era": "near-future",
+     "genre_mood": "comedy",
+     "time": "day",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/market_2_near-future_comedy_day_rain.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "stall",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 7,
+    "seconds": 5.0
+   }
+  ]
+ },
+ "mountain_pass": {
+  "category": "nature",
+  "kit": "terrain",
+  "eras": [
+   "medieval",
+   "modern",
+   "1700s-1800s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "mountain_pass",
+     "era": "medieval",
+     "genre_mood": "romance",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/mountain_pass_0_medieval_romance_dusk_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 0.9
+   },
+   {
+    "layers": {
+     "setting": "mountain_pass",
+     "era": "modern",
+     "genre_mood": "mystery",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/mountain_pass_1_modern_mystery_day_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 0.9
+   },
+   {
+    "layers": {
+     "setting": "mountain_pass",
+     "era": "1700s-1800s",
+     "genre_mood": "slice-of-life",
+     "time": "night",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/mountain_pass_2_1700s-1800s_slice-of-life_night_fog.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 1.0
+   }
+  ]
+ },
+ "office": {
+  "category": "civic",
+  "kit": "room",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "office",
+     "era": "1920s-50s",
+     "genre_mood": "adventure",
+     "time": "day",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/office_0_1920s-50s_adventure_day_snow.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 13,
+    "seconds": 2.1
+   },
+   {
+    "layers": {
+     "setting": "office",
+     "era": "modern",
+     "genre_mood": "war",
+     "time": "night",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/office_1_modern_war_night_rain.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 13,
+    "seconds": 1.3
+   },
+   {
+    "layers": {
+     "setting": "office",
+     "era": "near-future",
+     "genre_mood": "noir",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/office_2_near-future_noir_golden_clear.jpg",
+    "focus": [
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "shelves",
+     "window"
+    ],
+    "objects": 12,
+    "seconds": 0.9
+   }
+  ]
+ },
+ "open_field": {
+  "category": "nature",
+  "kit": "terrain",
+  "eras": [
+   "modern",
+   "medieval",
+   "1920s-50s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "open_field",
+     "era": "modern",
+     "genre_mood": "sci-fi",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/open_field_0_modern_sci-fi_night_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 5,
+    "seconds": 1.1
+   },
+   {
+    "layers": {
+     "setting": "open_field",
+     "era": "medieval",
+     "genre_mood": "comedy",
+     "time": "golden",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/open_field_1_medieval_comedy_golden_fog.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 5,
+    "seconds": 1.1
+   },
+   {
+    "layers": {
+     "setting": "open_field",
+     "era": "1920s-50s",
+     "genre_mood": "fantasy",
+     "time": "dusk",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/open_field_2_1920s-50s_fantasy_dusk_snow.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 5,
+    "seconds": 1.0
+   }
+  ]
+ },
+ "police_station": {
+  "category": "civic",
+  "kit": "room",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "police_station",
+     "era": "1920s-50s",
+     "genre_mood": "mystery",
+     "time": "golden",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/police_station_0_1920s-50s_mystery_golden_rain.jpg",
+    "focus": [
+     "cells",
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 14,
+    "seconds": 1.2
+   },
+   {
+    "layers": {
+     "setting": "police_station",
+     "era": "modern",
+     "genre_mood": "slice-of-life",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/police_station_1_modern_slice-of-life_dusk_clear.jpg",
+    "focus": [
+     "cells",
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 15,
+    "seconds": 1.2
+   },
+   {
+    "layers": {
+     "setting": "police_station",
+     "era": "near-future",
+     "genre_mood": "horror",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/civic/police_station_2_near-future_horror_day_clear.jpg",
+    "focus": [
+     "cells",
+     "desk",
+     "door",
+     "lamp",
+     "room",
+     "window"
+    ],
+    "objects": 14,
+    "seconds": 1.2
+   }
+  ]
+ },
+ "rooftop": {
+  "category": "urban",
+  "kit": "street",
+  "eras": [
+   "1920s-50s",
+   "modern",
+   "near-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "rooftop",
+     "era": "1920s-50s",
+     "genre_mood": "war",
+     "time": "dusk",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/rooftop_0_1920s-50s_war_dusk_fog.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 15,
+    "seconds": 2.1
+   },
+   {
+    "layers": {
+     "setting": "rooftop",
+     "era": "modern",
+     "genre_mood": "noir",
+     "time": "day",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/rooftop_1_modern_noir_day_snow.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 7,
+    "seconds": 2.1
+   },
+   {
+    "layers": {
+     "setting": "rooftop",
+     "era": "near-future",
+     "genre_mood": "romance",
+     "time": "night",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/urban/rooftop_2_near-future_romance_night_rain.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 17,
+    "seconds": 3.4
+   }
+  ]
+ },
+ "ruins": {
+  "category": "settlement",
+  "kit": "terrain",
+  "eras": [
+   "ancient",
+   "medieval",
+   "far-future"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "ruins",
+     "era": "ancient",
+     "genre_mood": "comedy",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/ruins_0_ancient_comedy_day_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "ruins"
+    ],
+    "objects": 6,
+    "seconds": 1.1
+   },
+   {
+    "layers": {
+     "setting": "ruins",
+     "era": "medieval",
+     "genre_mood": "fantasy",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/ruins_1_medieval_fantasy_night_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "ruins"
+    ],
+    "objects": 6,
+    "seconds": 1.2
+   },
+   {
+    "layers": {
+     "setting": "ruins",
+     "era": "far-future",
+     "genre_mood": "adventure",
+     "time": "golden",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/ruins_2_far-future_adventure_golden_fog.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "ruins"
+    ],
+    "objects": 6,
+    "seconds": 1.0
+   }
+  ]
+ },
+ "snowfield": {
+  "category": "nature",
+  "kit": "terrain",
+  "eras": [
+   "modern",
+   "medieval",
+   "1920s-50s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "snowfield",
+     "era": "modern",
+     "genre_mood": "slice-of-life",
+     "time": "night",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/snowfield_0_modern_slice-of-life_night_snow.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 0.8
+   },
+   {
+    "layers": {
+     "setting": "snowfield",
+     "era": "medieval",
+     "genre_mood": "horror",
+     "time": "golden",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/snowfield_1_medieval_horror_golden_rain.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 0.9
+   },
+   {
+    "layers": {
+     "setting": "snowfield",
+     "era": "1920s-50s",
+     "genre_mood": "sci-fi",
+     "time": "dusk",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/snowfield_2_1920s-50s_sci-fi_dusk_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 1.0
+   }
+  ]
+ },
+ "swamp": {
+  "category": "nature",
+  "kit": "terrain",
+  "eras": [
+   "medieval",
+   "modern",
+   "1700s-1800s"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "swamp",
+     "era": "medieval",
+     "genre_mood": "noir",
+     "time": "golden",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/swamp_0_medieval_noir_golden_clear.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 2.4
+   },
+   {
+    "layers": {
+     "setting": "swamp",
+     "era": "modern",
+     "genre_mood": "romance",
+     "time": "dusk",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/swamp_1_modern_romance_dusk_fog.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 1.8
+   },
+   {
+    "layers": {
+     "setting": "swamp",
+     "era": "1700s-1800s",
+     "genre_mood": "mystery",
+     "time": "day",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/nature/swamp_2_1700s-1800s_mystery_day_snow.jpg",
+    "focus": [
+     "horizon",
+     "landmark",
+     "path",
+     "tree"
+    ],
+    "objects": 6,
+    "seconds": 2.1
+   }
+  ]
+ },
+ "tavern": {
+  "category": "fantasy",
+  "kit": "room",
+  "eras": [
+   "medieval",
+   "1700s-1800s",
+   "ancient"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "tavern",
+     "era": "medieval",
+     "genre_mood": "fantasy",
+     "time": "dusk",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/tavern_0_medieval_fantasy_dusk_rain.jpg",
+    "focus": [
+     "bar_back",
+     "bottles",
+     "counter",
+     "crates",
+     "door",
+     "fireplace",
+     "room",
+     "window"
+    ],
+    "objects": 18,
+    "seconds": 1.3
+   },
+   {
+    "layers": {
+     "setting": "tavern",
+     "era": "1700s-1800s",
+     "genre_mood": "adventure",
+     "time": "day",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/tavern_1_1700s-1800s_adventure_day_clear.jpg",
+    "focus": [
+     "bar_back",
+     "bottles",
+     "counter",
+     "crates",
+     "door",
+     "fireplace",
+     "room",
+     "window"
+    ],
+    "objects": 17,
+    "seconds": 1.1
+   },
+   {
+    "layers": {
+     "setting": "tavern",
+     "era": "ancient",
+     "genre_mood": "war",
+     "time": "night",
+     "weather": "clear",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/fantasy/tavern_2_ancient_war_night_clear.jpg",
+    "focus": [
+     "bar_back",
+     "bottles",
+     "counter",
+     "crates",
+     "door",
+     "fireplace",
+     "room",
+     "window"
+    ],
+    "objects": 19,
+    "seconds": 1.4
+   }
+  ]
+ },
+ "village": {
+  "category": "settlement",
+  "kit": "street",
+  "eras": [
+   "medieval",
+   "1700s-1800s",
+   "modern"
+  ],
+  "runs": [
+   {
+    "layers": {
+     "setting": "village",
+     "era": "medieval",
+     "genre_mood": "horror",
+     "time": "day",
+     "weather": "fog",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/village_0_medieval_horror_day_fog.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 7,
+    "seconds": 2.3
+   },
+   {
+    "layers": {
+     "setting": "village",
+     "era": "1700s-1800s",
+     "genre_mood": "sci-fi",
+     "time": "night",
+     "weather": "snow",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/village_1_1700s-1800s_sci-fi_night_snow.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 17,
+    "seconds": 1.8
+   },
+   {
+    "layers": {
+     "setting": "village",
+     "era": "modern",
+     "genre_mood": "comedy",
+     "time": "golden",
+     "weather": "rain",
+     "state": "lived-in"
+    },
+    "ok": true,
+    "render": "renders/coverage/settlement/village_2_modern_comedy_golden_rain.jpg",
+    "focus": [
+     "far_end",
+     "shopfront",
+     "sign",
+     "street",
+     "street_lamp",
+     "vehicle"
+    ],
+    "objects": 15,
+    "seconds": 1.6
+   }
+  ]
+ }
+}

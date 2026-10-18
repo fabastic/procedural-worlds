@@ -96,6 +96,7 @@ def bake_colors(col):
             alphas = {li: info[min(p.material_index, len(info) - 1)][1] for p in me.polygons for li in p.loop_indices}
             try:
                 bake_object(o)
+                data = o.data.color_attributes["Col"].data   # the bake reallocates: never reuse refs
                 for li, a in alphas.items():                 # keep the unlit flag after the bake
                     c = data[li].color
                     data[li].color = (c[0], c[1], c[2], a)
@@ -151,7 +152,8 @@ def main():
         # spawn: the scene's spawn focus, projected to the floor, facing the establishing target
         sf = fps.get(info.get("spawn", {}).get("focus", ""), None)
         cam_loc, cam_tgt, _ = shots.establishing(info)
-        sp = Vector(sf["pos"]) if sf else Vector(cam_loc)
+        interior = sc["layers"].get("base") in ("interior", "vehicle", "underground")
+        sp = Vector(sf["pos"]) if (sf and interior) else Vector(cam_loc)   # outdoors: the composed vantage
         dg = bpy.context.evaluated_depsgraph_get()
         gz = shots._ground_z(bpy.context.scene, dg, sp + Vector((0, 0, 1.0)))
         sp = Vector((sp.x, sp.y, gz + 0.05))
