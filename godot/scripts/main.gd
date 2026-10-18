@@ -171,7 +171,16 @@ func _dress(root: Node) -> void:
 	var tint: Array = sc["sky"].get("light_tint", [1, 1, 1])
 	var mat := ShaderMaterial.new()
 	mat.shader = TOON
-	mat.set_shader_parameter("light_tint", Color(tint[0], tint[1], tint[2]))
+	mat.set_shader_parameter("light_tint", Vector3(tint[0], tint[1], tint[2]))
+	var skyd: Dictionary = sc["sky"]
+	var sh0: Array = skyd.get("shadow_tint", [0.7, 0.74, 0.86])
+	mat.set_shader_parameter("shadow_tint", Vector3(sh0[0], sh0[1], sh0[2]))
+	var is_indoor: bool = sc.get("interior", false)
+	var sd: Array = skyd.get("sun_dir", [-0.4, -0.8, -0.4])
+	# interiors: a soft key from the lamp overhead / window side; exteriors: the mood sun
+	mat.set_shader_parameter("key_dir", Vector3(-0.35, -1.0, -0.55) if is_indoor else Vector3(sd[0], sd[1], sd[2]))
+	var mood0: String = sc.get("mood", "DAY")
+	mat.set_shader_parameter("shadow_value", 0.62 if is_indoor else {"DAY": 0.6, "GOLDEN": 0.55, "DUSK": 0.5, "NIGHT": 0.45}.get(mood0, 0.55))
 	mat.set_shader_parameter("debug_albedo", OS.get_cmdline_user_args().has("--debug-albedo"))
 	if OS.get_cmdline_user_args().has("--debug-lights"):
 		var nl := 0

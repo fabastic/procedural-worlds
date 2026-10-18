@@ -43,7 +43,8 @@ Every render must look DRAWN, not 3D-rendered; target is `reference/ink_style_re
 
 ## In progress right now (2026-10-17 20:00 IST)
 - 4 asset-pack subagents in worktrees (interiors, urban+transit, nature+settlements, fantasy/sci-fi/horror), each writing only `procedural_worlds/kits/ext/<pack>*.py` + `presets/settings.d/<pack>.json`; briefed on the 15-era timeline. Review their prop sheets + layer sheets, merge, run coverage.
-- Godot walk mode written (`godot/`) but NOT RUN yet: Godot is not installed on this machine (needs the user's OK to download Godot 4.x).
+- Godot walk mode RUNS (Godot 4.7.2 extracted to gitignored `.tools/godot/`; launch `walk.bat [slug]`). Verified by screenshots of all 3 scenes of the-last-watch + the story picker. Lighting: `ink_toon.gdshader` is UNSHADED and computes the 3 cel bands itself from `key_dir` (imported glTF lamp energies are unusable); tints are plain vec3 (NOT source_color: that double-converted sRGB and made everything dark navy). Test hook: `--shot <png> --frames N --scene i [--debug-raw|--debug-edges|--debug-albedo|--debug-lights]`. Not yet tried by hand with keyboard/mouse.
+- Asset-pack subagents from the 2026-10-17 session can no longer be resumed (transcripts gone); their partial work sits in `.claude/worktrees/agent-{ae90ac0f,ac3247cb,afb5f52e,ad112982}*` — review/merge or relaunch.
 
 ## Phase 3 groundwork (verified vs not)
 - VERIFIED: `tools/build_world.py` exports per-scene GLB (COLOR_0 baked ink colours, alpha 0 = unlit faces, GN wobble applied, PW_Spawn / PW_Focus_* / PW_Trigger_* empties with extras, `__nocol` on sky cards/decals, KHR lights) + `world.json` (Godot coords, sky colours, sun dir, beats with trigger pos/radius). the-last-watch: 3 GLBs in 9 s.
