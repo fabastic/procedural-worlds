@@ -45,6 +45,17 @@ cd web && npm run sync && npm run dev
 - Example stories are in `story/examples/`.
 - There are no character models: the story is told through places, objects, POV shots, captions and speech balloons.
 
+## Walk the story (first person, Godot)
+Blender builds every world and Godot runs it.
+```
+tools/blender.sh -b --factory-startup -P tools/build_world.py -- story/examples/the_last_watch.json   # -> story_out/<slug>/world/*.glb + world.json
+walk.bat the-last-watch            # or: godot --path godot -- --story ../story_out/the-last-watch/world
+```
+- **Controls:** WASD or arrow keys to move, mouse to look, Shift to sprint, E to continue to the next scene, N to skip a scene, Esc to free the mouse.
+- **Story beats:** captions and off-panel dialogue appear as you reach each beat's place.
+- **Look:** ink cel bands, boiling edge lines, hatching and paper grain are drawn in real time.
+- **Requirements:** Godot 4.x. `walk.bat` uses `.tools/godot/` if present, otherwise `godot` on PATH. Running with no story argument shows a picker.
+
 ## Install
 - **As an extension (Blender 4.2+):** zip the `procedural_worlds/` folder (it contains `blender_manifest.toml`), then Preferences > Add-ons > Install from Disk. The extension install path is not verified yet.
 - **As a legacy add-on:** zip the same folder, then Preferences > Add-ons > Install from Disk.

@@ -21,6 +21,7 @@ var sun: DirectionalLight3D
 var fired := {}
 var next_beat := 0
 var focus_nodes := {}
+var post_mat: ShaderMaterial
 var shot_path := ""
 var shot_frames := 0
 var shot_scene := -1
@@ -217,7 +218,16 @@ func _dress(root: Node) -> void:
 				l.light_energy = 1.0
 
 
+func _apply_weather(sc: Dictionary) -> void:
+	if post_mat == null:
+		return
+	var w: String = sc.get("layers", {}).get("weather", "clear")
+	post_mat.set_shader_parameter("weather", {"rain": 1, "snow": 2, "fog": 3, "storm": 4}.get(w, 0))
+	post_mat.set_shader_parameter("mist", {"rain": 0.15, "snow": 0.2, "fog": 0.6, "storm": 0.3, "heat-haze": 0.1}.get(w, 0.0))
+
+
 func _setup_environment(sc: Dictionary) -> void:
+	_apply_weather(sc)
 	var s: Dictionary = sc["sky"]
 	var e := Environment.new()
 	e.background_mode = Environment.BG_SKY
@@ -268,6 +278,8 @@ func _add_post(cam: Camera3D) -> void:
 	pm.set_shader_parameter("ink", Vector3(0.02, 0.017, 0.015))
 	pm.set_shader_parameter("paper", Vector3(0.95, 0.91, 0.82))
 	q.material_override = pm
+	post_mat = pm
+	_apply_weather(world["scenes"][scene_index])
 	var ua := OS.get_cmdline_user_args()
 	if ua.has("--debug-edges"):
 		pm.set_shader_parameter("debug_mode", 1)
