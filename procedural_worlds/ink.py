@@ -155,6 +155,7 @@ def build_toon_group():
         ("Grime Color", C, (*srgb(0.42, 0.36, 0.26), 1)), ("AO Distance", F, 0.6),
         ("Stain Scale", F, 1.0), ("Aspect", F, 16 / 9), ("Hatch Density", F, 30.0),
         ("Lo", F, 0.16), ("Hi", F, 0.62), ("Ink", C, (*INK, 1)), ("Base Height", F, 0.25),
+        ("Snow", F, 0.0), ("Wet", F, 0.0),
     ], [("Shader", "NodeSocketShader")])
     O = gi.outputs
     # light amount and light hue from a white diffuse surface
@@ -208,6 +209,16 @@ def build_toon_group():
     dirt = t.math("ADD", dirt, t.math("MULTIPLY", base, 0.55))
     dirt = t.math("MINIMUM", t.math("MULTIPLY", dirt, O["Grime"]), 0.9)
     col = t.mix(1.0, col, t.mix(dirt, (1, 1, 1, 1), O["Grime Color"]), blend="MULTIPLY")
+    # weather on surfaces: rain darkens + deepens up-facing ground (wet), snow settles on tops
+    up = t.maprange(nzv, 0.55, 0.85)
+    wet = t.math("MULTIPLY", O["Wet"], up)
+    wet_col = t.node("ShaderNodeHueSaturation", {"Color": col, "Saturation": 1.12, "Value": 0.84}).outputs[0]
+    col = t.mix(wet, col, wet_col)
+    sn = t.node("ShaderNodeTexNoise", {"Vector": t.vmath("SCALE", geo.outputs["Position"], scale=1.7), "Scale": 1.0,
+                                       "Detail": 3.0})
+    snow_edge = t.math("ADD", t.maprange(nzv, 0.45, 0.75), t.math("MULTIPLY", t.math("SUBTRACT", sn.outputs["Fac"], 0.5), 0.6))
+    snow = t.math("MULTIPLY", t.math("GREATER_THAN", snow_edge, t.math("SUBTRACT", 1.15, O["Snow"])), t.math("GREATER_THAN", O["Snow"], 0.01))
+    col = t.mix(snow, col, (*srgb(0.93, 0.94, 0.96), 1))
     # hatching: screen-space wobbly diagonal strokes, only in shadow; cross-hatch in the darkest
     win = t.node("ShaderNodeSeparateXYZ", {"Vector": tc.outputs["Window"]})
     px = t.math("MULTIPLY", win.outputs["X"], O["Aspect"])
@@ -318,6 +329,8 @@ def ink_material(m, mood, opts):
     grp.inputs["Stain Scale"].default_value = opts["stain_scale"]
     grp.inputs["Aspect"].default_value = opts["aspect"]
     grp.inputs["Base Height"].default_value = opts["base_height"]
+    grp.inputs["Snow"].default_value = opts.get("snow", 0.0)
+    grp.inputs["Wet"].default_value = opts.get("wet", 0.0)
     if mood == "NIGHT":
         grp.inputs["Lo"].default_value, grp.inputs["Hi"].default_value = 0.14, 0.55
     nt.links.new(grp.outputs["Shader"], out.inputs["Surface"])
@@ -536,57 +549,86 @@ def build_world(mood, sun_obj, seed, sea_color=None):
 
 
 # ----------------------------------------------------------------------------- compositor
-def _weather(t, img, scene, uv, uvs, step):
+def _weather(t, img, scene, uv, uvs, step, rl, fog_d):
+    """Weather overlays drawn like ink: depth fog, two-layer rain with splashes, two-layer snow."""
     from .core import load_preset
     layers = scene.get("pw_layers", {}) or {}
     wname = layers.get("weather", "clear")
     W = load_preset("conditions")["weather"].get(wname, {})
-    if not W:
+    if not W or wname == "clear":
         return img
-    ncoord = t.node("CompositorNodeImageCoordinates", {"Image": img}).outputs["Normalized"]
-    nsep = t.node("ShaderNodeSeparateXYZ", {"Vector": ncoord})
+    nsep = t.node("ShaderNodeSeparateXYZ", {"Vector": t.node("CompositorNodeImageCoordinates", {"Image": img}).outputs["Normalized"]})
     ny = nsep.outputs["Y"]
+    tm = (lambda k: t.math("MULTIPLY", step, k)) if step is not None else (lambda k: 0.0)
     mist = float(W.get("mist", 0.0))
-    if mist > 0:
-        band = t.maprange(t.math("ABSOLUTE", t.math("SUBTRACT", ny, 0.5)), 0.0, 0.45, 1.0, 0.25)
-        k = t.math("MULTIPLY", band, mist * 0.75)
-        img = t.mix(k, img, (*srgb(0.86, 0.85, 0.80), 1))
-    tm = (lambda s: t.math("MULTIPLY", step, s)) if step is not None else (lambda s: 0.0)
-    if W.get("overlay") == "rain":
+    fogc = {"DAY": srgb(0.84, 0.85, 0.82), "GOLDEN": srgb(0.90, 0.80, 0.64), "DUSK": srgb(0.66, 0.58, 0.64)}.get(scene.get("pw_mood", "DAY"), srgb(0.40, 0.43, 0.50))
+    if mist > 0 and "Depth" in rl.outputs:
+        # depth fog: 1 - exp(-z / L), L shrinks with mist; flat posterised into 3 bands (drawn look)
+        z = t.math("MINIMUM", rl.outputs["Depth"], 1e5)
+        L = fog_d * (1.1 / max(mist, 0.05))
+        f = t.math("SUBTRACT", 1.0, t.math("EXPONENT", t.math("DIVIDE", t.math("MULTIPLY", z, -1.0), L)))
+        f = t.math("DIVIDE", t.math("FLOOR", t.math("MULTIPLY", f, 4.0)), 4.0)
+        f = t.math("MULTIPLY", f, t.maprange(z, 2000.0, 9000.0, 1.0, 0.45))     # sky keeps some colour
+        img = t.mix(t.math("MULTIPLY", f, min(0.9, 0.55 + mist * 0.5)), img, (*fogc, 1))
+    ov = W.get("overlay")
+    if ov == "rain":
         heavy = W.get("heavy", False)
         sep = t.node("ShaderNodeSeparateXYZ", {"Vector": uvs})
-        px = t.math("ADD", sep.outputs["X"], t.math("MULTIPLY", sep.outputs["Y"], 0.22))   # slanted
-        cols = 120.0
-        cid = t.math("FLOOR", t.math("MULTIPLY", px, cols))
-        cell = t.node("ShaderNodeCombineXYZ", {"X": cid, "Y": tm(1.0), "Z": 3.0}).outputs[0]
-        r = t.node("ShaderNodeTexWhiteNoise", {"Vector": cell}, noise_dimensions="3D").outputs["Value"]
-        on = t.math("GREATER_THAN", r, 0.86 if heavy else 0.92)
-        thin = t.math("LESS_THAN", t.math("FRACT", t.math("MULTIPLY", px, cols)), 0.3)
-        seg = t.math("LESS_THAN", t.math("FRACT", t.math("ADD", t.math("MULTIPLY", sep.outputs["Y"], 2.6),
-                                                          t.math("MULTIPLY", r, 13.0))), 0.22 if heavy else 0.16)
-        streak = t.math("MULTIPLY", t.math("MULTIPLY", on, thin), seg)
-        img = t.mix(t.math("MULTIPLY", streak, 0.75), img, (*srgb(0.90, 0.92, 0.95), 1))
-        dark = t.math("MULTIPLY", streak, t.math("GREATER_THAN", r, 0.985))           # a few inked strokes
-        img = t.mix(t.math("MULTIPLY", dark, 0.6), img, (*INK, 1))
-    elif W.get("overlay") == "snow":
-        drift = t.node("ShaderNodeCombineXYZ", {"X": tm(0.013), "Y": tm(-0.045), "Z": 0.0}).outputs[0]
-        vo = t.node("ShaderNodeTexVoronoi", {"Vector": t.vmath("ADD", uvs, drift), "Scale": 20.0, "Randomness": 1.0})
-        d = vo.outputs["Distance"]
-        sz = t.node("ShaderNodeSeparateXYZ", {"Vector": vo.outputs["Color"]}).outputs["X"]
-        keep = t.math("GREATER_THAN", sz, 0.45)
-        rad = t.math("ADD", 0.035, t.math("MULTIPLY", sz, 0.05))
-        flake = t.math("MULTIPLY", t.math("LESS_THAN", d, rad), keep)
-        rim = t.math("MULTIPLY", t.math("MULTIPLY", t.math("LESS_THAN", d, t.math("ADD", rad, 0.02)),
-                                        t.math("SUBTRACT", 1.0, flake)), keep)
-        img = t.mix(t.math("MULTIPLY", rim, 0.7), img, (*INK, 1))
-        img = t.mix(flake, img, (*srgb(0.97, 0.97, 0.95), 1))
-    elif W.get("overlay") == "haze":
-        hz = t.node("ShaderNodeTexNoise", {"Vector": t.vmath("MULTIPLY", uvs, (1.0, 6.0, 1.0)), "Scale": 3.0}).outputs["Fac"]
-        img = t.mix(t.maprange(hz, 0.4, 0.7, 0.0, 0.12), img, (*srgb(0.98, 0.90, 0.72), 1))
+        X, Y = sep.outputs["X"], sep.outputs["Y"]
+        layers_ = ((150.0, 0.07 if heavy else 0.05, 0.22, 0.25, 0.45),   # far: thin, dense, short, faint
+                   (55.0, 0.05 if heavy else 0.03, 0.30, 0.45, 0.8))      # near: bold, sparse, long
+        for i, (cols, dens, width, length, alpha) in enumerate(layers_):
+            px = t.math("ADD", X, t.math("MULTIPLY", Y, 0.25 + 0.05 * i))
+            cid = t.math("FLOOR", t.math("MULTIPLY", px, cols))
+            cell = t.node("ShaderNodeCombineXYZ", {"X": cid, "Y": tm(1.0 + i), "Z": 3.0 + i}).outputs[0]
+            r = t.node("ShaderNodeTexWhiteNoise", {"Vector": cell}, noise_dimensions="3D").outputs["Value"]
+            on = t.math("LESS_THAN", r, dens * 2.0)
+            thin = t.math("LESS_THAN", t.math("FRACT", t.math("MULTIPLY", px, cols)), width)
+            ph = t.math("ADD", t.math("MULTIPLY", Y, 2.0 + i), t.math("MULTIPLY", r, 37.0))
+            seg = t.math("LESS_THAN", t.math("FRACT", ph), t.math("MULTIPLY", length, t.math("ADD", 0.6, r)))
+            streak = t.math("MULTIPLY", t.math("MULTIPLY", on, thin), seg)
+            img = t.mix(t.math("MULTIPLY", streak, alpha), img, (*srgb(0.88, 0.91, 0.95), 1))
+            if i == 1:                                                    # near strokes get an ink edge
+                edge = t.math("MULTIPLY", t.math("MULTIPLY", on, seg),
+                              t.math("LESS_THAN", t.math("ABSOLUTE", t.math("SUBTRACT", t.math("FRACT", t.math("MULTIPLY", px, cols)), width + 0.04)), 0.04))
+                img = t.mix(t.math("MULTIPLY", edge, 0.55), img, (*INK, 1))
+        # splashes: little inked crowns ticking on the lower half of the frame
+        sp = t.vmath("MULTIPLY", uvs, (90.0, 60.0, 1.0))
+        spc = t.node("ShaderNodeVectorMath", operation="FLOOR")
+        t.link(sp, spc.inputs[0])
+        sr = t.node("ShaderNodeTexWhiteNoise", {"Vector": t.vmath("ADD", spc.outputs[0], t.node("ShaderNodeCombineXYZ", {"X": 0.0, "Y": 0.0, "Z": tm(1.0)}).outputs[0])},
+                    noise_dimensions="3D").outputs["Value"]
+        fr = t.vmath("SUBTRACT", sp, spc.outputs[0])
+        fsep = t.node("ShaderNodeSeparateXYZ", {"Vector": fr})
+        tick = t.math("MULTIPLY", t.math("LESS_THAN", t.math("ABSOLUTE", t.math("SUBTRACT", fsep.outputs["Y"], 0.5)), 0.12),
+                      t.math("LESS_THAN", t.math("ABSOLUTE", t.math("SUBTRACT", fsep.outputs["X"], 0.5)), 0.4))
+        low = t.maprange(ny, 0.5, 0.15)
+        splash = t.math("MULTIPLY", t.math("MULTIPLY", tick, t.math("GREATER_THAN", sr, 0.985 if not heavy else 0.97)), low)
+        img = t.mix(t.math("MULTIPLY", splash, 0.7), img, (*srgb(0.90, 0.92, 0.95), 1))
+    elif ov == "snow":
+        for i, (scale, rmin, rvar, drift, alpha) in enumerate(((26.0, 0.025, 0.03, 0.03, 0.75),     # far: small
+                                                              (10.0, 0.03, 0.05, 0.07, 1.0))):    # near: big
+            dv = t.node("ShaderNodeCombineXYZ", {"X": tm(drift * 0.3), "Y": tm(-drift), "Z": float(i)}).outputs[0]
+            vo = t.node("ShaderNodeTexVoronoi", {"Vector": t.vmath("ADD", uvs, dv), "Scale": scale, "Randomness": 1.0})
+            d = vo.outputs["Distance"]
+            rr = t.node("ShaderNodeSeparateXYZ", {"Vector": vo.outputs["Color"]}).outputs["X"]
+            keep = t.math("GREATER_THAN", rr, 0.5 if i == 0 else 0.7)
+            rad = t.math("ADD", rmin, t.math("MULTIPLY", rr, rvar))
+            flake = t.math("MULTIPLY", t.math("LESS_THAN", d, rad), keep)
+            rim = t.math("MULTIPLY", t.math("MULTIPLY", t.math("LESS_THAN", d, t.math("ADD", rad, 0.018 + 0.01 * i)),
+                                            t.math("SUBTRACT", 1.0, flake)), keep)
+            img = t.mix(t.math("MULTIPLY", rim, 0.65 * alpha), img, (*INK, 1))
+            img = t.mix(t.math("MULTIPLY", flake, alpha), img, (*srgb(0.97, 0.97, 0.95), 1))
+    elif ov == "haze":
+        hz = t.node("ShaderNodeTexNoise", {"Vector": t.vmath("ADD", t.vmath("MULTIPLY", uvs, (1.0, 8.0, 1.0)),
+                                                            t.node("ShaderNodeCombineXYZ", {"X": 0.0, "Y": tm(0.05), "Z": 0.0}).outputs[0]),
+                                           "Scale": 3.0}).outputs["Fac"]
+        band = t.maprange(ny, 0.35, 0.6, 1.0, 0.0)
+        img = t.mix(t.math("MULTIPLY", t.maprange(hz, 0.35, 0.65, 0.12, 0.42), band), img, (*srgb(0.99, 0.90, 0.70), 1))
     return img
 
 
-def build_compositor(scene, seed, frame_boil=True, grade=None):
+def build_compositor(scene, seed, frame_boil=True, grade=None, fog_distance=10.0):
     name = "PW_InkComp"
     g = bpy.data.node_groups.get(name)
     if g is not None:
@@ -657,7 +699,7 @@ def build_compositor(scene, seed, frame_boil=True, grade=None):
     img = t.mix(dark, img, (*INK, 1))
     # 4b. weather (presets/conditions.json via the scene's story layers): inked rain strokes,
     # snow flakes with an ink rim, and a paper-coloured mist band around the horizon
-    img = _weather(t, img, scene, uv, uvs, step if frame_boil else None)
+    img = _weather(t, img, scene, uv, uvs, step if frame_boil else None, rl, fog_distance)
     # 5. warm grimy vignette
     g = grade or {}
     vig = t.maprange(r, 0.55, 1.15, 0.0, min(0.85, 0.45 * g.get("vignette", 1.0)))
@@ -691,6 +733,8 @@ def _scene_scale(scene, info):
 def apply(context, col, seed, mood, info):
     scene = context.scene
     scene["pw_ink"] = 1
+    scene["pw_mood"] = mood
+    context.view_layer.use_pass_z = True                 # depth fog in the compositor
     context.view_layer.update()          # camera/sun matrix_world are stale right after creation
     opts = dict(line_scale=1.0, wobble=1.0, grime=1.0, hatch=1.0, ao_distance=None, sea_color=None,
                 base_height=None, light_tint=None, shadow_tint=None)
@@ -710,6 +754,11 @@ def apply(context, col, seed, mood, info):
     opts["stain_scale"] = 0.9 / max(d * 0.08, 0.05)
     opts["aspect"] = scene.render.resolution_x / max(scene.render.resolution_y, 1)
     opts["base_height"] = opts["base_height"] or 0.055 * d
+    from .core import load_preset
+    W = load_preset("conditions")["weather"].get((scene.get("pw_layers", {}) or {}).get("weather", "clear"), {})
+    opts["wet"] = 1.0 if W.get("wet") else 0.0
+    opts["snow"] = 0.75 if W.get("overlay") == "snow" else 0.0
+    opts["fog_distance"] = d
     build_toon_group()
     build_wonk_group()
     done = set()
@@ -736,7 +785,7 @@ def apply(context, col, seed, mood, info):
         sun.data.angle = math.radians(0.6)
         build_world(mood, sun, seed, opts["sea_color"])
     add_outlines(col, seed, radius, opts["line_scale"])
-    build_compositor(scene, seed, grade=grade)
+    build_compositor(scene, seed, grade=grade, fog_distance=opts["fog_distance"])
     return {"line_radius": radius, "materials": len(done)}
 
 
